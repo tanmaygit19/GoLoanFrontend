@@ -1,0 +1,131 @@
+<div class="container-fluid py-4">
+
+  <!-- Page Header -->
+  <div class="mb-4">
+    <h2 class="mb-0">Admin - Support Tickets</h2>
+    <p class="text-muted mt-2 mb-0">
+      View and manage customer support tickets.
+    </p>
+  </div>
+
+  <!-- Success Message -->
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Loading Message -->
+  <div *ngIf="isLoading" class="alert alert-info">
+    Loading support tickets...
+  </div>
+
+  <!-- Tickets Table -->
+  <div class="card border-0 shadow-sm">
+    <div class="card-body">
+
+      <!-- Empty State -->
+      <div
+        *ngIf="!isLoading && tickets.length === 0"
+        class="alert alert-info mb-0"
+      >
+        No support tickets found.
+      </div>
+
+      <!-- Ticket List -->
+      <div *ngIf="tickets.length > 0" class="table-responsive">
+
+        <table class="table table-bordered table-striped align-middle mb-0">
+
+          <thead class="table-dark">
+            <tr>
+              <th>Ticket ID</th>
+              <th>Customer</th>
+              <th>Loan Account No.</th>
+              <th>Subject</th>
+              <th>Status</th>
+              <th>Created Date</th>
+              <th>Officer Response</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr *ngFor="let ticket of tickets">
+
+              <!-- Ticket ID -->
+              <td>
+                {{ ticket.ticketId ?? ticket.TicketId }}
+              </td>
+
+              <!-- Customer Name -->
+              <td>
+                {{ ticket.customerName ?? ticket.CustomerName ?? 'N/A' }}
+              </td>
+
+              <!-- Loan Account Number -->
+              <td>
+                {{ ticket.loanAccountNo ?? ticket.LoanAccountNo ?? 'N/A' }}
+              </td>
+
+              <!-- Subject -->
+              <td>
+                {{ ticket.subject ?? ticket.Subject }}
+              </td>
+
+              <!-- Status -->
+              <td>
+                <span
+                  class="badge"
+                  [ngClass]="getStatusClass(ticket.status ?? ticket.Status)"
+                >
+                  {{ ticket.status ?? ticket.Status }}
+                </span>
+              </td>
+
+              <!-- Created Date -->
+              <td>
+                {{
+                  (ticket.createdDate ?? ticket.CreatedDate)
+                    | date: 'dd-MM-yyyy'
+                }}
+              </td>
+
+              <!-- Officer Response -->
+              <td>
+                {{
+                  (ticket.officerResponse ?? ticket.OfficerResponse)
+                    || 'Awaiting response'
+                }}
+              </td>
+
+              <!-- Manage Response Button -->
+              <td>
+                <a
+                  [routerLink]="[
+                    '/support/manage-response',
+                    ticket.ticketId ?? ticket.TicketId
+                  ]"
+                  class="btn btn-sm btn-primary"
+                >
+                  Manage Response
+                </a>
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+

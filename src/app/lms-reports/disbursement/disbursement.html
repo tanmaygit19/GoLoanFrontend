@@ -1,0 +1,205 @@
+
+<div class="report-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <a routerLink="/lms-reports" class="back-link">
+        <i class="bi bi-arrow-left"></i>
+        LMS Reports Dashboard
+      </a>
+
+      <h2>Disbursement Report</h2>
+      <p>Review monthly loan disbursements and total disbursed amounts.</p>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-outline-primary refresh-btn"
+      (click)="refreshReport()"
+      [disabled]="isLoading">
+      <i class="bi bi-arrow-clockwise"></i>
+      Refresh
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-card">
+
+    <div class="filter-field">
+      <label for="fromDate">From Date</label>
+      <input
+        id="fromDate"
+        type="date"
+        class="form-control"
+        [(ngModel)]="fromDate"
+        [max]="toDate"
+        [disabled]="isLoading">
+    </div>
+
+    <div class="filter-field">
+      <label for="toDate">To Date</label>
+      <input
+        id="toDate"
+        type="date"
+        class="form-control"
+        [(ngModel)]="toDate"
+        [min]="fromDate"
+        [disabled]="isLoading">
+    </div>
+
+    <div class="filter-field search-field">
+      <label for="searchTerm">Search Month</label>
+      <input
+        id="searchTerm"
+        type="text"
+        class="form-control"
+        placeholder="Search month, e.g. 2026-07"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="applyFilters()">
+    </div>
+
+    <div class="filter-actions">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="loadReport()"
+        [disabled]="isLoading">
+        <i class="bi bi-search"></i>
+        Search
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="exportReport()"
+        [disabled]="filteredData.length === 0 || isLoading">
+        <i class="bi bi-download"></i>
+        Export
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Loading -->
+  <div class="alert alert-info" *ngIf="isLoading">
+    <span class="spinner-border spinner-border-sm me-2"></span>
+    Loading disbursement report...
+  </div>
+
+  <!-- Error -->
+  <div class="alert alert-danger" *ngIf="!isLoading && errorMessage">
+    {{ errorMessage }}
+
+    <button
+      type="button"
+      class="btn btn-sm btn-outline-danger ms-2"
+      (click)="loadReport()">
+      Retry
+    </button>
+  </div>
+
+  <ng-container *ngIf="!isLoading && !errorMessage">
+
+    <!-- Summary Cards -->
+    <div class="summary-grid">
+
+      <div class="summary-card loans-card">
+        <div class="summary-icon loans-icon">
+          <i class="bi bi-bank"></i>
+        </div>
+
+        <div>
+          <p>Total Loans Disbursed</p>
+          <h3>{{ totalLoansDisbursed | number }}</h3>
+        </div>
+      </div>
+
+      <div class="summary-card amount-card">
+        <div class="summary-icon amount-icon">
+          <i class="bi bi-currency-rupee"></i>
+        </div>
+
+        <div>
+          <p>Total Disbursement Amount</p>
+          <h3>{{ totalDisbursementAmount | currency:'INR':'symbol':'1.2-2':'en-IN' }}</h3>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Report Table -->
+    <div class="report-card">
+
+      <div class="card-heading">
+        <div>
+          <h4>Monthly Disbursement Summary</h4>
+          <p>Monthly loan counts and disbursed amounts for the selected date range.</p>
+        </div>
+
+        <span class="record-count">
+          {{ filteredData.length }}
+          {{ filteredData.length === 1 ? 'month' : 'months' }}
+        </span>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table report-table align-middle mb-0">
+
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th class="text-end">Loans Disbursed</th>
+              <th class="text-end">Disbursement Amount (₹)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let item of filteredData">
+
+              <td>
+                <span class="month-badge">{{ item.month }}</span>
+              </td>
+
+              <td class="text-end">
+                {{ item.loansDisbursed | number }}
+              </td>
+
+              <td class="text-end amount-value">
+                {{ item.disbursementAmount | currency:'INR':'symbol':'1.2-2':'en-IN' }}
+              </td>
+
+            </tr>
+
+            <tr *ngIf="filteredData.length === 0">
+              <td colspan="3" class="empty-state">
+                <i class="bi bi-inbox"></i>
+                <p>No disbursement records found.</p>
+                <span>Try changing the date range or search term.</span>
+              </td>
+            </tr>
+          </tbody>
+
+          <tfoot *ngIf="filteredData.length > 0">
+            <tr>
+              <th>Total</th>
+
+              <th class="text-end">
+                {{ totalLoansDisbursed | number }}
+              </th>
+
+              <th class="text-end">
+                {{ totalDisbursementAmount | currency:'INR':'symbol':'1.2-2':'en-IN' }}
+              </th>
+            </tr>
+          </tfoot>
+
+        </table>
+      </div>
+
+    </div>
+
+  </ng-container>
+
+</div>
+

@@ -1,0 +1,125 @@
+<div class="container py-4">
+
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Ticket Details</h2>
+
+    <a routerLink="/support/my-tickets" class="btn btn-outline-primary">
+      Back to My Tickets
+    </a>
+  </div>
+
+  <!-- Loading Message -->
+  <div *ngIf="isLoading" class="alert alert-info">
+    Loading ticket details...
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Ticket Details -->
+  <div *ngIf="ticket && !isLoading" class="card border-0 shadow-sm">
+
+    <!-- Ticket Header -->
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">
+        Ticket #{{ ticket.ticketId ?? ticket.TicketId }}
+      </h5>
+    </div>
+
+    <div class="card-body">
+
+      <!-- Customer Information -->
+      <div class="row mb-3">
+
+        <div class="col-md-6">
+          <strong>Customer Name</strong>
+          <p>{{ ticket.customerName ?? ticket.CustomerName ?? 'N/A' }}</p>
+        </div>
+
+        <div class="col-md-6">
+          <strong>Loan Account Number</strong>
+          <p>{{ ticket.loanAccountNo ?? ticket.LoanAccountNo ?? 'N/A' }}</p>
+        </div>
+
+      </div>
+
+      <!-- Subject -->
+      <div class="mb-3">
+        <strong>Subject</strong>
+        <p>{{ ticket.subject ?? ticket.Subject ?? 'N/A' }}</p>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <strong>Description</strong>
+        <p>{{ ticket.description ?? ticket.Description ?? 'N/A' }}</p>
+      </div>
+
+      <!-- Date and Status -->
+      <div class="row mb-3">
+
+        <div class="col-md-6">
+          <strong>Created Date</strong>
+          <p>
+            {{
+              (ticket.createdDate ?? ticket.CreatedDate)
+                | date: 'dd-MM-yyyy HH:mm'
+            }}
+          </p>
+        </div>
+
+        <div class="col-md-6">
+          <strong>Status</strong>
+          <p>
+            <span class="badge bg-warning text-dark">
+              {{ ticket.status ?? ticket.Status ?? 'Unknown' }}
+            </span>
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Officer Response -->
+      <div class="mb-3">
+        <strong>Officer Response</strong>
+        <p>
+          {{
+            (ticket.officerResponse ?? ticket.OfficerResponse)
+              || 'Awaiting response'
+          }}
+        </p>
+      </div>
+
+      <!-- Attachment -->
+      <div
+        class="mb-3"
+        *ngIf="ticket.attachmentPath ?? ticket.AttachmentPath"
+      >
+        <strong>Attachment</strong>
+        <p>
+          <a
+            [href]="'https://localhost:7074' + (ticket.attachmentPath ?? ticket.AttachmentPath)"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View Attachment
+          </a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div
+    *ngIf="!isLoading && !errorMessage && !ticket"
+    class="alert alert-warning"
+  >
+    No ticket details are available.
+  </div>
+
+</div>
+
