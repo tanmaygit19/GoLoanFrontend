@@ -16,6 +16,8 @@ export class Paybtn {
   }
 
   openEmiPay() {
-    this.router.navigate(['/emi-pay', this.emiScheduleId]);
+    if (this.emiScheduleId) {
+      this.router.navigate(['/module/emi-pay', this.emiScheduleId]);
+    }
   }
 }

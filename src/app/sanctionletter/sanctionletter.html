@@ -1,16 +1,13 @@
-
-<div class="page">
+  <div class="page">
   <h2>Sanction Letters</h2>
+
+  <p *ngIf="message && !showdisbursement" class="message">{{ message }}</p>
 
   <div class="generate-section">
     <h3>Generate Sanction Letter</h3>
 
     <label for="loandealid">Select Approved Loan</label>
-
-    <select
-      id="loandealid"
-      [(ngModel)]="loandealid"
-      (change)="selectloan()">
+    <select id="loandealid" [(ngModel)]="loandealid" (change)="selectloan()">
       <option [ngValue]="null">Select Deal ID</option>
       <option *ngFor="let loan of loans" [ngValue]="loan.dealId">
         Deal ID {{ loan.dealId }} - {{ loan.loanType }}
@@ -19,7 +16,6 @@
 
     <div *ngIf="selectedloan" class="loan-details">
       <h3>Loan Details</h3>
-
       <p><strong>Deal ID:</strong> {{ selectedloan.dealId }}</p>
       <p><strong>Loan Type:</strong> {{ selectedloan.loanType }}</p>
       <p><strong>Loan Amount:</strong> ₹{{ selectedloan.loanAmount }}</p>
@@ -30,8 +26,6 @@
         Generate Sanction Letter
       </button>
     </div>
-
-    <p *ngIf="message" class="message">{{ message }}</p>
   </div>
 
   <div class="table-section">
@@ -66,15 +60,11 @@
             <td>{{ item.createdAt | date:'dd-MM-yyyy' }}</td>
 
             <td>
-              <button
-                type="button"
-                (click)="viewsanction(item.sanctionId)">
+              <button type="button" (click)="viewsanction(item.sanctionId)">
                 View
               </button>
 
-              <button
-                type="button"
-                (click)="downloadsanction(item.sanctionId)">
+              <button type="button" (click)="downloadsanction(item.sanctionId)">
                 Download
               </button>
 
@@ -105,67 +95,117 @@
     </div>
   </div>
 
-  <div *ngIf="sanction" class="view-section">
-    <h3>Sanction Letter Details</h3>
+  <div
+    *ngIf="sanction"
+    class="modal-backdrop"
+    (click)="sanction = null">
 
-    <p><strong>Sanction ID:</strong> {{ sanction.sanctionId }}</p>
-    <p><strong>Deal ID:</strong> {{ sanction.dealId }}</p>
-    <p><strong>Loan Type:</strong> {{ sanction.loanType }}</p>
-    <p><strong>Loan Amount:</strong> ₹{{ sanction.loanAmount }}</p>
-    <p><strong>Interest Rate:</strong> {{ sanction.interestRate }}%</p>
-    <p><strong>Tenure:</strong> {{ sanction.tenureMonths }} months</p>
-    <p><strong>EMI:</strong> ₹{{ sanction.emiAmount }}</p>
-    <p><strong>Created At:</strong> {{ sanction.createdAt | date:'dd-MM-yyyy' }}</p>
+    <div
+      class="modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="sanction-modal-title"
+      (click)="$event.stopPropagation()">
 
-    <button type="button" (click)="sanction = null">
-      Close
-    </button>
+      <div class="modal-header">
+        <h3 id="sanction-modal-title">Sanction Letter Details</h3>
+        <button type="button" class="close-button" (click)="sanction = null">
+          &times;
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p><strong>Sanction ID:</strong> {{ sanction.sanctionId }}</p>
+        <p><strong>Deal ID:</strong> {{ sanction.dealId }}</p>
+        <p><strong>Loan Type:</strong> {{ sanction.loanType }}</p>
+        <p><strong>Loan Amount:</strong> ₹{{ sanction.loanAmount }}</p>
+        <p><strong>Interest Rate:</strong> {{ sanction.interestRate }}%</p>
+        <p><strong>Tenure:</strong> {{ sanction.tenureMonths }} months</p>
+        <p><strong>EMI:</strong> ₹{{ sanction.emiAmount }}</p>
+        <p>
+          <strong>Created At:</strong>
+          {{ sanction.createdAt | date:'dd-MM-yyyy' }}
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" (click)="sanction = null">Close</button>
+      </div>
+    </div>
   </div>
 
-  <div *ngIf="showdisbursement" class="disbursement-form">
-    <h3>Loan Disbursement</h3>
+  <div
+    *ngIf="showdisbursement"
+    class="modal-backdrop"
+    (click)="closedisbursement()">
 
-    <label for="disbursementdealid">Deal ID</label>
-    <input
-      id="disbursementdealid"
-      type="number"
-      [(ngModel)]="disbursement.dealId"
-      readonly>
+    <div
+      class="modal-dialog disbursement-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="disbursement-modal-title"
+      (click)="$event.stopPropagation()">
 
-    <label for="disbursementamount">Disbursement Amount</label>
-    <input
-      id="disbursementamount"
-      type="number"
-      [(ngModel)]="disbursement.disburseAmount"
-      min="1"
-      required>
+      <div class="modal-header">
+        <h3 id="disbursement-modal-title">Loan Disbursement</h3>
+        <button
+          type="button"
+          class="close-button"
+          [disabled]="submitting"
+          (click)="closedisbursement()">
+          &times;
+        </button>
+      </div>
 
-    <label for="disbursementdate">Date</label>
-    <input
-      id="disbursementdate"
-      type="date"
-      [(ngModel)]="disbursement.disbursementDate"
-      readonly>
+      <div class="modal-body">
+        <p *ngIf="message" class="message">{{ message }}</p>
 
-    <label for="bankpartner">Bank Partner</label>
-    <input
-      id="bankpartner"
-      type="text"
-      [(ngModel)]="disbursement.bankPartner"
-      required>
+        <label for="disbursementdealid">Deal ID</label>
+        <input
+          id="disbursementdealid"
+          type="number"
+          [(ngModel)]="disbursement.dealId"
+          readonly>
 
-    <button
-      type="button"
-      [disabled]="submitting"
-      (click)="submitdisbursement()">
-      {{ submitting ? 'Submitting...' : 'Submit' }}
-    </button>
+        <label for="disbursementamount">Disbursement Amount</label>
+        <input
+          id="disbursementamount"
+          type="number"
+          [(ngModel)]="disbursement.disburseAmount"
+          min="1"
+          required>
 
-    <button
-      type="button"
-      [disabled]="submitting"
-      (click)="closedisbursement()">
-      Close
-    </button>
+        <label for="disbursementdate">Date</label>
+        <input
+          id="disbursementdate"
+          type="date"
+          [(ngModel)]="disbursement.disbursementDate"
+          readonly>
+
+        <label for="bankpartner">Bank Partner</label>
+        <input
+          id="bankpartner"
+          type="text"
+          [(ngModel)]="disbursement.bankPartner"
+          required>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          [disabled]="submitting"
+          (click)="submitdisbursement()">
+          {{ submitting ? 'Submitting...' : 'Submit' }}
+        </button>
+
+        <button
+          type="button"
+          class="secondary-button"
+          [disabled]="submitting"
+          (click)="closedisbursement()">
+          Close
+        </button>
+      </div>
+    </div>
   </div>
 </div>

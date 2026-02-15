@@ -2,10 +2,10 @@
   <div class="heading">
     <div>
       <h2>Pending Deals</h2>
-      <p>Review and manage loan applications.</p>
+      <p>View loan applications waiting for approval.</p>
     </div>
 
-    <button type="button" class="refresh-btn" (click)="fetchloans()" [disabled]="loading">
+    <button type="button" (click)="fetchloans()" [disabled]="loading">
       {{ loading ? 'Loading...' : 'Refresh' }}
     </button>
   </div>
@@ -13,9 +13,7 @@
   <div class="error" *ngIf="error">{{ error }}</div>
   <div class="message" *ngIf="message">{{ message }}</div>
 
-  <div class="loading" *ngIf="loading && loans.length === 0">
-    Loading pending deals...
-  </div>
+  <p *ngIf="loading && loans.length === 0">Loading pending deals...</p>
 
   <div class="table-container">
     <table>
@@ -32,117 +30,134 @@
 
       <tbody>
         <tr *ngFor="let loan of loans">
-          <td>#{{ loan.dealId }}</td>
+          <td>{{ loan.dealId }}</td>
           <td>{{ loan.loanType }}</td>
-          <td class="amount">{{ loan.loanAmount | currency:'INR':'symbol':'1.0-2' }}</td>
+          <td>{{ loan.loanAmount | currency:'INR':'symbol':'1.0-2' }}</td>
           <td>{{ loan.tenureMonths }} months</td>
           <td>
             <span class="status">{{ loan.currentStatus || loan.status }}</span>
           </td>
           <td>
-            <button type="button" class="view-btn" (click)="viewprofile(loan)">
-              View Profile
+            <button type="button" (click)="viewprofile(loan)">
+              View Info
             </button>
           </td>
         </tr>
 
         <tr *ngIf="!loading && !error && loans.length === 0">
-          <td colspan="6" class="empty">
-            <strong>No pending deals found</strong>
-            <p>New applications awaiting approval will appear here.</p>
-          </td>
+          <td colspan="6" class="empty">No pending deals found.</td>
         </tr>
       </tbody>
     </table>
   </div>
+</div>
 
-  <div class="profile" *ngIf="selectedloan as loan">
-    <div class="profile-heading">
-      <div>
-        <h3>Loan Profile</h3>
-        <p>Review the application before making a decision.</p>
-      </div>
+<div
+  class="modal-backdrop"
+  *ngIf="selectedloan as loan"
+  (click)="closeprofile()"
+>
+  <div
+    class="modal-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="loanModalTitle"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h5 class="modal-title" id="loanModalTitle">Loan Profile</h5>
+          <p>Review the loan application before making a decision.</p>
+        </div>
 
-      <button type="button" class="close-btn" (click)="closeprofile()">
-        Close
-      </button>
-    </div>
-
-    <div class="details">
-      <div class="detail-item">
-        <span>Deal ID</span>
-        <strong>#{{ loan.dealId }}</strong>
-      </div>
-
-      <div class="detail-item">
-        <span>Loan Type</span>
-        <strong>{{ loan.loanType }}</strong>
-      </div>
-
-      <div class="detail-item">
-        <span>Requested Amount</span>
-        <strong>{{ loan.loanAmount | currency:'INR':'symbol':'1.0-2' }}</strong>
-      </div>
-
-      <div class="detail-item">
-        <span>Tenure</span>
-        <strong>{{ loan.tenureMonths }} months</strong>
-      </div>
-
-      <div class="detail-item">
-        <span>Current Status</span>
-        <strong>{{ loan.currentStatus || loan.status }}</strong>
-      </div>
-
-      <div class="detail-item" *ngIf="loan.approvedAmount">
-        <span>Approved Amount</span>
-        <strong>{{ loan.approvedAmount | currency:'INR':'symbol':'1.0-2' }}</strong>
-      </div>
-
-      <div class="detail-item" *ngIf="loan.rejectionReason">
-        <span>Rejection Reason</span>
-        <strong>{{ loan.rejectionReason }}</strong>
-      </div>
-    </div>
-
-    <div class="decision-form" *ngIf="(loan.currentStatus || loan.status || '').toLowerCase() === 'pending'">
-      <h4>Loan Decision</h4>
-
-      <label for="approvedAmount">Approved Amount (₹)</label>
-      <input
-        id="approvedAmount"
-        name="approvedAmount"
-        type="number"
-        [(ngModel)]="approvedAmount"
-        min="1"
-        [max]="loan.loanAmount"
-        required
-      />
-
-      <label for="rejectionReason">Rejection Reason</label>
-      <textarea
-        id="rejectionReason"
-        name="rejectionReason"
-        [(ngModel)]="rejectionReason"
-        rows="3"
-        placeholder="Enter reason if rejecting the application"
-      ></textarea>
-
-      <div class="actions">
         <button
           type="button"
-          class="approve-btn"
+          class="icon-close"
+          aria-label="Close"
+          (click)="closeprofile()"
+        >
+          &times;
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="details">
+          <p><strong>Deal ID:</strong> {{ loan.dealId }}</p>
+          <p><strong>Loan Type:</strong> {{ loan.loanType }}</p>
+          <p>
+            <strong>Requested Amount:</strong>
+            {{ loan.loanAmount | currency:'INR':'symbol':'1.0-2' }}
+          </p>
+          <p><strong>Tenure:</strong> {{ loan.tenureMonths }} months</p>
+          <p>
+            <strong>Current Status:</strong>
+            {{ loan.currentStatus || loan.status }}
+          </p>
+
+          <p *ngIf="loan.approvedAmount">
+            <strong>Approved Amount:</strong>
+            {{ loan.approvedAmount | currency:'INR':'symbol':'1.0-2' }}
+          </p>
+
+          <p *ngIf="loan.rejectionReason">
+            <strong>Rejection Reason:</strong> {{ loan.rejectionReason }}
+          </p>
+        </div>
+
+        <div
+          *ngIf="(loan.currentStatus || loan.status || '').toLowerCase() === 'pending'"
+          class="decision-form"
+        >
+          <label for="approvedAmount">Approved Amount (₹)</label>
+          <input
+            id="approvedAmount"
+            name="approvedAmount"
+            type="number"
+            [(ngModel)]="approvedAmount"
+            min="1"
+            [max]="loan.loanAmount"
+            required
+          />
+
+          <label for="rejectionReason">Rejection Reason</label>
+          <textarea
+            id="rejectionReason"
+            name="rejectionReason"
+            [(ngModel)]="rejectionReason"
+            rows="3"
+            placeholder="Enter reason for rejection"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          *ngIf="(loan.currentStatus || loan.status || '').toLowerCase() === 'pending'"
+          type="button"
+          class="reject-btn"
           [disabled]="processing"
-          (click)="approveloan()">
-          {{ processing ? 'Processing...' : 'Approve Loan' }}
+          (click)="rejectloan()"
+        >
+          Reject
+        </button>
+
+        <button
+          *ngIf="(loan.currentStatus || loan.status || '').toLowerCase() === 'pending'"
+          type="button"
+          [disabled]="processing"
+          (click)="approveloan()"
+        >
+          {{ processing ? 'Processing...' : 'Approve' }}
         </button>
 
         <button
           type="button"
-          class="reject-btn"
+          class="close-btn"
           [disabled]="processing"
-          (click)="rejectloan()">
-          Reject Loan
+          (click)="closeprofile()"
+        >
+          Close
         </button>
       </div>
     </div>

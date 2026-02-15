@@ -18,18 +18,15 @@
     Select Loan Account
   </label>
 
-  <select
-    id="loanAccount"
-    class="form-select"
-    [value]="selectedLoanId"
-    (change)="selectedLoanId = +$any($event.target).value; loadEmiSchedule(selectedLoanId!)">
-
-    <option *ngFor="let account of accounts"
-            [value]="account.loanAccountId">
-      {{ account.loanAccountNo }} - ₹{{ account.loanAmount }}
-    </option>
-
-  </select>
+<select
+  id="loanAccount"
+  class="form-select"
+  [(ngModel)]="selectedLoanId"
+  (ngModelChange)="loadEmiSchedule($event)">
+  <option *ngFor="let account of accounts" [ngValue]="account.loanAccountId">
+    {{ account.loanAccountNo }} - ₹{{ account.loanAmount }}
+  </option>
+</select>
 </div>
 
 <div class="row g-3 mb-4">
@@ -94,18 +91,14 @@
 <td>{{ emi.paymentStatus }}</td>
 
 <td>
-  <button
+  <app-paybtn
     *ngIf="emi.paymentStatus === 'Pending'"
-    class="btn btn-primary btn-sm"
-    [disabled]="!isCurrentMonthEmi(emi)"
-  >
-    Pay
-  </button>
+    [emiScheduleId]="emi.emiScheduleId">
+  </app-paybtn>
 
   <span
     *ngIf="emi.paymentStatus === 'Paid'"
-    class="badge bg-success"
-  >
+    class="badge bg-success">
     Paid
   </span>
 </td>
@@ -113,7 +106,7 @@
           </tr>
 
           <tr *ngIf="emis && emis.length === 0">
-            <td colspan="8" class="text-center">
+            <td colspan="9" class="text-center">
               No EMI records found for this loan account.
             </td>
           </tr>
