@@ -1,0 +1,187 @@
+<div class="profile-container">
+
+  <!-- Header Section -->
+  <div class="profile-header">
+    <h2 class="profile-title">Customer Profile</h2>
+    <button class="btn-edit-profile" (click)="openEditModal()">
+      Edit Profile
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p>Loading profile details...</p>
+  </div>
+
+  <!-- Error Alert -->
+  <div *ngIf="errorMessage && !isLoading" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <ng-container *ngIf="!isLoading && profile">
+    
+    <!-- 1. Personal Details Card -->
+    <div class="profile-card">
+      <div class="card-header-custom">
+        <h3 class="card-title">Personal Details</h3>
+      </div>
+      <div class="card-body-custom">
+        <div class="details-grid">
+          
+          <!-- Left Column -->
+          <div class="detail-column">
+            <div class="detail-row">
+              <span class="detail-label">Name :</span>
+              <span class="detail-value">{{ profile.firstName }} {{ profile.lastName }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Email :</span>
+              <span class="detail-value">{{ profile.email }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Mobile :</span>
+              <span class="detail-value">{{ profile.mobile }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">PAN :</span>
+              <span class="detail-value">{{ profile.pan }}</span>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="detail-column">
+            <div class="detail-row">
+              <span class="detail-label">Aadhaar :</span>
+              <span class="detail-value">{{ profile.aadhaarNo }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Employment :</span>
+              <span class="detail-value">{{ profile.employmentType }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Monthly Income :</span>
+              <span class="detail-value">₹ {{ profile.monthlyIncome | number:'1.2-2' }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Monthly Investment :</span>
+              <span class="detail-value">₹ {{ (profile.monthlyInvestment || 0) | number:'1.2-2' }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Age :</span>
+              <span class="detail-value">{{ profile.age }}</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. KYC Documents Card -->
+    <div class="profile-card">
+      <div class="card-header-custom">
+        <h3 class="card-title">KYC Documents</h3>
+      </div>
+      <div class="card-body-custom">
+        <div *ngIf="!profile.kycDocuments || profile.kycDocuments.length === 0" class="empty-state-text">
+          No KYC Documents Uploaded
+        </div>
+        <div *ngIf="profile.kycDocuments && profile.kycDocuments.length > 0" class="documents-list">
+          <div *ngFor="let doc of profile.kycDocuments" class="doc-item">
+            <span class="doc-name">{{ doc.documentType }}</span>
+            <span class="badge" [ngClass]="{
+              'badge-success': doc.verificationStatus === 'Approved',
+              'badge-warning': doc.verificationStatus === 'Pending',
+              'badge-danger': doc.verificationStatus === 'Rejected'
+            }">
+              {{ doc.verificationStatus }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Score Card -->
+    <div class="profile-card">
+      <div class="card-header-custom">
+        <h3 class="card-title">Score Card</h3>
+      </div>
+      <div class="card-body-custom">
+        <div *ngIf="!profile.cibilScore || profile.cibilScore === 0" class="empty-state-text">
+          Score Card Not Generated
+        </div>
+        <div *ngIf="profile.cibilScore && profile.cibilScore > 0" class="score-display">
+          <span class="score-label">CIBIL Score: </span>
+          <span class="score-val">{{ profile.cibilScore }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Loan Details Card -->
+    <div class="profile-card">
+      <div class="card-header-custom">
+        <h3 class="card-title">Loan Details</h3>
+      </div>
+      <div class="card-body-custom">
+        <div *ngIf="!profile.loans || profile.loans.length === 0" class="empty-state-text">
+          No Loan Taken
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal-backdrop" *ngIf="showEditModal">
+  <div class="modal-dialog-custom">
+    <div class="modal-content-custom">
+      <div class="modal-header-custom">
+        <h4>Edit Profile</h4>
+        <button class="btn-close-modal" (click)="closeEditModal()">&times;</button>
+      </div>
+      <div class="modal-body-custom">
+        <div class="form-row mb-3">
+          <label>First Name</label>
+          <input type="text" class="form-control" [(ngModel)]="editForm.firstName">
+        </div>
+        <div class="form-row mb-3">
+          <label>Last Name</label>
+          <input type="text" class="form-control" [(ngModel)]="editForm.lastName">
+        </div>
+        <div class="form-row mb-3">
+          <label>Mobile Number</label>
+          <input type="text" class="form-control" [(ngModel)]="editForm.mobile">
+        </div>
+        <div class="form-row mb-3">
+          <label>Age</label>
+          <input type="number" class="form-control" [(ngModel)]="editForm.age">
+        </div>
+        <div class="form-row mb-3">
+          <label>Employment Type</label>
+          <select class="form-control" [(ngModel)]="editForm.employmentType">
+            <option value="Salaried">Salaried</option>
+            <option value="Self Employed">Self Employed</option>
+            <option value="Government">Government</option>
+            <option value="Private">Private</option>
+          </select>
+        </div>
+        <div class="form-row mb-3">
+          <label>Monthly Income (₹)</label>
+          <input type="number" class="form-control" [(ngModel)]="editForm.monthlyIncome">
+        </div>
+        <div class="form-row mb-3">
+          <label>Monthly Investment (₹)</label>
+          <input type="number" class="form-control" [(ngModel)]="editForm.monthlyInvestment">
+        </div>
+      </div>
+      <div class="modal-footer-custom">
+        <button class="btn btn-secondary mr-2" (click)="closeEditModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveProfile()" [disabled]="isSaving">
+          {{ isSaving ? 'Saving...' : 'Save Changes' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

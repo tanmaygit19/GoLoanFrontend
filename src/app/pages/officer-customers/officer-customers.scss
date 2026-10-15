@@ -1,0 +1,192 @@
+.officer-table-container {
+  padding: 30px 40px;
+  background-color: #f4f6f9;
+  min-height: calc(100vh - 60px);
+
+  .main-card {
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 30px 32px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+
+    .dashboard-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 24px;
+    }
+
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+
+      .filter-select {
+        height: 38px;
+        min-width: 140px;
+        padding: 4px 12px;
+        font-size: 14px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        background-color: #ffffff;
+      }
+
+      .date-input {
+        height: 38px;
+        padding: 4px 12px;
+        font-size: 14px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+      }
+    }
+
+    .controls-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+
+      .entries-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+
+        .entries-select {
+          padding: 4px 8px;
+          border: 1px solid #ced4da;
+          border-radius: 4px;
+        }
+      }
+
+      .search-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+
+        .search-input {
+          padding: 6px 12px;
+          border: 1px solid #ced4da;
+          border-radius: 4px;
+          min-width: 180px;
+        }
+      }
+    }
+
+    .officer-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+
+      thead th {
+        padding: 12px 14px;
+        border-bottom: 2px solid #dee2e6;
+        font-size: 14px;
+        font-weight: 700;
+        color: #212529;
+        text-align: left;
+      }
+
+      tbody td {
+        padding: 14px;
+        border-bottom: 1px solid #e9ecef;
+        font-size: 14px;
+        color: #495057;
+        vertical-align: middle;
+      }
+
+      .btn-view-profile {
+        background-color: #0dcaf0;
+        color: #ffffff;
+        border: none;
+        padding: 6px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #0bb5d8;
+        }
+      }
+    }
+
+    .table-footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+
+      .showing-text {
+        font-size: 14px;
+        color: #6c757d;
+      }
+
+      .pagination-box {
+        display: flex;
+        gap: 4px;
+
+        .page-btn {
+          min-width: 32px;
+          height: 32px;
+          border: 1px solid #dee2e6;
+          background: #ffffff;
+          color: #008000;
+          border-radius: 4px;
+          font-size: 13px;
+          cursor: pointer;
+
+          &.active {
+            font-weight: 700;
+          }
+
+          &:disabled {
+            color: #adb5bd;
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
+  }
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+
+  .modal-dialog-custom {
+    width: 100%; max-width: 600px;
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+
+    .modal-header-custom {
+      padding: 16px 20px;
+      border-bottom: 1px solid #dee2e6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h4 { margin: 0; font-size: 18px; font-weight: 700; }
+      .btn-close-modal { background: none; border: none; font-size: 24px; cursor: pointer; }
+    }
+
+    .modal-body-custom { padding: 20px; }
+    .modal-footer-custom {
+      padding: 12px 20px;
+      border-top: 1px solid #dee2e6;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}

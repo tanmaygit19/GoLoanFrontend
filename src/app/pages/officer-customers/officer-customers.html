@@ -1,0 +1,196 @@
+<div class="officer-table-container">
+
+  <div class="main-card">
+    
+    <h3 class="dashboard-title">Credit Officer Dashboard</h3>
+
+    <div class="filter-bar">
+      
+      <select class="filter-select" [(ngModel)]="selectedKyc" (change)="onFilterChange()">
+        <option value="KYC">KYC</option>
+        <option value="Done">Done</option>
+        <option value="Pending">Pending</option>
+      </select>
+
+      <select class="filter-select" [(ngModel)]="selectedLoanStatus" (change)="onFilterChange()">
+        <option value="Loan Status">Loan Status</option>
+        <option value="Approved">Approved</option>
+        <option value="Pending">Pending</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+
+      <select class="filter-select" [(ngModel)]="selectedDateFilter" (change)="onFilterChange()">
+        <option value="Date">Date</option>
+        <option value="Most Recent">Most Recent</option>
+        <option value="Last 7 Days">Last 7 Days</option>
+        <option value="Last 30 Days">Last 30 Days</option>
+        <option value="Ascending">Ascending</option>
+        <option value="Descending">Descending</option>
+      </select>
+
+      <input 
+        type="date" 
+        class="date-input" 
+        [(ngModel)]="fromDate" 
+        (change)="onFilterChange()"
+        title="From Date"
+      >
+      <input 
+        type="date" 
+        class="date-input" 
+        [(ngModel)]="toDate" 
+        (change)="onFilterChange()"
+        title="To Date"
+      >
+
+    </div>
+
+    <div class="controls-row">
+      <div class="entries-box">
+        <select class="entries-select" [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+          <option [ngValue]="10">10</option>
+          <option [ngValue]="25">25</option>
+          <option [ngValue]="50">50</option>
+        </select>
+        <span>entries per page</span>
+      </div>
+
+      <div class="search-box">
+        <label>Search:</label>
+        <input 
+          type="text" 
+          class="search-input" 
+          [(ngModel)]="searchQuery" 
+          (input)="onSearchChange()"
+        >
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="officer-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>KYC</th>
+            <th>CIBIL</th>
+            <th>Loan</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr *ngIf="isLoading">
+            <td colspan="8" class="text-center py-4 text-muted">
+              Loading customer data...
+            </td>
+          </tr>
+
+          <tr *ngIf="!isLoading && customers.length === 0">
+            <td colspan="8" class="text-center py-4 text-danger font-weight-bold">
+              No matching records found
+            </td>
+          </tr>
+
+          <tr *ngFor="let c of customers">
+            <td class="text-center">{{ c.id }}</td>
+            <td class="font-weight-bold">{{ c.name }}</td>
+            <td>
+              <span [ngClass]="{'text-success font-weight-bold': c.kyc === 'Approved', 'text-warning font-weight-bold': c.kyc === 'Pending'}">
+                {{ c.kyc }}
+              </span>
+            </td>
+            <td>{{ c.cibil }}</td>
+            <td>{{ c.loan | number:'1.2-2' }}</td>
+            <td>{{ c.status }}</td>
+            <td>{{ c.date }}</td>
+            <td>
+              <button class="btn-view-profile" (click)="viewProfile(c.id)">
+                View Profile
+              </button>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-footer-row">
+      <div class="showing-text">
+        Showing {{ showingStart }} to {{ showingEnd }} of {{ totalEntries }} entries
+      </div>
+
+      <div class="pagination-box">
+        <button 
+          class="page-btn" 
+          [disabled]="currentPage === 1" 
+          (click)="goToPage(currentPage - 1)"
+        >
+          ‹
+        </button>
+        <button class="page-btn active">{{ currentPage }}</button>
+        <button 
+          class="page-btn" 
+          [disabled]="currentPage >= totalPages" 
+          (click)="goToPage(currentPage + 1)"
+        >
+          ›
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Customer Profile Modal -->
+<div class="modal-backdrop" *ngIf="showProfileModal">
+  <div class="modal-dialog-custom">
+    <div class="modal-content-custom">
+      <div class="modal-header-custom">
+        <h4>Customer Profile #{{ selectedProfile?.customerId }}</h4>
+        <button class="btn-close-modal" (click)="closeProfileModal()">&times;</button>
+      </div>
+      <div class="modal-body-custom">
+        <div *ngIf="loadingProfile" class="text-center py-4">
+          <div class="spinner-border text-primary" role="status"></div>
+        </div>
+
+        <div *ngIf="!loadingProfile && selectedProfile">
+          <div class="row mb-2">
+            <div class="col-6"><strong>Name:</strong> {{ selectedProfile.firstName }} {{ selectedProfile.lastName }}</div>
+            <div class="col-6"><strong>Email:</strong> {{ selectedProfile.email }}</div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-6"><strong>Mobile:</strong> {{ selectedProfile.mobile }}</div>
+            <div class="col-6"><strong>Age:</strong> {{ selectedProfile.age }}</div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-6"><strong>PAN:</strong> {{ selectedProfile.pan }}</div>
+            <div class="col-6"><strong>Aadhaar:</strong> {{ selectedProfile.aadhaarNo }}</div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-6"><strong>Employment:</strong> {{ selectedProfile.employmentType }}</div>
+            <div class="col-6"><strong>Monthly Income:</strong> ₹{{ selectedProfile.monthlyIncome | number:'1.2-2' }}</div>
+          </div>
+          <hr>
+          <h6>KYC Documents ({{ selectedProfile.kycDocuments.length }})</h6>
+          <div *ngIf="selectedProfile.kycDocuments.length === 0" class="text-muted small">No documents uploaded</div>
+          <ul class="list-group list-group-flush mb-3" *ngIf="selectedProfile.kycDocuments.length > 0">
+            <li class="list-group-item d-flex justify-content-between align-items-center py-2" *ngFor="let doc of selectedProfile.kycDocuments">
+              <span>{{ doc.documentType }}</span>
+              <span class="badge" [ngClass]="{'badge-success': doc.verificationStatus === 'Approved', 'badge-warning': doc.verificationStatus === 'Pending'}">
+                {{ doc.verificationStatus }}
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer-custom">
+        <button class="btn btn-secondary btn-sm" (click)="closeProfileModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

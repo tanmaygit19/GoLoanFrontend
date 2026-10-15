@@ -1,0 +1,44 @@
+.customer-top-accent {
+  height: 50px;
+  background-color: #008000;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 30px;
+
+  .bell-icon {
+    font-size: 16px;
+    cursor: pointer;
+  }
+}
+
+.topbar-banner {
+  background: #ffffff;
+  padding: 16px 32px;
+  margin: 16px 24px 0;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .welcome-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: #008000;
+  }
+
+  .role-pill-btn {
+    background-color: #008000;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 20px;
+    display: inline-block;
+  }
+}
+
+.page-body {
+  padding: 24px;
+}

@@ -1,0 +1,160 @@
+<div class="register-wrapper">
+  <div class="register-card">
+
+    <!-- Brand Header -->
+    <div class="text-center mb-4">
+      <div class="logo-circle mx-auto mb-3">
+        <i class="bi bi-person-plus-fill"></i>
+      </div>
+      <h3 class="register-title">Create Customer Account</h3>
+      <p class="register-subtitle">Join GoLoan and apply for personal & business loans in minutes</p>
+    </div>
+
+    <!-- Error Alert -->
+    <div *ngIf="errorMessage" class="alert alert-danger py-2 px-3 mb-4 d-flex align-items-center" style="font-size: 13px;">
+      <i class="bi bi-exclamation-circle-fill mr-2"></i>
+      <span>{{ errorMessage }}</span>
+    </div>
+
+    <!-- Registration Form -->
+    <form [formGroup]="customerForm" (ngSubmit)="onRegister()">
+
+      <!-- Section: Personal Info -->
+      <div class="section-badge mb-3">
+        <i class="bi bi-person-badge mr-1"></i> Personal Details
+      </div>
+
+      <div class="form-grid mb-4">
+        
+        <!-- First Name -->
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <div class="input-box">
+            <i class="bi bi-person input-icon"></i>
+            <input type="text" formControlName="firstName" class="form-input" placeholder="e.g. Tanmay" required>
+          </div>
+        </div>
+
+        <!-- Last Name -->
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <div class="input-box">
+            <i class="bi bi-person input-icon"></i>
+            <input type="text" formControlName="lastName" class="form-input" placeholder="e.g. Padekar" required>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <div class="input-box">
+            <i class="bi bi-envelope input-icon"></i>
+            <input type="email" formControlName="email" class="form-input" placeholder="user@example.com" required>
+          </div>
+        </div>
+
+        <!-- Mobile -->
+        <div class="form-group">
+          <label class="form-label">Mobile Number</label>
+          <div class="input-box">
+            <i class="bi bi-phone input-icon"></i>
+            <input type="text" formControlName="mobileNo" class="form-input" placeholder="10-digit Mobile" maxlength="10" required>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-box">
+            <i class="bi bi-lock input-icon"></i>
+            <input type="password" formControlName="password" class="form-input" placeholder="Min. 8 characters" required>
+          </div>
+        </div>
+
+        <!-- Age -->
+        <div class="form-group">
+          <label class="form-label">Age</label>
+          <div class="input-box">
+            <i class="bi bi-calendar-event input-icon"></i>
+            <input type="number" formControlName="age" class="form-input" placeholder="18 - 60" min="18" max="60" required>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Section: KYC & Financial Details -->
+      <div class="section-badge mb-3">
+        <i class="bi bi-cash-stack mr-1"></i> Identity & Financials
+      </div>
+
+      <div class="form-grid mb-4">
+        
+        <!-- PAN -->
+        <div class="form-group">
+          <label class="form-label">PAN Number</label>
+          <div class="input-box">
+            <i class="bi bi-card-heading input-icon"></i>
+            <input type="text" formControlName="pan" class="form-input text-uppercase" placeholder="ABCDE1234F" maxlength="10" required>
+          </div>
+        </div>
+
+        <!-- Aadhaar -->
+        <div class="form-group">
+          <label class="form-label">Aadhaar Number</label>
+          <div class="input-box">
+            <i class="bi bi-fingerprint input-icon"></i>
+            <input type="text" formControlName="aadhaarNo" class="form-input" placeholder="12-digit Aadhaar" maxlength="12" required>
+          </div>
+        </div>
+
+                <!-- Employment Type -->
+        <div class="form-group">
+          <label class="form-label">Employment Type</label>
+          <div class="input-box">
+            <i class="bi bi-briefcase input-icon"></i>
+            <select formControlName="employmentType" class="form-input form-select" required>
+              <option value="" disabled selected>-- Select Employment --</option>
+              <option value="Government">Government</option>
+              <option value="Private">Private</option>
+              <option value="Self Employed">Self Employed</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Monthly Income -->
+        <div class="form-group">
+          <label class="form-label">Monthly Income (₹)</label>
+          <div class="input-box">
+            <i class="bi bi-currency-rupee input-icon"></i>
+            <input type="number" formControlName="monthlyIncome" class="form-input" placeholder="e.g. 50000" min="1000" required>
+          </div>
+        </div>
+
+        <!-- Monthly Investment -->
+        <div class="form-group">
+          <label class="form-label">Monthly Investment (₹)</label>
+          <div class="input-box">
+            <i class="bi bi-piggy-bank input-icon"></i>
+            <input type="number" formControlName="monthlyInvestment" class="form-input" placeholder="e.g. 10000" min="0" required>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Submit & Action Row -->
+      <div class="actions-row mt-4">
+        <button type="submit" class="btn btn-register">
+          <i class="bi bi-check2-circle mr-1"></i> Register Account
+        </button>
+      </div>
+
+    </form>
+
+    <!-- Sign In Link -->
+    <div class="text-center mt-4">
+      <span class="text-muted" style="font-size: 13px;">Already have an account? </span>
+      <a routerLink="/login" class="login-link font-weight-bold" style="font-size: 13px;">Sign In here</a>
+    </div>
+
+  </div>
+</div>

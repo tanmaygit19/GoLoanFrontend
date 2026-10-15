@@ -1,0 +1,68 @@
+<div class="twofa-wrapper">
+  <div class="twofa-card">
+
+    <!-- Header & Icon Badge -->
+    <div class="text-center mb-4">
+      <div class="logo-circle mx-auto mb-3">
+        <i class="bi bi-shield-lock-fill"></i>
+      </div>
+      <h3 class="twofa-title">Two-Factor Authentication</h3>
+      <p class="twofa-subtitle">
+        {{ isSetup ? 'Scan the QR code to set up your authenticator app' : 'Enter the 6-digit code from Google Authenticator' }}
+      </p>
+    </div>
+
+    <!-- Error Alert -->
+    <div *ngIf="errorMessage" class="alert alert-danger py-2 px-3 mb-3 d-flex align-items-center" style="font-size: 13px;">
+      <i class="bi bi-exclamation-circle-fill mr-2"></i>
+      <span>{{ errorMessage }}</span>
+    </div>
+
+    <!-- First Time QR Setup Box -->
+    <div *ngIf="isSetup && qrCode" class="qr-container mb-4 text-center">
+      <div class="qr-frame">
+        <img [src]="'data:image/png;base64,' + qrCode" alt="2FA QR Code" class="qr-image">
+      </div>
+      <div class="secret-box mt-3">
+        <span class="secret-label">Manual Secret Key:</span>
+        <code class="secret-code">{{ tempSecret }}</code>
+      </div>
+    </div>
+
+    <!-- Verification Form -->
+    <form [formGroup]="twoFaForm" (ngSubmit)="onVerify()">
+      
+      <div class="form-group mb-4">
+        <label class="form-label text-center">Enter 6-Digit Code</label>
+        <div class="otp-input-wrapper">
+          <input 
+            type="text" 
+            formControlName="code" 
+            class="otp-input" 
+            placeholder="000000"
+            maxlength="6" 
+            pattern="[0-9]*"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            required
+            autofocus
+          >
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-verify btn-block">
+        <i class="bi bi-check-circle mr-2"></i> Verify & Continue
+      </button>
+
+      <!-- Cancel / Back Link -->
+      <div class="text-center mt-3">
+        <button type="button" class="btn-cancel" (click)="onCancel()">
+          <i class="bi bi-arrow-left mr-1"></i> Back to Login
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

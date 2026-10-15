@@ -1,0 +1,154 @@
+<div class="officer-kyc-container">
+  <div class="main-card" *ngIf="currentView === 'list'">
+    <h3 class="page-title">Customer KYC Verification</h3>
+
+    <div class="table-responsive">
+      <table class="dark-table">
+        <thead>
+          <tr>
+            <th>Customer Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="isLoadingList">
+            <td colspan="4" class="text-center py-4 text-muted">
+              Loading customer records...
+            </td>
+          </tr>
+
+          <tr *ngIf="!isLoadingList && customers.length === 0">
+            <td colspan="4" class="text-center py-4 text-muted">
+              No customers found.
+            </td>
+          </tr>
+
+          <tr *ngFor="let c of customers">
+            <td class="customer-name-cell">{{ c.customerName }}</td>
+            <td>{{ c.email }}</td>
+            <td>{{ c.mobile }}</td>
+            <td>
+              <button class="btn-view-kyc" (click)="viewKyc(c.customerId)">
+                View KYC
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="main-card" *ngIf="currentView === 'details'">
+    
+    <div class="details-top-header">
+      <h3 class="page-title">KYC Documents</h3>
+      <button class="btn-back" (click)="backToList()">
+        <i class="bi bi-arrow-left"></i> Back to Customer List
+      </button>
+    </div>
+
+    <div *ngIf="isLoadingDetails" class="text-center py-4 text-muted">
+      Loading customer documents...
+    </div>
+
+    <div *ngIf="!isLoadingDetails && selectedCustomerDocs">
+      
+      <!-- Customer Details Card -->
+      <div class="customer-details-card">
+        <h5 class="section-title">Customer Details</h5>
+        <hr class="divider">
+        
+        <div class="detail-row">
+          <span class="detail-label">Name :</span>
+          <span class="detail-value">{{ selectedCustomerDocs.customerName }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Email :</span>
+          <span class="detail-value">{{ selectedCustomerDocs.email }}</span>
+        </div>
+      </div>
+
+      <!-- Action Message Alert (if any) -->
+      <div class="alert alert-info py-2 px-3 small my-3" *ngIf="actionMessage">
+        {{ actionMessage }}
+      </div>
+
+      <!-- KYC Documents Table -->
+      <div class="table-responsive mt-3">
+        <table class="dark-table">
+          <thead>
+            <tr>
+              <th class="select-col">
+                <input 
+                  type="checkbox" 
+                  [(ngModel)]="selectAll" 
+                  (change)="toggleSelectAll()"
+                  title="Select All"
+                >
+                <span class="select-text">Select</span>
+              </th>
+              <th>Document Type</th>
+              <th>View</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="selectedCustomerDocs.documents.length === 0">
+              <td colspan="4" class="text-center py-3 text-muted">
+                No documents uploaded for this customer.
+              </td>
+            </tr>
+
+            <tr *ngFor="let doc of selectedCustomerDocs.documents">
+              <td class="select-col">
+                <input 
+                  type="checkbox" 
+                  [(ngModel)]="doc.selected" 
+                  (change)="onDocSelectChange()"
+                >
+              </td>
+              <td>{{ doc.documentType }}</td>
+              <td>
+                <button class="btn-view-doc" (click)="openPdf(doc.filePath)">
+                  View
+                </button>
+              </td>
+              <td>
+                <span class="status-badge" [ngClass]="{
+                  'badge-pending': doc.verificationStatus.toLowerCase() === 'pending',
+                  'badge-approved': doc.verificationStatus.toLowerCase() === 'approved',
+                  'badge-rejected': doc.verificationStatus.toLowerCase() === 'rejected'
+                }">
+                  {{ doc.verificationStatus }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Approve Selected / Reject Selected Buttons -->
+      <div class="action-buttons-row mt-3">
+        <button 
+          class="btn-approve" 
+          [disabled]="isProcessingAction"
+          (click)="approveSelected()"
+        >
+          Approve Selected
+        </button>
+        <button 
+          class="btn-reject" 
+          [disabled]="isProcessingAction"
+          (click)="rejectSelected()"
+        >
+          Reject Selected
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,160 @@
+<aside class="sidebar-blue">
+  
+  <!-- Sidebar Header / Logo -->
+  <div class="sidebar-header">
+    <div class="header-icon">
+      <i class="bi bi-bank2"></i>
+    </div>
+    <h4 class="header-title">
+      {{ isOfficer ? 'Loan Officer' : 'GoLoan' }}
+    </h4>
+  </div>
+
+  <!-- Menu Content Area -->
+  <div class="sidebar-menu">
+
+    <!-- ========================================== -->
+    <!-- 1. LOAN OFFICER SIDEBAR                    -->
+    <!-- ========================================== -->
+    <ng-container *ngIf="isOfficer">
+      
+      <!-- Dashboard Link -->
+      <a routerLink="/dashboard" routerLinkActive="active" class="menu-item single-item">
+        <i class="bi bi-speedometer2"></i>
+        <span>Dashboard</span>
+      </a>
+
+      <!-- Customer Management Dropdown -->
+      <div class="menu-group">
+        <button class="menu-group-btn" (click)="toggleMenu('customerMgmt')">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-people-fill mr-2"></i>
+            <span>Customer Management</span>
+          </div>
+          <i class="bi" [ngClass]="openMenus['customerMgmt'] ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
+        </button>
+        <div class="submenu" *ngIf="openMenus['customerMgmt']">
+          <a routerLink="/module/customers" routerLinkActive="active" class="submenu-item">Customers</a>
+          <a routerLink="/module/kyc" routerLinkActive="active" class="submenu-item">KYC Verification</a>
+          <a routerLink="/module/eligibility" routerLinkActive="active" class="submenu-item">Eligibility Check</a>
+          <a routerLink="/module/scorecards" routerLinkActive="active" class="submenu-item">Score Cards</a>
+        </div>
+      </div>
+
+      <!-- Loan Processing Dropdown -->
+      <div class="menu-group">
+        <button class="menu-group-btn" (click)="toggleMenu('loanProcessing')">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-file-earmark-text-fill mr-2"></i>
+            <span>Loan Processing</span>
+          </div>
+          <i class="bi" [ngClass]="openMenus['loanProcessing'] ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
+        </button>
+        <div class="submenu" *ngIf="openMenus['loanProcessing']">
+          <a routerLink="/module/applications" routerLinkActive="active" class="submenu-item">Loan Applications</a>
+          <a routerLink="/module/letters" routerLinkActive="active" class="submenu-item">Sanction Letters</a>
+          <a routerLink="/module/accounts" routerLinkActive="active" class="submenu-item">Loan Accounts</a>
+        </div>
+      </div>
+
+      <!-- Requests & Collections Dropdown -->
+      <div class="menu-group">
+        <button class="menu-group-btn" (click)="toggleMenu('requests')">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-cash-stack mr-2"></i>
+            <span>Requests & Collections</span>
+          </div>
+          <i class="bi" [ngClass]="openMenus['requests'] ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
+        </button>
+        <div class="submenu" *ngIf="openMenus['requests']">
+          <a routerLink="/module/closure-requests" routerLinkActive="active" class="submenu-item">Closure Requests</a>
+          <a routerLink="/module/penalty-charges" routerLinkActive="active" class="submenu-item">Penalty Charges</a>
+        </div>
+      </div>
+
+      <!-- Support Tickets Link -->
+      <a routerLink="/module/support" routerLinkActive="active" class="menu-item single-item">
+        <i class="bi bi-headset"></i>
+        <span>Support Tickets</span>
+      </a>
+
+    </ng-container>
+
+    <!-- ========================================== -->
+    <!-- 2. CUSTOMER SIDEBAR                        -->
+    <!-- ========================================== -->
+    <ng-container *ngIf="!isOfficer">
+      
+      <!-- Customer Section Dropdown -->
+      <div class="menu-group">
+        <button class="menu-group-btn" (click)="toggleMenu('customerMenu')">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-person-circle mr-2"></i>
+            <span>Customer</span>
+          </div>
+          <i class="bi" [ngClass]="openMenus['customerMenu'] ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
+        </button>
+        <div class="submenu" *ngIf="openMenus['customerMenu']">
+          <a routerLink="/dashboard" routerLinkActive="active" class="submenu-item">
+            <i class="bi bi-speedometer2 mr-2"></i> Dashboard
+          </a>
+          <a routerLink="/module/profile" routerLinkActive="active" class="submenu-item">Profile</a>
+          <a routerLink="/module/kyc-verification" routerLinkActive="active" class="submenu-item">KYC Verification</a>
+          <a routerLink="/module/cibil" routerLinkActive="active" class="submenu-item">CIBIL Score</a>
+          <a routerLink="/module/eligibility-result" routerLinkActive="active" class="submenu-item">Eligibility Result</a>
+        </div>
+      </div>
+
+      <!-- Loan Services Dropdown -->
+      <div class="menu-group">
+        <button class="menu-group-btn" (click)="toggleMenu('loanServices')">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-bank mr-2"></i>
+            <span>Loan Services</span>
+          </div>
+          <i class="bi" [ngClass]="openMenus['loanServices'] ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
+        </button>
+        <div class="submenu" *ngIf="openMenus['loanServices']">
+          <a routerLink="/module/apply-loan" routerLinkActive="active" class="submenu-item">Apply Loan</a>
+          <a routerLink="/module/track-status" routerLinkActive="active" class="submenu-item">Track Status</a>
+          <a routerLink="/dashboard" routerLinkActive="active" class="submenu-item">Dashboard</a>
+          <a routerLink="/module/foreclosure-request" routerLinkActive="active" class="submenu-item">Foreclosure Request</a>
+        </div>
+      </div>
+
+      <!-- Payments Dropdown -->
+      <div class="menu-group">
+        <button class="menu-group-btn" (click)="toggleMenu('payments')">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-credit-card-2-front-fill mr-2"></i>
+            <span>Payments</span>
+          </div>
+          <i class="bi" [ngClass]="openMenus['payments'] ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
+        </button>
+        <div class="submenu" *ngIf="openMenus['payments']">
+          <a routerLink="/module/emi-schedule" routerLinkActive="active" class="submenu-item">EMI Schedule</a>
+          <a routerLink="/module/make-payments" routerLinkActive="active" class="submenu-item">Make Payments</a>
+          <a routerLink="/module/payment-history" routerLinkActive="active" class="submenu-item">Payment History</a>
+          <a routerLink="/module/penalties" routerLinkActive="active" class="submenu-item">My Penalties</a>
+        </div>
+      </div>
+
+      <!-- Support Link -->
+      <a routerLink="/module/support" routerLinkActive="active" class="menu-item single-item">
+        <i class="bi bi-chat-dots-fill"></i>
+        <span>Support</span>
+      </a>
+
+    </ng-container>
+
+  </div>
+
+  <!-- Logout Button at bottom -->
+  <div class="sidebar-footer">
+    <button class="btn-logout" (click)="onLogout()">
+      <i class="bi bi-box-arrow-right mr-2"></i>
+      <span>Logout</span>
+    </button>
+  </div>
+
+</aside>

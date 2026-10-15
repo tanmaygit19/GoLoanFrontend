@@ -1,0 +1,125 @@
+<div class="kyc-container">
+
+  <!-- Alert Messages -->
+  <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ errorMessage }}
+  </div>
+  <div *ngIf="fileError" class="alert alert-danger" role="alert">
+    {{ fileError }}
+  </div>
+
+  <!-- Card 1: Upload KYC Documents -->
+  <div class="kyc-card">
+    <div class="card-header-blue">
+      <h4>Upload KYC Documents</h4>
+    </div>
+    <div class="card-body-custom">
+      
+      <!-- Document Type Select (Dynamic from Backend) -->
+      <div class="form-group mb-4">
+        <label class="form-label font-weight-bold">Document Type</label>
+        <select class="form-control select-input" [(ngModel)]="selectedDocType">
+          <option value="" disabled selected>-- Select Document --</option>
+          <option *ngFor="let type of documentTypes" [value]="type">
+            {{ type }}
+          </option>
+        </select>
+      </div>
+
+      <!-- File Input (Strictly PDF) -->
+      <div class="form-group mb-4">
+        <label class="form-label font-weight-bold">Upload File</label>
+        <input 
+          type="file" 
+          id="kycFileInput"
+          class="form-control file-input-control" 
+          accept=".pdf,application/pdf"
+          (change)="onFileSelected($event)"
+        >
+        <small class="form-text text-muted mt-1">Accepted format: <strong>.pdf</strong> (Max 10MB)</small>
+      </div>
+
+      <!-- Upload Button -->
+      <div>
+        <button 
+          type="button" 
+          class="btn btn-upload" 
+          (click)="onUpload()"
+          [disabled]="isUploading || !selectedFile || !selectedDocType"
+        >
+          <span *ngIf="isUploading" class="spinner-border spinner-border-sm mr-2" role="status"></span>
+          {{ isUploading ? 'Uploading...' : 'Upload Document' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Card 2: Uploaded Documents Table -->
+  <div class="kyc-card mt-4">
+    <div class="card-header-dark">
+      <h4>Uploaded Documents</h4>
+    </div>
+    <div class="card-body-custom p-0">
+      <div class="table-responsive">
+        <table class="table table-bordered mb-0">
+          <thead>
+            <tr>
+              <th>Document Name</th>
+              <th>View Document</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <!-- Empty state -->
+            <tr *ngIf="!isLoading && documents.length === 0">
+              <td colspan="4" class="text-center py-4 text-danger font-weight-bold">
+                No Documents Uploaded
+              </td>
+            </tr>
+
+            <!-- Populated Rows -->
+            <tr *ngFor="let doc of documents">
+              <td class="font-weight-bold">{{ doc.documentType }}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary" (click)="viewDocument(doc.filePath)">
+                  <i class="bi bi-file-earmark-pdf mr-1"></i> View PDF
+                </button>
+              </td>
+              <td>
+                <span class="badge" [ngClass]="{
+                  'badge-success': doc.verificationStatus === 'Approved',
+                  'badge-warning': doc.verificationStatus === 'Pending',
+                  'badge-danger': doc.verificationStatus === 'Rejected'
+                }">
+                  {{ doc.verificationStatus }}
+                </span>
+              </td>
+              <td>
+                <button 
+                  class="btn btn-sm btn-outline-danger" 
+                  (click)="deleteDocument(doc)"
+                  [disabled]="doc.verificationStatus === 'Approved'"
+                >
+                  <i class="bi bi-trash"></i> Delete
+                </button>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="kyc-footer">
+    <p>© 2026 LoanApp | Smart Loan Management System</p>
+  </footer>
+
+</div>

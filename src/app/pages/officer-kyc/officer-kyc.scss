@@ -1,0 +1,226 @@
+.officer-kyc-container {
+  padding: 30px 40px;
+  background-color: #f4f6f9;
+  min-height: calc(100vh - 60px);
+
+  .main-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 30px 32px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-top: 0;
+      margin-bottom: 24px;
+    }
+
+    .details-top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+
+      .page-title {
+        margin-bottom: 0;
+      }
+
+      .btn-back {
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        color: #334155;
+        padding: 6px 14px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+
+        &:hover {
+          background: #e2e8f0;
+        }
+      }
+    }
+
+    // Customer Details Card (Screen 2)
+    .customer-details-card {
+      border: 1px solid #dee2e6;
+      border-radius: 6px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      background-color: #ffffff;
+
+      .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #212529;
+        margin: 0;
+      }
+
+      .divider {
+        margin: 12px 0 18px 0;
+        border: 0;
+        border-top: 1px solid #dee2e6;
+      }
+
+      .detail-row {
+        font-size: 14px;
+        color: #212529;
+        margin-bottom: 10px;
+
+        .detail-label {
+          font-weight: 700;
+          margin-right: 8px;
+        }
+
+        .detail-value {
+          font-weight: 400;
+        }
+      }
+    }
+
+    // Dark-header table (matching both reference images)
+    .dark-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      thead th {
+        background-color: #212529;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 12px 16px;
+        text-align: left;
+        border: none;
+
+        &.select-col {
+          width: 90px;
+        }
+
+        .select-text {
+          margin-left: 6px;
+        }
+      }
+
+      tbody td {
+        padding: 12px 16px;
+        border-bottom: 1px solid #dee2e6;
+        font-size: 14px;
+        color: #212529;
+        vertical-align: middle;
+
+        &.select-col {
+          width: 90px;
+        }
+      }
+
+      .customer-name-cell {
+        font-weight: 500;
+      }
+
+      // View KYC button (Screen 1)
+      .btn-view-kyc {
+        background-color: #008000;
+        color: #ffffff;
+        border: none;
+        padding: 5px 14px;
+        font-size: 13px;
+        font-weight: 500;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #006800;
+        }
+      }
+
+      // View Document button (Screen 2)
+      .btn-view-doc {
+        background-color: #008000;
+        color: #ffffff;
+        border: none;
+        padding: 4px 14px;
+        font-size: 13px;
+        font-weight: 500;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #006800;
+        }
+      }
+
+      // Badges
+      .status-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+
+        &.badge-pending {
+          background-color: #ffc107;
+          color: #000000;
+        }
+
+        &.badge-approved {
+          background-color: #198754;
+          color: #ffffff;
+        }
+
+        &.badge-rejected {
+          background-color: #dc3545;
+          color: #ffffff;
+        }
+      }
+    }
+
+    // Action buttons row (Approve Selected / Reject Selected)
+    .action-buttons-row {
+      display: flex;
+      gap: 12px;
+
+      .btn-approve {
+        background-color: #198754;
+        color: #ffffff;
+        border: none;
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover:not(:disabled) {
+          background-color: #157347;
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+
+      .btn-reject {
+        background-color: #dc3545;
+        color: #ffffff;
+        border: none;
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover:not(:disabled) {
+          background-color: #bb2d3b;
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,109 @@
+.dashboard-card-wrapper {
+  max-width: 1000px;
+  margin: 20px auto 0;
+
+  .dashboard-main-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 36px 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid #eef2f6;
+
+    .dashboard-heading {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.4px;
+      margin-bottom: 28px;
+    }
+  }
+
+  // Officer 4x2 Grid
+  .officer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+
+    @media (max-width: 992px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  // Common Metric Card Style
+  .metric-card {
+    background: #ffffff;
+    border: 1px solid #edf2f7;
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+
+    .metric-info {
+      .metric-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #718096;
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .metric-value {
+        font-size: 20px;
+        font-weight: 800;
+        color: #1a202c;
+      }
+    }
+
+    .metric-icon {
+      font-size: 26px;
+    }
+  }
+
+  // Customer Dashboard Row
+  .customer-row {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+
+    .mini-loan-card {
+      flex: 0 0 240px;
+    }
+
+    .account-selector-box {
+      flex: 1;
+      background: #ffffff;
+      border: 1px solid #edf2f7;
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+
+      .selector-label {
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a202c;
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .selector-input {
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        height: 42px;
+        font-size: 13px;
+        color: #4a5568;
+
+        &:focus {
+          border-color: #008000;
+          box-shadow: 0 0 0 3px rgba(0, 128, 0, 0.15);
+        }
+      }
+    }
+  }
+
+  .empty-loan-text {
+    font-size: 13px;
+    color: #a0aec0;
+  }
+}
