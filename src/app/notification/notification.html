@@ -1,0 +1,58 @@
+
+<div class="dropdown position-relative">
+
+  <button
+    class="btn btn-light border position-relative"
+    type="button"
+    (click)="showNotifications = !showNotifications"
+    aria-label="Notifications"
+  >
+    <span class="fs-5">🔔</span>
+
+    <span
+      *ngIf="notifications.length > 0"
+      class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+    >
+      {{ notifications.length }}
+    </span>
+  </button>
+
+  <div
+    *ngIf="showNotifications"
+    class="dropdown-menu show p-3 shadow border rounded-3"
+    style="width: 340px; max-width: 90vw; max-height: 420px; overflow-y: auto; position: absolute; top: 100%; right: 0; left: auto;"
+  >
+    <h6 class="text-secondary mb-3">Notifications</h6>
+
+    <div
+      *ngFor="let notification of notifications"
+      class="d-flex align-items-start gap-2 mb-3 border-bottom pb-3"
+    >
+      <span class="text-primary fs-5">📅</span>
+
+      <div class="flex-grow-1">
+        <p class="mb-1">{{ notification.message }}</p>
+
+        <small class="text-secondary d-block mb-2">
+          {{ notification.createdAt | date:'dd MMM yyyy, hh:mm a' }}
+        </small>
+
+        <button
+          class="btn btn-outline-primary btn-sm"
+          (click)="markAsRead(notification.notificationId)"
+        >
+          Mark as Read
+        </button>
+      </div>
+    </div>
+
+    <div
+      *ngIf="notifications.length === 0"
+      class="text-center text-secondary py-3"
+    >
+      <div class="fs-3 mb-2">🔔</div>
+      No new notifications
+    </div>
+  </div>
+
+</div>
