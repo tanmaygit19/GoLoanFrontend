@@ -11,11 +11,17 @@ import { OfficerKyc } from './pages/officer-kyc/officer-kyc';
 import { ModulePage } from './pages/module-page/module-page';
 import { authGuard } from './core/guards/auth.guard';
 
+import { Loanaccount } from './loanaccount/loanaccount';
+import { Emischedule } from './emischedule/emischedule';
+import { LoanaccountDetails } from './loanaccount-details/loanaccount-details';
+
 export const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   { path: 'two-factor', component: TwoFactor },
+
   {
     path: '',
     component: MainLayout,
@@ -26,8 +32,14 @@ export const routes: Routes = [
       { path: 'module/kyc-verification', component: KycVerification },
       { path: 'module/customers', component: OfficerCustomers },
       { path: 'module/kyc', component: OfficerKyc },
-      { path: 'module/:id', component: ModulePage }
+      { path: 'module/:id', component: ModulePage },
+
+      // Your loan account routes
+      { path: 'loanacc', component: Loanaccount },
+      { path: 'emischedule', component: Emischedule },
+      { path: 'loanaccount-details/:id', component: LoanaccountDetails }
     ]
   },
+
   { path: '**', redirectTo: '/dashboard' }
 ];
