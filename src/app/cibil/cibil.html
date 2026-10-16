@@ -1,0 +1,15 @@
+<div class="container">
+  <h2>CIBIL Reports</h2>
+  <hr>
+
+  <label>Customer ID:</label>
+  <input type="number" [(ngModel)]="customerId">
+
+  <button (click)="getCibilReport()">Get Report</button>
+
+  <div *ngIf="cibilReport">
+    <hr>
+    <p>Customer ID: {{ cibilReport.customerId }}</p>
+    <p>CIBIL Score: {{ cibilReport.cibilScore }}</p>
+  </div>
+</div>

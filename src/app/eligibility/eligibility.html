@@ -1,0 +1,22 @@
+<div class="container">
+  <h2>Eligibility Check</h2>
+  <hr>
+
+  <label>Customer ID:</label>
+  <input type="number" [(ngModel)]="customerId">
+
+  <button (click)="getEligibility()">Check Eligibility</button>
+
+  <div *ngIf="eligibility">
+    <hr>
+    <p>Eligibility ID: {{ eligibility.eligibilityId }}</p>
+    <p>Customer ID: {{ eligibility.customerId }}</p>
+    <p>CIBIL Score: {{ eligibility.cibilScore }}</p>
+    <p>Eligibility Status: {{ eligibility.isEligible }}</p>
+    <p>Eligible Loan Amount: {{ eligibility.loanAmount }}</p>
+
+    <p *ngIf="eligibility.rejectionReason">
+      Rejection Reason: {{ eligibility.rejectionReason }}
+    </p>
+  </div>
+</div>
