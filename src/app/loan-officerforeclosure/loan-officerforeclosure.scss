@@ -1,0 +1,216 @@
+
+:host {
+  display: block;
+  background: #f4f6f9;
+  min-height: 100%;
+  padding: 22px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  color: #172b4d;
+}
+
+.foreclosure-container {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 18px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+h2 {
+  margin: 0 0 10px;
+  font-size: 29px;
+  font-weight: 700;
+  color: #172b4d;
+}
+
+.subtitle {
+  margin: 0 0 28px;
+  color: #64748b;
+  font-size: 16px;
+}
+
+.tabs {
+  display: flex;
+  gap: 20px;
+  border-bottom: 1px solid #dce2e9;
+  margin-bottom: 24px;
+}
+
+.tab {
+  padding: 14px 18px;
+  color: #64748b;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tab.active {
+  color: #1769ff;
+  border-bottom: 3px solid #1769ff;
+}
+
+.tab {
+  display: inline-block;
+  padding: 14px 18px;
+  color: #64748b;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.tab.active {
+  color: #1769ff;
+  border-bottom: 3px solid #1769ff;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.request-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  background: #ffffff;
+}
+
+.request-table th {
+  padding: 20px 16px;
+  text-align: left;
+  font-weight: 500;
+  color: #243b5a;
+  border-bottom: 1px solid #dce2e9;
+  line-height: 1.5;
+  white-space: normal;
+}
+
+.request-table td {
+  padding: 20px 16px;
+  color: #111827;
+  border-bottom: 1px solid #dce2e9;
+  line-height: 1.6;
+  vertical-align: middle;
+}
+
+.request-table tbody tr:hover {
+  background: #f8faff;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 22px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.approved {
+  color: #00874a;
+  background: #d9fbe7;
+}
+
+.rejected {
+  color: #dc2626;
+  background: #ffe1e1;
+}
+
+.pending {
+  color: #a16207;
+  background: #fef3c7;
+}
+
+.view-btn {
+  border: none;
+  background: #1769ff;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 9px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.view-btn:hover {
+  background: #0754db;
+}
+
+.no-records {
+  text-align: center;
+  padding: 28px !important;
+  color: #64748b !important;
+}
+
+@media (max-width: 768px) {
+  :host {
+    padding: 12px;
+  }
+
+  .foreclosure-container {
+    padding: 18px;
+  }
+
+  h2 {
+    font-size: 23px;
+  }
+
+  .request-table {
+    min-width: 950px;
+  }
+}
+
+
+.details-card {
+  margin-top: 24px;
+  padding: 24px;
+  border: 1px solid #dce2e9;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+.details-card h3 {
+  margin: 0 0 20px;
+  color: #172b4d;
+  font-size: 22px;
+}
+
+.details-card p {
+  padding: 10px 0;
+  margin: 0;
+  border-bottom: 1px solid #edf0f4;
+}
+
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-row > span:first-child {
+  color: #64748b;
+}
+
+.detail-row strong {
+  color: #172b4d;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.modal-title {
+  color: #172b4d;
+  font-weight: 700;
+}
+
+.tab[routerLink] {
+  cursor: pointer;
+}
