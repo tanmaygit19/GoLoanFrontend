@@ -1,0 +1,164 @@
+<div class="report-page">
+
+  <div class="page-header">
+    <div>
+      <h2>Loan Portfolio Report</h2>
+      <p>Review active loans and outstanding amounts by product.</p>
+    </div>
+
+
+<button
+  class="btn btn-outline-primary"
+  (click)="loadReport()"
+  [disabled]="isLoading">
+  <i class="bi bi-arrow-clockwise"></i>
+  Refresh
+</button>
+
+
+  </div>
+
+  <!-- Filters -->
+
+  <div class="filter-card">
+    <div class="filter-field">
+      <label for="asOnDate">As On Date</label>
+      <input
+        id="asOnDate"
+        type="date"
+        class="form-control"
+        [(ngModel)]="asOnDate">
+    </div>
+
+
+<div class="filter-field">
+  <label for="branch">Branch</label>
+  <select
+    id="branch"
+    class="form-select"
+    [(ngModel)]="selectedBranch">
+    <option value="All">All</option>
+  </select>
+</div>
+
+<div class="filter-field search-field">
+  <label for="search">Search Product</label>
+  <input
+    id="search"
+    type="text"
+    class="form-control"
+    placeholder="Search products..."
+    [(ngModel)]="searchTerm"
+    (input)="applyFilters()">
+</div>
+
+<div class="filter-actions">
+  <button
+    class="btn btn-primary"
+    (click)="loadReport()"
+    [disabled]="isLoading">
+    <i class="bi bi-search"></i>
+    Search
+  </button>
+
+  <button
+    class="btn btn-outline-secondary"
+    (click)="exportReport()"
+    [disabled]="filteredData.length === 0">
+    <i class="bi bi-download"></i>
+    Export
+  </button>
+</div>
+
+
+  </div>
+
+  <!-- Loading -->
+
+  <div class="alert alert-info" *ngIf="isLoading">
+    Loading loan portfolio report...
+  </div>
+
+  <!-- Error -->
+
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    {{ errorMessage }}
+    <button
+      class="btn btn-sm btn-outline-danger ms-2"
+      (click)="loadReport()">
+      Retry
+    </button>
+  </div>
+
+  <!-- Report Table -->
+
+  <div class="report-card" *ngIf="!isLoading && !errorMessage">
+
+
+<div class="table-heading">
+  <div>
+    <h5>Loan Portfolio</h5>
+    <p>Product-wise active loan summary</p>
+  </div>
+
+  <span class="record-count">
+    {{ filteredData.length }} products
+  </span>
+</div>
+
+<div class="table-responsive">
+  <table class="table report-table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th class="text-end">Active Loans</th>
+        <th class="text-end">Outstanding (₹)</th>
+        <th class="text-end">%</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of filteredData">
+        <td>
+          <span class="product-name">{{ item.product }}</span>
+        </td>
+
+        <td class="text-end">
+          {{ item.activeLoans | number }}
+        </td>
+
+        <td class="text-end amount">
+          {{ item.outstandingAmount | currency:'INR':'symbol-narrow':'1.2-2' }}
+        </td>
+
+        <td class="text-end">
+          {{ item.percentage | number:'1.0-2' }}%
+        </td>
+      </tr>
+
+      <tr *ngIf="filteredData.length === 0">
+        <td colspan="4" class="empty-row">
+          No loan portfolio records found.
+        </td>
+      </tr>
+    </tbody>
+
+    <tfoot *ngIf="filteredData.length > 0">
+      <tr>
+        <th>Total</th>
+        <th class="text-end">{{ totalActiveLoans | number }}</th>
+        <th class="text-end">
+          {{ totalOutstandingAmount | currency:'INR':'symbol-narrow':'1.2-2' }}
+        </th>
+        <th class="text-end">
+          {{ totalPercentage | number:'1.0-2' }}%
+        </th>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+
+  </div>
+
+</div>

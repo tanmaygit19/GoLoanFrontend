@@ -1,0 +1,177 @@
+<div class="container py-4">
+
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="mb-1">Manage Support Response</h2>
+      <p class="text-muted mb-0">
+        View ticket details and update the officer response.
+      </p>
+    </div>
+
+    <a
+      routerLink="/support/admin-tickets"
+      class="btn btn-outline-primary"
+    >
+      Back to Tickets
+    </a>
+  </div>
+
+  <!-- Loading Message -->
+  <div *ngIf="isLoading" class="alert alert-info">
+    Loading ticket details...
+  </div>
+
+  <!-- Success Message -->
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Ticket Details and Response Form -->
+  <div *ngIf="ticket && !isLoading" class="card border-0 shadow-sm">
+
+    <!-- Card Header -->
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">
+        Ticket #{{ ticket.ticketId ?? ticket.TicketId }}
+      </h5>
+    </div>
+
+    <div class="card-body">
+
+      <!-- Customer Information -->
+      <div class="row mb-4">
+
+        <div class="col-md-6">
+          <strong>Customer Name</strong>
+          <p class="mt-1">
+            {{ ticket.customerName ?? ticket.CustomerName ?? 'N/A' }}
+          </p>
+        </div>
+
+        <div class="col-md-6">
+          <strong>Loan Account Number</strong>
+          <p class="mt-1">
+            {{ ticket.loanAccountNo ?? ticket.LoanAccountNo ?? 'N/A' }}
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Subject -->
+      <div class="mb-4">
+        <strong>Subject</strong>
+        <p class="mt-1">
+          {{ ticket.subject ?? ticket.Subject ?? 'N/A' }}
+        </p>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-4">
+        <strong>Description</strong>
+        <p class="mt-1">
+          {{ ticket.description ?? ticket.Description ?? 'N/A' }}
+        </p>
+      </div>
+
+      <!-- Created Date and Current Status -->
+      <div class="row mb-4">
+
+        <div class="col-md-6">
+          <strong>Created Date</strong>
+          <p class="mt-1">
+            {{
+              (ticket.createdDate ?? ticket.CreatedDate)
+                | date: 'dd-MM-yyyy HH:mm'
+            }}
+          </p>
+        </div>
+
+        <div class="col-md-6">
+          <strong>Current Status</strong>
+          <p class="mt-1">
+            <span
+              class="badge"
+              [ngClass]="getStatusClass(ticket.status ?? ticket.Status)"
+            >
+              {{ ticket.status ?? ticket.Status ?? 'Unknown' }}
+            </span>
+          </p>
+        </div>
+
+      </div>
+
+      <hr>
+
+      <!-- Update Status -->
+      <h5 class="mb-3">Update Ticket</h5>
+
+      <div class="mb-3">
+        <label for="ticketStatus" class="form-label">
+          Ticket Status
+        </label>
+
+        <select
+          id="ticketStatus"
+          class="form-select"
+          [(ngModel)]="updatedStatus"
+          [disabled]="isSaving"
+        >
+          <option value="Pending">Pending</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Completed">Completed</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+
+      <!-- Officer Response -->
+      <div class="mb-4">
+        <label for="officerResponse" class="form-label">
+          Officer Response
+        </label>
+
+        <textarea
+          id="officerResponse"
+          class="form-control"
+          rows="5"
+          [(ngModel)]="officerResponse"
+          [disabled]="isSaving"
+          placeholder="Enter your response to the customer"
+        ></textarea>
+
+        <small class="text-muted">
+          Enter the response that should be visible to the customer.
+        </small>
+      </div>
+
+      <!-- Save Button -->
+      <div class="d-flex gap-2">
+
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="updateTicket()"
+          [disabled]="isSaving || isLoading"
+        >
+          {{ isSaving ? 'Saving...' : 'Save Changes' }}
+        </button>
+
+        <a
+          routerLink="/support/admin-tickets"
+          class="btn btn-secondary"
+        >
+          Cancel
+        </a>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+

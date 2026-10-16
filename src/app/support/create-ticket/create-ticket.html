@@ -1,0 +1,83 @@
+<div class="support-page">
+  <div class="card border-0 shadow-sm">
+
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Raise Support Ticket</h2>
+    </div>
+
+    <div class="card-body p-4">
+
+      <form (ngSubmit)="submitTicket()" #ticketForm="ngForm">
+
+        <div class="mb-3">
+          <label for="subject" class="form-label">Subject</label>
+          <input
+            type="text"
+            id="subject"
+            name="subject"
+            class="form-control"
+            placeholder="Enter ticket subject"
+            [(ngModel)]="subject"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            class="form-control"
+            rows="4"
+            placeholder="Describe your issue"
+            [(ngModel)]="description"
+            required
+          ></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="attachment" class="form-label">Attachment</label>
+          <input
+            type="file"
+            id="attachment"
+            name="attachment"
+            class="form-control"
+            accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+            (change)="onFileSelected($event)"
+          />
+          <small class="text-muted">
+            Optional: Attach a supporting document or image.
+          </small>
+        </div>
+
+        <div
+          *ngIf="message"
+          class="alert"
+          [ngClass]="messageClass"
+          role="alert"
+        >
+          {{ message }}
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="isSubmitting"
+        >
+          {{ isSubmitting ? 'Submitting...' : 'Submit Ticket' }}
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-success w-100 mt-2"
+          routerLink="/support/my-tickets"
+        >
+          My Tickets
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+

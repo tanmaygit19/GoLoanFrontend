@@ -1,0 +1,32 @@
+.support-page {
+min-height: 100vh;
+padding: 24px;
+background-color: #f4f7fc;
+}
+
+.card {
+border-radius: 8px;
+overflow: hidden;
+}
+
+.card-header {
+padding: 16px;
+}
+
+.card-header h2 {
+font-size: 24px;
+}
+
+.form-label {
+font-weight: 500;
+}
+
+.form-control {
+padding: 10px;
+}
+
+@media (max-width: 576px) {
+.support-page {
+padding: 12px;
+}
+}

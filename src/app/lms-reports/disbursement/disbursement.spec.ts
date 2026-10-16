@@ -1,0 +1,21 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DisbursementComponent } from './disbursement';
+
+describe('DisbursementComponent', () => {
+  let component: DisbursementComponent;
+  let fixture: ComponentFixture<DisbursementComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [DisbursementComponent]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(DisbursementComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
