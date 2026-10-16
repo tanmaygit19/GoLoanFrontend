@@ -1,12 +1,11 @@
-
 <div class="page">
   <div class="heading">
     <div>
       <h2>Pending Deals</h2>
-      <p>View loan applications waiting for approval.</p>
+      <p>Review and manage loan applications.</p>
     </div>
 
-    <button type="button" (click)="fetchloans()" [disabled]="loading">
+    <button type="button" class="refresh-btn" (click)="fetchloans()" [disabled]="loading">
       {{ loading ? 'Loading...' : 'Refresh' }}
     </button>
   </div>
@@ -14,7 +13,9 @@
   <div class="error" *ngIf="error">{{ error }}</div>
   <div class="message" *ngIf="message">{{ message }}</div>
 
-  <p *ngIf="loading && loans.length === 0">Loading pending deals...</p>
+  <div class="loading" *ngIf="loading && loans.length === 0">
+    Loading pending deals...
+  </div>
 
   <div class="table-container">
     <table>
@@ -31,20 +32,25 @@
 
       <tbody>
         <tr *ngFor="let loan of loans">
-          <td>{{ loan.dealId }}</td>
+          <td>#{{ loan.dealId }}</td>
           <td>{{ loan.loanType }}</td>
-          <td>{{ loan.loanAmount | currency:'INR':'symbol':'1.0-2' }}</td>
+          <td class="amount">{{ loan.loanAmount | currency:'INR':'symbol':'1.0-2' }}</td>
           <td>{{ loan.tenureMonths }} months</td>
-          <td><span class="status">{{ loan.currentStatus || loan.status }}</span></td>
           <td>
-            <button type="button" (click)="viewprofile(loan)">
+            <span class="status">{{ loan.currentStatus || loan.status }}</span>
+          </td>
+          <td>
+            <button type="button" class="view-btn" (click)="viewprofile(loan)">
               View Profile
             </button>
           </td>
         </tr>
 
         <tr *ngIf="!loading && !error && loans.length === 0">
-          <td colspan="6" class="empty">No pending deals found.</td>
+          <td colspan="6" class="empty">
+            <strong>No pending deals found</strong>
+            <p>New applications awaiting approval will appear here.</p>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -52,31 +58,57 @@
 
   <div class="profile" *ngIf="selectedloan as loan">
     <div class="profile-heading">
-      <h3>Loan Profile</h3>
+      <div>
+        <h3>Loan Profile</h3>
+        <p>Review the application before making a decision.</p>
+      </div>
+
       <button type="button" class="close-btn" (click)="closeprofile()">
         Close
       </button>
     </div>
 
     <div class="details">
-      <p><strong>Deal ID:</strong> {{ loan.dealId }}</p>
-      <p><strong>Loan Type:</strong> {{ loan.loanType }}</p>
-      <p><strong>Requested Amount:</strong> {{ loan.loanAmount | currency:'INR':'symbol':'1.0-2' }}</p>
-      <p><strong>Tenure:</strong> {{ loan.tenureMonths }} months</p>
-      <p><strong>Current Status:</strong> {{ loan.currentStatus || loan.status }}</p>
+      <div class="detail-item">
+        <span>Deal ID</span>
+        <strong>#{{ loan.dealId }}</strong>
+      </div>
 
-      <p *ngIf="loan.approvedAmount">
-        <strong>Approved Amount:</strong>
-        {{ loan.approvedAmount | currency:'INR':'symbol':'1.0-2' }}
-      </p>
+      <div class="detail-item">
+        <span>Loan Type</span>
+        <strong>{{ loan.loanType }}</strong>
+      </div>
 
-      <p *ngIf="loan.rejectionReason">
-        <strong>Rejection Reason:</strong> {{ loan.rejectionReason }}
-      </p>
+      <div class="detail-item">
+        <span>Requested Amount</span>
+        <strong>{{ loan.loanAmount | currency:'INR':'symbol':'1.0-2' }}</strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Tenure</span>
+        <strong>{{ loan.tenureMonths }} months</strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Current Status</span>
+        <strong>{{ loan.currentStatus || loan.status }}</strong>
+      </div>
+
+      <div class="detail-item" *ngIf="loan.approvedAmount">
+        <span>Approved Amount</span>
+        <strong>{{ loan.approvedAmount | currency:'INR':'symbol':'1.0-2' }}</strong>
+      </div>
+
+      <div class="detail-item" *ngIf="loan.rejectionReason">
+        <span>Rejection Reason</span>
+        <strong>{{ loan.rejectionReason }}</strong>
+      </div>
     </div>
 
-    <div *ngIf="(loan.currentStatus || loan.status || '').toLowerCase() === 'pending'">
-      <label for="approvedAmount">Approved Amount</label>
+    <div class="decision-form" *ngIf="(loan.currentStatus || loan.status || '').toLowerCase() === 'pending'">
+      <h4>Loan Decision</h4>
+
+      <label for="approvedAmount">Approved Amount (₹)</label>
       <input
         id="approvedAmount"
         name="approvedAmount"
@@ -93,15 +125,16 @@
         name="rejectionReason"
         [(ngModel)]="rejectionReason"
         rows="3"
-        placeholder="Enter reason for rejection"
+        placeholder="Enter reason if rejecting the application"
       ></textarea>
 
       <div class="actions">
         <button
           type="button"
+          class="approve-btn"
           [disabled]="processing"
           (click)="approveloan()">
-          {{ processing ? 'Processing...' : 'Approve' }}
+          {{ processing ? 'Processing...' : 'Approve Loan' }}
         </button>
 
         <button
@@ -109,7 +142,7 @@
           class="reject-btn"
           [disabled]="processing"
           (click)="rejectloan()">
-          Reject
+          Reject Loan
         </button>
       </div>
     </div>
