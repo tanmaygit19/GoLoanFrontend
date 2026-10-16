@@ -1,12 +1,18 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "cli": {
+    "packageManager": "npm",
+    "analytics": "5e0d0866-476f-45e8-bd32-84ba3888e266"
+  },
   "newProjectRoot": "projects",
   "projects": {
-    "GoLoanFrontend": {
+    "goloanui": {
       "projectType": "application",
       "schematics": {
-        "@schematics/angular:component": { "style": "scss" }
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
       },
       "root": "",
       "sourceRoot": "src",
@@ -19,15 +25,36 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              { "glob": "**/*", "input": "public" }
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
             ],
-            "styles": ["src/styles.scss"]
+            "styles": [
+              "src/styles.scss"
+            ],
+            "server": "src/main.server.ts",
+            "outputMode": "server",
+            "security": {
+              "allowedHosts": []
+            },
+            "ssr": {
+              "entry": "src/server.ts"
+            }
           },
           "configurations": {
             "production": {
               "budgets": [
-                { "type": "initial", "maximumWarning": "700kB", "maximumError": "1.2MB" },
-                { "type": "anyComponentStyle", "maximumWarning": "12kB", "maximumError": "20kB" }
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
               ],
               "outputHashing": "all"
             },
@@ -37,15 +64,22 @@
               "sourceMap": true
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
-            "production": { "buildTarget": "GoLoanFrontend:build:production" },
-            "development": { "buildTarget": "GoLoanFrontend:build:development" }
+            "production": {
+              "buildTarget": "goloanui:build:production"
+            },
+            "development": {
+              "buildTarget": "goloanui:build:development"
+            }
           },
           "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test"
         }
       }
     }

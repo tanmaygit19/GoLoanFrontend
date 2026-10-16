@@ -1,0 +1,23 @@
+<p>loanaccount works!</p>
+
+<h2>Loan Accounts</h2>
+
+<p>API response:</p>
+<pre>{{ accounts | json }}</pre>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Loan Account ID</th>
+      <th>Customer ID</th>
+      <th>Deal ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let account of accounts">
+      <td>{{ account.loanAccountId }}</td>
+      <td>{{ account.customerId }}</td>
+      <td>{{ account.dealId }}</td>
+    </tr>
+  </tbody>
+</table>
