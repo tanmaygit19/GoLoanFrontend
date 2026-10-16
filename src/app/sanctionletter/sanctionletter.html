@@ -1,0 +1,171 @@
+
+<div class="page">
+  <h2>Sanction Letters</h2>
+
+  <div class="generate-section">
+    <h3>Generate Sanction Letter</h3>
+
+    <label for="loandealid">Select Approved Loan</label>
+
+    <select
+      id="loandealid"
+      [(ngModel)]="loandealid"
+      (change)="selectloan()">
+      <option [ngValue]="null">Select Deal ID</option>
+      <option *ngFor="let loan of loans" [ngValue]="loan.dealId">
+        Deal ID {{ loan.dealId }} - {{ loan.loanType }}
+      </option>
+    </select>
+
+    <div *ngIf="selectedloan" class="loan-details">
+      <h3>Loan Details</h3>
+
+      <p><strong>Deal ID:</strong> {{ selectedloan.dealId }}</p>
+      <p><strong>Loan Type:</strong> {{ selectedloan.loanType }}</p>
+      <p><strong>Loan Amount:</strong> ₹{{ selectedloan.loanAmount }}</p>
+      <p><strong>Tenure:</strong> {{ selectedloan.tenureMonths }} months</p>
+      <p><strong>Status:</strong> {{ selectedloan.currentStatus }}</p>
+
+      <button type="button" (click)="generatesanction()">
+        Generate Sanction Letter
+      </button>
+    </div>
+
+    <p *ngIf="message" class="message">{{ message }}</p>
+  </div>
+
+  <div class="table-section">
+    <h3>Generated Sanction Letters</h3>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Sanction ID</th>
+            <th>Deal ID</th>
+            <th>Loan Type</th>
+            <th>Loan Amount</th>
+            <th>Interest (%)</th>
+            <th>Tenure</th>
+            <th>EMI</th>
+            <th>Created At</th>
+            <th>Action</th>
+            <th>Disbursement Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let item of sanctions">
+            <td>{{ item.sanctionId }}</td>
+            <td>{{ item.dealId }}</td>
+            <td>{{ item.loanType }}</td>
+            <td>₹{{ item.loanAmount }}</td>
+            <td>{{ item.interestRate }}%</td>
+            <td>{{ item.tenureMonths }} months</td>
+            <td>₹{{ item.emiAmount }}</td>
+            <td>{{ item.createdAt | date:'dd-MM-yyyy' }}</td>
+
+            <td>
+              <button
+                type="button"
+                (click)="viewsanction(item.sanctionId)">
+                View
+              </button>
+
+              <button
+                type="button"
+                (click)="downloadsanction(item.sanctionId)">
+                Download
+              </button>
+
+              <button
+                type="button"
+                [disabled]="disbursementstatuses[item.dealId] === 'Approved'"
+                (click)="opendisbursement(item)">
+                Disburse
+              </button>
+            </td>
+
+            <td>
+              <span
+                class="status-text"
+                [class.status-pending]="disbursementstatuses[item.dealId] === 'Pending'"
+                [class.status-approved]="disbursementstatuses[item.dealId] === 'Approved'"
+                [class.status-rejected]="disbursementstatuses[item.dealId] === 'Rejected'">
+                {{ disbursementstatuses[item.dealId] || 'Not Disbursed' }}
+              </span>
+            </td>
+          </tr>
+
+          <tr *ngIf="sanctions.length === 0">
+            <td colspan="10">No sanction letters found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div *ngIf="sanction" class="view-section">
+    <h3>Sanction Letter Details</h3>
+
+    <p><strong>Sanction ID:</strong> {{ sanction.sanctionId }}</p>
+    <p><strong>Deal ID:</strong> {{ sanction.dealId }}</p>
+    <p><strong>Loan Type:</strong> {{ sanction.loanType }}</p>
+    <p><strong>Loan Amount:</strong> ₹{{ sanction.loanAmount }}</p>
+    <p><strong>Interest Rate:</strong> {{ sanction.interestRate }}%</p>
+    <p><strong>Tenure:</strong> {{ sanction.tenureMonths }} months</p>
+    <p><strong>EMI:</strong> ₹{{ sanction.emiAmount }}</p>
+    <p><strong>Created At:</strong> {{ sanction.createdAt | date:'dd-MM-yyyy' }}</p>
+
+    <button type="button" (click)="sanction = null">
+      Close
+    </button>
+  </div>
+
+  <div *ngIf="showdisbursement" class="disbursement-form">
+    <h3>Loan Disbursement</h3>
+
+    <label for="disbursementdealid">Deal ID</label>
+    <input
+      id="disbursementdealid"
+      type="number"
+      [(ngModel)]="disbursement.dealId"
+      readonly>
+
+    <label for="disbursementamount">Disbursement Amount</label>
+    <input
+      id="disbursementamount"
+      type="number"
+      [(ngModel)]="disbursement.disburseAmount"
+      min="1"
+      required>
+
+    <label for="disbursementdate">Date</label>
+    <input
+      id="disbursementdate"
+      type="date"
+      [(ngModel)]="disbursement.disbursementDate"
+      readonly>
+
+    <label for="bankpartner">Bank Partner</label>
+    <input
+      id="bankpartner"
+      type="text"
+      [(ngModel)]="disbursement.bankPartner"
+      required>
+
+    <button
+      type="button"
+      [disabled]="submitting"
+      (click)="submitdisbursement()">
+      {{ submitting ? 'Submitting...' : 'Submit' }}
+    </button>
+
+    <button
+      type="button"
+      [disabled]="submitting"
+      (click)="closedisbursement()">
+      Close
+    </button>
+  </div>
+</div>
