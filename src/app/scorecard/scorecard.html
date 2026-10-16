@@ -1,0 +1,17 @@
+<div class="container">
+  <h2>Score Cards</h2>
+  <hr>
+
+  <label>Customer ID:</label>
+  <input type="number" [(ngModel)]="customerId">
+
+  <button (click)="getScoreCard()">Get Score Card</button>
+
+  <div *ngIf="scoreCard">
+    <hr>
+    <p>Score Card ID: {{ scoreCard.scoreCardId }}</p>
+    <p>Customer ID: {{ scoreCard.customerId }}</p>
+    <p>Risk Category: {{ scoreCard.riskCategory }}</p>
+    <p>Eligible Loan Amount: {{ scoreCard.eligibleLoanAmount }}</p>
+  </div>
+</div>

@@ -1,40 +1,59 @@
-# GoLoan Angular Frontend
+# Goloanui
 
-This is a separate Angular frontend for the GoLoan .NET API. The source follows the reference TestApp conventions: standalone components and separate `.ts`, `.html`, and `.scss` files.
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.2.
 
-## Requirements
+## Development server
 
-- Node.js compatible with the Angular CLI version in `package.json`
-- npm
-- GoLoan .NET API running locally
-
-## Run the frontend
+To start a local development server, run:
 
 ```bash
-npm install
-npm start
+ng serve
 ```
 
-Open `http://localhost:4200`.
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## API configuration
+## Code scaffolding
 
-The default API base URL is `http://localhost:5047/api`, matching the HTTP launch URL in the uploaded GoLoan backend. Change `src/environments/environment.ts` if your API runs on a different host or port.
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-The backend's CORS policy currently allows `http://localhost:4200`. Keep that origin aligned with the frontend development server. The frontend sends requests with credentials enabled for the backend's HttpOnly `access_token` cookie and also attaches a Bearer token when the standard login response contains one.
+```bash
+ng generate component component-name
+```
 
-## Included in this first pass
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-- Sign-in screen matching `POST /api/Auth/Login`
-- TOTP 2FA setup and verification matching `/api/Auth/Setup2FA` and `/api/Auth/Verify2FA`
-- Authenticated shell with responsive sidebar and topbar
-- Role-aware navigation: customer menu vs back-office menu
-- Customer dashboard using `GET /api/CustomerDashboard?customerId=...`
-- Back-office dashboard using `GET /api/LMSReports/Dashboard`
-- Route placeholders for the other loan-management modules, ready for incremental implementation
+```bash
+ng generate --help
+```
 
-## Backend notes
+## Building
 
-- Public registration is not included because the backend requires a `RoleId` and this ZIP does not provide a stable role-ID mapping for the UI to use safely.
-- The current backend has several endpoints without `[Authorize]`. Angular route guards improve navigation UX but are not security boundaries. Add authorization and role checks in .NET before production deployment.
-- Login/2FA routes and request payloads are based on the controllers in the uploaded GoLoan backend.
+To build the project run:
+
+```bash
+ng build
+```
+
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Running unit tests
+
+To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
