@@ -1,0 +1,113 @@
+
+<div class="container-fluid mt-4">
+
+  <h2 class="mb-4">Payment History</h2>
+
+
+  <div class="row mb-4">
+
+    <div class="col-md-4">
+      <label class="form-label">Loan Account</label>
+
+      <select class="form-select" [(ngModel)]="loanAccount" (ngModelChange)="getPaymentHistory(); getForeClosurePaymentHistory()">
+
+        <option [ngValue]="null">All Loan Accounts</option>
+
+        <option *ngFor="let account of loanAccounts" [ngValue]="account.loanAccountId"> {{ account.loanAccountNo }} </option>
+
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label">Payment Period</label>
+
+      <select class="form-select" [(ngModel)]="period" (ngModelChange)="getPaymentHistory(); getForeClosurePaymentHistory()">
+        <option value="all">All</option>
+        <option value="1month">Last 1 Month</option>
+        <option value="3month">Last 3 Months</option>
+        <option value="6month">Last 6 Months</option>
+        <option value="1year">Last 1 Year</option>
+
+      </select>
+    </div>
+
+  </div>
+
+
+
+  <h3 class="mb-3">EMI Payment History</h3>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+
+      <thead class="table-dark">
+        <tr>
+          <th>Date</th>
+          <th>Loan Account</th>
+          <th>Payment Type</th>
+          <th>Amount</th>
+          <th>Payment Mode</th>
+          <th>Reference</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let p of payments">
+          <td>{{ p.date | date:'dd-MMM-yyyy' }}</td>
+          <td>{{ p.loanAccountNo }}</td>
+          <td>{{ p.paymentType }}</td>
+          <td>{{ p.amount | currency:'INR':'symbol':'1.2-2' }}</td>
+          <td>{{ p.paymentMode }}</td>
+          <td>{{ p.reference }}</td>
+          <td>{{ p.status }}</td>
+        </tr>
+
+        <tr *ngIf="payments.length === 0">
+          <td colspan="7" class="text-center">
+            No EMI payments available
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+
+  <h3 class="mt-5 mb-3">Foreclosure Payment History</h3>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+
+      <thead class="table-dark">
+        <tr>
+          <th>Request ID</th>
+          <th>Loan Account ID</th>
+          <th>Foreclosure Type</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Paid Date</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let f of foreClosurePayments">
+          <td>{{ f.requestId }}</td>
+          <td>{{ f.loanAccountId }}</td>
+          <td>{{ f.foreClosureType }}</td>
+          <td>{{ f.foreClosureAmount | currency:'INR':'symbol':'1.2-2' }}</td>
+          <td>{{ f.status }}</td>
+          <td>{{ f.paidDate | date:'dd-MMM-yyyy' }}</td>
+        </tr>
+
+        <tr *ngIf="foreClosurePayments.length === 0">
+          <td colspan="6" class="text-center">
+            No foreclosure payments available
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+</div>

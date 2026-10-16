@@ -3,11 +3,11 @@
   "version": 1,
   "cli": {
     "packageManager": "npm",
-    "analytics": false
+    "analytics": "62f24313-b1b2-438b-99e5-30e732dca567"
   },
   "newProjectRoot": "projects",
   "projects": {
-    "goloanui": {
+    "GoLoan": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -31,8 +31,12 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"
             ],
+          "scripts": [
+            "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+          ],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
@@ -70,10 +74,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "goloanui:build:production"
+              "buildTarget": "GoLoan:build:production"
             },
             "development": {
-              "buildTarget": "goloanui:build:development"
+              "buildTarget": "GoLoan:build:development"
             }
           },
           "defaultConfiguration": "development"

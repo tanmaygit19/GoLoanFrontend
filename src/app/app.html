@@ -1,42 +1,5 @@
-<div class="container">
-  <h1>GoLoan</h1>
-  <p>Loan Management System</p>
+<!-- <app-foreclosure></app-foreclosure> -->
 
-  <hr>
+<!-- <app-loan-officerforeclosure></app-loan-officerforeclosure> -->
 
-  <nav>
-    <a routerLink="/">Dashboard</a>
-    <a routerLink="/cibil">CIBIL Reports</a>
-    <a routerLink="/scorecard">Score Cards</a>
-    <a routerLink="/eligibility">Eligibility Check</a>
-  </nav>
-
-  <hr>
-
-  <div *ngIf="!isModulePage">
-    <h2>Dashboard</h2>
-    <p>Select a module to continue.</p>
-
-    <div class="cards">
-      <div class="card">
-        <h3>CIBIL Reports</h3>
-        <p>View customer CIBIL reports.</p>
-        <a routerLink="/cibil">Open</a>
-      </div>
-
-      <div class="card">
-        <h3>Score Cards</h3>
-        <p>View customer score cards.</p>
-        <a routerLink="/scorecard">Open</a>
-      </div>
-
-      <div class="card">
-        <h3>Eligibility Check</h3>
-        <p>Check loan eligibility.</p>
-        <a routerLink="/eligibility">Open</a>
-      </div>
-    </div>
-  </div>
-
-  <router-outlet></router-outlet>
-</div>
+<router-outlet />
