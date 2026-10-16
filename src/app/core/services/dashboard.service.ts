@@ -1,16 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
-  http = inject(HttpClient);
+  private http = inject(HttpClient);
 
-  dashboardUrl = `${environment.apiUrl}/CustomerDashboard`;
+  private customerDashboardUrl = `${environment.apiUrl}/CustomerDashboard`;
+  private officerDashboardUrl = `${environment.apiUrl}/Dashboard/OfficerDashboard`;
 
-  getDashboard(customerId: any) {
-    return this.http.get<any>(`${this.dashboardUrl}?customerId=${customerId}`);
+  getCustomerDashboard(customerId: any): Observable<any> {
+    return this.http.get<any>(`${this.customerDashboardUrl}?customerId=${customerId}`);
+  }
+
+  getOfficerDashboard(): Observable<any> {
+    return this.http.get<any>(this.officerDashboardUrl);
+  }
+
+  getDashboard(customerId: any): Observable<any> {
+    return this.getCustomerDashboard(customerId);
   }
 }
