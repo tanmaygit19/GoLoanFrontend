@@ -1,0 +1,93 @@
+
+<div class="container mt-4" *ngIf="account">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Loan Account Details</h2>
+
+    <button
+      class="btn btn-secondary"
+      routerLink="/loanacc"
+    >
+      Back to Loan Accounts
+    </button>
+  </div>
+
+
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Account Information</h5>
+    </div>
+
+    <div class="card-body">
+      <div class="row g-4">
+
+        <div class="col-md-6">
+          <p class="text-secondary mb-1">Loan Account Number</p>
+          <h5>{{ account.loanAccountNo }}</h5>
+        </div>
+
+        <div class="col-md-6">
+          <p class="text-secondary mb-1">Customer ID</p>
+          <h5>{{ account.customerId }}</h5>
+        </div>
+
+        <div class="col-md-6">
+          <p class="text-secondary mb-1">Loan Amount</p>
+          <h5>₹{{ account.loanAmount }}</h5>
+        </div>
+
+        <div class="col-md-6">
+          <p class="text-secondary mb-1">Outstanding Principal</p>
+          <h5>₹{{ account.outstandingPrincipal }}</h5>
+        </div>
+
+        <div class="col-md-6">
+          <p class="text-secondary mb-1">Loan Status</p>
+          <span
+            class="badge"
+            [ngClass]="account.loanStatus === 'Active'
+              ? 'bg-success'
+              : 'bg-secondary'"
+          >
+            {{ account.loanStatus }}
+          </span>
+        </div>
+
+        <div class="col-md-6">
+          <p class="text-secondary mb-1">Interest Rate</p>
+          <h5>{{ account.interestRate }}%</h5>
+        </div>
+
+        <div class="col-md-6">
+          <p class="text-secondary mb-1">Loan Tenure</p>
+          <h5>{{ account.tenureMonths }} months</h5>
+        </div>
+
+        <div class="col-md-6">
+          <p class="text-secondary mb-1">Monthly EMI</p>
+          <h5>₹{{ account.emiAmount }}</h5>
+        </div>
+
+        <div class="col-md-6">
+          <p class="text-secondary mb-1">Total Paid Amount</p>
+          <h5>₹{{ account.totalPaidAmount }}</h5>
+        </div>
+
+        <div class="col-md-6">
+          <p class="text-secondary mb-1">Disbursement Date</p>
+          <h5>
+            {{ account.disbursementDate | date:'dd MMM yyyy' }}
+          </h5>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="container mt-4" *ngIf="!account">
+  <div class="alert alert-info">
+    Loading loan account details...
+  </div>
+</div>
