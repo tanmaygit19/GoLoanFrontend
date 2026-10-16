@@ -1,0 +1,186 @@
+<div class="report-page">
+
+  <!-- Page Header -->
+
+  <div class="page-header">
+    <div>
+      <h2>EMI Collection Report</h2>
+      <p>Review billed, collected and pending EMI amounts for the selected period.</p>
+    </div>
+
+
+<button
+  type="button"
+  class="btn btn-outline-primary refresh-btn"
+  (click)="loadReport()"
+  [disabled]="isLoading">
+  <i class="bi bi-arrow-clockwise"></i>
+  Refresh
+</button>
+
+
+  </div>
+
+  <!-- Filters -->
+
+  <div class="filter-card">
+
+
+<div class="filter-field">
+  <label for="fromDate">From Date</label>
+  <input
+    id="fromDate"
+    type="date"
+    class="form-control"
+    [(ngModel)]="fromDate"
+    [disabled]="isLoading">
+</div>
+
+<div class="filter-field">
+  <label for="toDate">To Date</label>
+  <input
+    id="toDate"
+    type="date"
+    class="form-control"
+    [(ngModel)]="toDate"
+    [disabled]="isLoading">
+</div>
+
+<div class="filter-field search-field">
+  <label for="searchTerm">Search Particulars</label>
+  <input
+    id="searchTerm"
+    type="text"
+    class="form-control"
+    placeholder="Search EMI billed, collected, pending..."
+    [(ngModel)]="searchTerm"
+    (input)="applyFilters()">
+</div>
+
+<div class="filter-actions">
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="searchReport()"
+    [disabled]="isLoading">
+    <i class="bi bi-search"></i>
+    Search
+  </button>
+
+  <button
+    type="button"
+    class="btn btn-outline-secondary"
+    (click)="exportReport()"
+    [disabled]="!hasData">
+    <i class="bi bi-download"></i>
+    Export
+  </button>
+</div>
+
+
+  </div>
+
+  <!-- Loading -->
+
+  <div class="alert alert-info" *ngIf="isLoading">
+    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+    Loading EMI collection report...
+  </div>
+
+  <!-- Error -->
+
+  <div class="alert alert-danger" *ngIf="!isLoading && errorMessage">
+    {{ errorMessage }}
+
+
+<button
+  type="button"
+  class="btn btn-sm btn-outline-danger ms-2"
+  (click)="loadReport()">
+  Retry
+</button>
+
+
+  </div>
+
+  <!-- Report Table -->
+
+  <div class="report-card" *ngIf="!isLoading && !errorMessage">
+
+
+<div class="card-heading">
+  <div>
+    <h4>EMI Collection Summary</h4>
+    <p>Summary of EMI billing and collection performance.</p>
+  </div>
+
+  <span class="record-count">
+    {{ filteredData.length }} records
+  </span>
+</div>
+
+<div class="table-responsive">
+  <table class="table report-table align-middle mb-0">
+
+    <thead>
+      <tr>
+        <th>Particulars</th>
+        <th class="text-end">Count</th>
+        <th class="text-end">Amount (₹)</th>
+        <th class="text-end">Percentage (%)</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of filteredData">
+        <td>
+          <span class="particular-name">
+            {{ item.particulars }}
+          </span>
+        </td>
+
+        <td class="text-end">
+          {{ item.count | number }}
+        </td>
+
+        <td class="text-end amount-cell">
+          {{ item.amount | currency:'INR':'symbol':'1.2-2':'en-IN' }}
+        </td>
+
+        <td class="text-end">
+          <span
+            class="percentage-badge"
+            [class.pending-badge]="item.particulars.toLowerCase() === 'emi pending'"
+            [class.collected-badge]="item.particulars.toLowerCase() === 'emi collected'">
+            {{ item.percentage | number:'1.0-2' }}%
+          </span>
+        </td>
+      </tr>
+
+      <tr *ngIf="filteredData.length === 0">
+        <td colspan="4" class="empty-state">
+          No EMI collection records found for the selected filters.
+        </td>
+      </tr>
+    </tbody>
+
+    <tfoot *ngIf="hasData">
+      <tr>
+        <th>Total</th>
+        <th class="text-end">{{ totalCount | number }}</th>
+        <th class="text-end">
+          {{ totalAmount | currency:'INR':'symbol':'1.2-2':'en-IN' }}
+        </th>
+        <th class="text-end">
+          {{ totalPercentage | number:'1.0-2' }}%
+        </th>
+      </tr>
+    </tfoot>
+
+  </table>
+</div>
+
+
+  </div>
+
+</div>

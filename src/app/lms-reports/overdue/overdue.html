@@ -1,0 +1,156 @@
+<div class="report-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2>Overdue Report</h2>
+      <p>Review overdue accounts and outstanding amounts by overdue period.</p>
+    </div>
+
+    <button
+      class="btn btn-outline-primary refresh-btn"
+      (click)="loadReport()"
+      [disabled]="isLoading">
+
+      <i class="bi bi-arrow-clockwise"></i>
+      Refresh
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-card">
+
+    <div class="filter-field date-field">
+      <label for="asOnDate">As On Date</label>
+
+      <input
+        id="asOnDate"
+        type="date"
+        class="form-control"
+        [(ngModel)]="asOnDate">
+    </div>
+
+    <div class="filter-field search-field">
+      <label for="searchTerm">Search Overdue Period</label>
+
+      <input
+        id="searchTerm"
+        type="text"
+        class="form-control"
+        placeholder="Search overdue periods..."
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="applyFilters()">
+    </div>
+
+    <div class="filter-actions">
+      <button
+        class="btn btn-primary"
+        (click)="applyFilters()">
+
+        <i class="bi bi-search"></i>
+        Search
+      </button>
+
+      <button
+        class="btn btn-outline-secondary"
+        (click)="exportReport()"
+        [disabled]="filteredData.length === 0">
+
+        <i class="bi bi-download"></i>
+        Export
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Loading -->
+  <div class="alert alert-info" *ngIf="isLoading">
+    Loading overdue report...
+  </div>
+
+  <!-- Error -->
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    {{ errorMessage }}
+
+    <button
+      class="btn btn-sm btn-outline-danger ms-2"
+      (click)="loadReport()">
+      Retry
+    </button>
+  </div>
+
+  <!-- Report Table -->
+  <div class="report-card" *ngIf="!isLoading && !errorMessage">
+
+    <div class="card-heading">
+      <div>
+        <h4>Overdue Summary</h4>
+        <p>Account distribution and outstanding amounts by overdue period.</p>
+      </div>
+
+      <span class="record-count">
+        {{ filteredData.length }} periods
+      </span>
+    </div>
+
+    <div class="table-responsive">
+
+      <table class="table report-table align-middle mb-0">
+
+        <thead>
+          <tr>
+            <th>Days Overdue</th>
+            <th class="text-end">Accounts</th>
+            <th class="text-end">Outstanding (₹)</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let item of filteredData">
+
+            <td>
+              <span class="overdue-label">
+                {{ item.daysOverdue }}
+              </span>
+            </td>
+
+            <td class="text-end">
+              {{ item.accounts | number }}
+            </td>
+
+            <td class="text-end amount-value">
+              {{ item.outstandingAmount | currency:'INR':'symbol':'1.2-2':'en-IN' }}
+            </td>
+
+          </tr>
+
+          <tr *ngIf="filteredData.length === 0">
+            <td colspan="3" class="empty-state">
+              No overdue records found.
+            </td>
+          </tr>
+
+        </tbody>
+
+        <tfoot *ngIf="filteredData.length > 0">
+          <tr>
+            <th>Total</th>
+
+            <th class="text-end">
+              {{ totalAccounts | number }}
+            </th>
+
+            <th class="text-end">
+              {{ totalOutstandingAmount | currency:'INR':'symbol':'1.2-2':'en-IN' }}
+            </th>
+          </tr>
+        </tfoot>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
