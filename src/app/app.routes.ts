@@ -19,6 +19,11 @@ import { ModulePage } from './pages/module-page/module-page';
 // Authentication guard
 import { authGuard } from './core/guards/auth.guard';
 
+// Main branch routes
+import { Cibil } from './cibil/cibil';
+import { Scorecard } from './scorecard/scorecard';
+import { Eligibility } from './eligibility/eligibility';
+
 export const routes: Routes = [
   // Default route
   {
@@ -72,6 +77,20 @@ export const routes: Routes = [
         component: ModulePage
       }
     ]
+  },
+
+  // Main branch routes
+  {
+    path: 'cibil',
+    component: Cibil
+  },
+  {
+    path: 'scorecard',
+    component: Scorecard
+  },
+  {
+    path: 'eligibility',
+    component: Eligibility
   },
 
   // Unknown routes

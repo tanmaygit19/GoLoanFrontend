@@ -1,13 +1,27 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import {
+  RouterOutlet,
+  RouterLinkWithHref,
+  Router,
+  NavigationEnd
+} from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [CommonModule, RouterOutlet, RouterLinkWithHref],
+  styleUrl: './app.scss',
   templateUrl: './app.html',
-  styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('loanaccount');
+  isModulePage = false;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.isModulePage = event.urlAfterRedirects !== '/';
+      }
+    });
+  }
 }
