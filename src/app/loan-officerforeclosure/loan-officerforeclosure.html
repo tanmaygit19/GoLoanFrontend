@@ -1,0 +1,147 @@
+<div class="foreclosure-container">
+
+  <h2>Foreclosure / Closure Requests</h2>
+  <p class="subtitle">
+    Manage customer foreclosure and closure requests
+  </p>
+
+
+  <div class="tabs">
+    <a class="tab" routerLink="/foreclosure"> Foreclosure Request </a>
+
+    <a class="tab" href="/closure"> Closure Requests </a>
+  </div>
+
+
+
+  <div class="table-wrapper">
+    <table class="request-table">
+      <thead>
+        <tr>
+          <th>Request ID</th>
+          <th>Loan Account</th>
+          <th>Customer Name</th>
+          <th>Type</th>
+          <th>Request Date</th>
+          <th>Outstanding Principal</th>
+          <th>Foreclosure Amount</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let x of adminRequests">
+          <td><strong>FR{{ x.requestId }}</strong></td>
+          <td>{{ x.loanAccountNo }}</td>
+          <td>{{ x.customerName }}</td>
+          <td>{{ x.type }}</td>
+          <td>{{ x.requestedDate | date:'dd MMM yyyy' }}</td>
+          <td>₹ {{ x.outstandingPrincipal}}</td>
+          <td>₹ {{ x.amount}}</td>
+          <td>
+            <span class="status-badge" [ngClass]="{
+                'approved': x.status === 'Approved',
+                'rejected': x.status === 'Rejected',
+                'pending': x.status === 'Pending'
+              }">
+              {{ x.status }}
+            </span>
+          </td>
+          <td>
+
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+              data-bs-target="#foreclosureModal" (click)="viewRequest(x)">
+              View
+            </button>
+          </td>
+        </tr>
+
+        <tr *ngIf="adminRequests.length === 0">
+          <td colspan="9" class="no-records">No foreclosure requests found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+
+
+
+<!-- View Page Details -->
+
+<div class="modal fade" id="foreclosureModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="foreclosureModalLabel" aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" *ngIf="selectedRequest as r">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="foreclosureModalLabel">
+          Foreclosure Request Details
+        </h5>
+
+      </div>
+
+      <div class="modal-body">
+
+        <div class="detail-row">
+          <span>Request ID</span>
+          <strong>FR{{ r.requestId }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Loan Account</span>
+          <strong>{{ r.loanAccountNo }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Customer Name</span>
+          <strong>{{ r.customerName }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Foreclosure Type</span>
+          <strong>{{ r.type }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Request Date</span>
+          <strong>{{ r.requestedDate | date:'dd MMM yyyy' }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Outstanding Principal</span>
+          <strong>₹ {{ r.outstandingPrincipal}}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Foreclosure Amount</span>
+          <strong>₹ {{ r.amount}}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>Status</span>
+          <span class="badge" [ngClass]="{
+                  'bg-success': r.status === 'Approved',
+                  'bg-danger': r.status === 'Rejected',
+                  'bg-warning text-dark': r.status === 'Pending'}">
+            {{ r.status }}
+          </span>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-danger" (click)="rejectRequest(r)"> Reject </button>
+
+        <button type="button" class="btn btn-success" (click)="approveRequest(r)"> Approve </button>
+
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Close </button>
+      </div>
+
+    </div>
+  </div>
+</div>

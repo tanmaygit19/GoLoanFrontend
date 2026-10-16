@@ -1,101 +1,39 @@
 import { Routes } from '@angular/router';
-
-// Authentication pages
-import { Login } from './pages/auth/login/login';
-import { Register } from './pages/auth/register/register';
-import { TwoFactor } from './pages/auth/two-factor/two-factor';
-
-// Layout
-import { MainLayout } from './layout/main-layout/main-layout';
-
-// Dashboard and modules
-import { Dashboard } from './pages/dashboard/dashboard';
-import { CustomerProfile } from './pages/customer-profile/customer-profile';
-import { KycVerification } from './pages/kyc-verification/kyc-verification';
-import { OfficerCustomers } from './pages/officer-customers/officer-customers';
-import { OfficerKyc } from './pages/officer-kyc/officer-kyc';
-import { ModulePage } from './pages/module-page/module-page';
-
-// Authentication guard
-import { authGuard } from './core/guards/auth.guard';
-
-// Main branch routes
-import { Cibil } from './cibil/cibil';
-import { Scorecard } from './scorecard/scorecard';
-import { Eligibility } from './eligibility/eligibility';
+import { LoanOfficerClosure } from './loan-officer-closure/loan-officer-closure';
+import { LoanOfficerforeclosure } from './loan-officerforeclosure/loan-officerforeclosure';
+import { ForeclosurePayment } from './foreclosure-payment/foreclosure-payment';
+import { Foreclosure } from './foreclosure/foreclosure';
+import { EmiPay } from './emi-pay/emi-pay';
+import { Paybtn } from './paybtn/paybtn';
+import { PaymentHistory } from './payment-history/payment-history';
 
 export const routes: Routes = [
-  // Default route
   {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full'
-  },
-
-  // Public routes
-  {
-    path: 'login',
-    component: Login
+    path: 'foreclosure',
+    component: LoanOfficerforeclosure
   },
   {
-    path: 'register',
-    component: Register
+    path: 'closure',
+    component: LoanOfficerClosure
   },
   {
-    path: 'two-factor',
-    component: TwoFactor
-  },
-
-  // Protected application layout
-  {
-    path: '',
-    component: MainLayout,
-    canActivate: [authGuard],
-    children: [
-      {
-        path: 'dashboard',
-        component: Dashboard
-      },
-      {
-        path: 'module/profile',
-        component: CustomerProfile
-      },
-      {
-        path: 'module/kyc-verification',
-        component: KycVerification
-      },
-      {
-        path: 'module/customers',
-        component: OfficerCustomers
-      },
-      {
-        path: 'module/kyc',
-        component: OfficerKyc
-      },
-      {
-        path: 'module/:id',
-        component: ModulePage
-      }
-    ]
-  },
-
-  // Main branch routes
-  {
-    path: 'cibil',
-    component: Cibil
+    path: 'fore',
+    component:Foreclosure
   },
   {
-    path: 'scorecard',
-    component: Scorecard
+ path: 'foreclosure-payment/:requestId',
+ component: ForeclosurePayment
+},
+  {
+    path: 'emi-pay/:emiScheduleId',
+    component: EmiPay
   },
   {
-    path: 'eligibility',
-    component: Eligibility
+    path:'btn',
+    component:Paybtn
   },
-
-  // Unknown routes
   {
-    path: '**',
-    redirectTo: 'dashboard'
+    path:'payment',
+    component: PaymentHistory
   }
 ];

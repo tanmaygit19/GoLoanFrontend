@@ -1,0 +1,47 @@
+
+<h2>EMI Payment Details</h2>
+
+<div *ngIf="emiDetails ">
+
+  <p>Installment No: {{ emiDetails.installmentNo }}</p>
+
+  <p>EMI Amount: ₹{{ emiDetails.emiPay }}</p>
+
+  <p>Bonus: ₹{{ emiDetails.bonus }}</p>
+
+  <p>Penalty: ₹{{ emiDetails.penalty }}</p>
+
+  <p>Late Days: {{ emiDetails.lateDays }}</p>
+
+  <p>GST: ₹{{ emiDetails.gst }}</p>
+
+  <h3>Total Amount: ₹{{ emiDetails.totalAmount }}</h3>
+
+<button type="button" (click)="payNow()"> Pay Now </button>
+ <button type="button" (click)="viewDetails()"> View Details </button> 
+
+
+  <!-- Modal -->
+<div class="modal-backdrop" *ngIf="showDetails">
+
+  <div class="modal-box">
+
+    <h2>EMI Payment Details</h2>
+
+    <p>EMI Schedule ID: {{ emiDetails.emiScheduleId }}</p>
+    <p>Installment No: {{ emiDetails.installmentNo }}</p>
+    <p>EMI Amount: ₹{{ emiDetails.emiPay }}</p>
+    <p>Bonus: ₹{{ emiDetails.bonus }}</p>
+    <p>Penalty: ₹{{ emiDetails.penalty }}</p>
+    <p>Late Days: {{ emiDetails.lateDays }}</p>
+    <p>GST: ₹{{ emiDetails.gst }}</p>
+
+    <h3>Total Amount: ₹{{ emiDetails.totalAmount }}</h3>
+
+    <button type="button" (click)="viewDetails()"> Close </button>
+
+  </div>
+
+</div>
+
+</div>

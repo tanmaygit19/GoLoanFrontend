@@ -1,0 +1,171 @@
+
+<div class="foreclosure-container">
+
+  <h1>Foreclosure Request</h1>
+
+  <form [formGroup]="foreclosureForm" (ngSubmit)="getData()">
+
+    <!-- Select Loan Account -->
+    <label>Select Loan Account</label>
+
+    <select
+      class="form-select mb-4"
+      formControlName="loanAccountId"
+      (change)="onLoanAccountChange()">
+
+      <option value="">Select Loan Account</option>
+
+      <option
+        *ngFor="let x of loanAccount"
+        [value]="x.loanAccountId">
+        {{ x.loanAccountNo }}
+      </option>
+
+    </select>
+
+    <!-- Loan Details -->
+    <div class="loan-details">
+
+      <div class="detail-card">
+        <label>Loan Account Number</label>
+        <h2>{{ selectedLoan?.loanAccountNo || '-' }}</h2>
+      </div>
+
+      <div class="detail-card">
+        <label>Outstanding Principal</label>
+        <h2>₹ {{ selectedLoan?.outstandingPrincipal ?? 0 }}</h2>
+      </div>
+
+      <div class="detail-card">
+        <label>EMI Amount</label>
+        <h2>₹ {{ selectedLoan?.emiAmount ?? 0 }}</h2>
+      </div>
+
+    </div>
+
+    <!-- Foreclosure Type -->
+    <h3>Select Foreclosure Type</h3>
+
+    <div class="type-options">
+
+      <label>
+        <input
+          type="radio"
+          formControlName="foreclosureType"
+          value="Full">
+        Full Foreclosure
+      </label>
+
+      <label>
+        <input
+          type="radio"
+          formControlName="foreclosureType"
+          value="Partial">
+        Partial Foreclosure
+      </label>
+
+    </div>
+
+    <!-- Number of EMI for Partial Foreclosure -->
+    @if (foreclosureForm.get('foreclosureType')?.value === 'Partial') {
+
+      <div class="form-group mt-3">
+        <label for="noOfEmi">No. of EMI</label>
+
+        <input
+          type="number"
+          id="noOfEmi"
+          class="form-control"
+          formControlName="noOfEmi"
+          min="1"
+          placeholder="Enter number of EMI">
+      </div>
+
+    }
+
+    <!-- Expected Closure Date -->
+    <div class="form-group mt-3">
+      <label for="expectedClosureDate">Expected Closure Date</label>
+
+      <input
+        type="date"
+        id="expectedClosureDate"
+        class="form-control"
+        formControlName="expectedClosureDate">
+    </div>
+
+    <!-- Reason -->
+    <div class="form-group mt-3">
+      <label for="reason">Reason / Notes</label>
+
+      <textarea
+        id="reason"
+        class="form-control"
+        formControlName="reason"
+        rows="4"
+        placeholder="Enter foreclosure reason"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">
+      Submit Request
+    </button>
+
+  </form>
+
+</div>
+
+
+<!-- My Foreclosure Requests -->
+<div class="foreclosure-container mt-4">
+
+  <h2>My Foreclosure Requests</h2>
+
+  <div class="table-responsive">
+
+    <table class="table table-bordered table-striped">
+
+      <thead class="table-dark">
+        <tr>
+          <th>Loan Account</th>
+          <th>Amount</th>
+          <th>Type</th>
+          <th>Reason</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+<tr *ngFor="let x of (requestdata || [])">
+          <td>{{ x.loanAccountNo }}</td>
+          <td>{{ x.amount | currency:'INR':'symbol':'1.2-2' }}</td>
+          <td>{{ x.type }}</td>
+          <td>{{ x.reason }}</td>
+          <td>{{ x.status }}</td>
+
+          <td>
+            <button
+              type="button"
+              class="btn btn-success btn-sm"
+              [disabled]="x.status !== 'Approved' || x.isPaid"
+              (click)="payForeclosure(x)">
+              Pay
+            </button>
+          </td>
+
+        </tr>
+
+        <tr *ngIf="requestdata.length === 0">
+          <td colspan="6" class="text-center">
+            No foreclosure requests available
+          </td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
