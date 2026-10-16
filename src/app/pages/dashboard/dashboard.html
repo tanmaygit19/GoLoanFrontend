@@ -1,11 +1,7 @@
-<!-- ========================================== -->
-<!-- 1. LOAN OFFICER DASHBOARD                   -->
-<!-- ========================================== -->
 <div *ngIf="isOfficer" class="dashboard-card-wrapper">
   <div class="dashboard-main-card">
     
     <h3 class="dashboard-heading">Loan Management Dashboard</h3>
-
     <!-- 8 KPI Cards Grid (4x2) -->
     <div class="officer-grid">
       
@@ -13,95 +9,85 @@
       <div class="metric-card">
         <div class="metric-info">
           <span class="metric-label">Total Customers</span>
-          <div class="metric-value">{{ dashboardData?.summary?.totalApplications || 5 }}</div>
+          <div class="metric-value">{{ dashboardData?.totalCustomers ?? 0 }}</div>
         </div>
         <div class="metric-icon text-primary">
           <i class="bi bi-people-fill"></i>
         </div>
       </div>
-
       <!-- Card 2: Loan Customers -->
       <div class="metric-card">
         <div class="metric-info">
           <span class="metric-label">Loan Customers</span>
-          <div class="metric-value">0/{{ dashboardData?.summary?.totalApplications || 5 }}</div>
+          <div class="metric-value">{{ dashboardData?.totalLoanCustomers ?? 0 }}/{{ dashboardData?.totalCustomers ?? 0 }}</div>
         </div>
         <div class="metric-icon text-warning">
           <i class="bi bi-cash-stack"></i>
         </div>
       </div>
-
       <!-- Card 3: Approved KYC -->
       <div class="metric-card">
         <div class="metric-info">
           <span class="metric-label">Approved KYC</span>
-          <div class="metric-value">0/{{ dashboardData?.summary?.totalApplications || 5 }}</div>
+          <div class="metric-value">{{ dashboardData?.totalApprovedKyc ?? 0 }}/{{ dashboardData?.totalCustomers ?? 0 }}</div>
         </div>
         <div class="metric-icon text-success">
           <i class="bi bi-check-square-fill"></i>
         </div>
       </div>
-
       <!-- Card 4: Total Loan Amount -->
       <div class="metric-card">
         <div class="metric-info">
           <span class="metric-label">Total Loan Amount</span>
-          <div class="metric-value">₹{{ (dashboardData?.summary?.totalAmountPaid || 0) | number:'1.2-2' }}</div>
+          <div class="metric-value">₹{{ (dashboardData?.totalLoanAmount || 0) | number:'1.2-2' }}</div>
         </div>
         <div class="metric-icon text-secondary">
           <i class="bi bi-bank2"></i>
         </div>
       </div>
-
       <!-- Card 5: Active Loans -->
       <div class="metric-card">
         <div class="metric-info">
           <span class="metric-label">Active Loans</span>
-          <div class="metric-value">{{ dashboardData?.summary?.activeLoans || 0 }}</div>
+          <div class="metric-value">{{ dashboardData?.totalActiveLoans ?? 0 }}</div>
         </div>
         <div class="metric-icon text-info">
           <i class="bi bi-file-earmark-text"></i>
         </div>
       </div>
-
       <!-- Card 6: Today's Collection -->
       <div class="metric-card">
         <div class="metric-info">
           <span class="metric-label">Today's Collection</span>
-          <div class="metric-value">₹0.00</div>
+          <div class="metric-value">₹{{ (dashboardData?.todaysCollection || 0) | number:'1.2-2' }}</div>
         </div>
         <div class="metric-icon text-success">
           <i class="bi bi-cash"></i>
         </div>
       </div>
-
       <!-- Card 7: Pending EMI -->
       <div class="metric-card">
         <div class="metric-info">
           <span class="metric-label">Pending EMI</span>
-          <div class="metric-value">0</div>
+          <div class="metric-value">{{ dashboardData?.pendingEmiCount ?? 0 }}</div>
         </div>
         <div class="metric-icon text-warning">
           <i class="bi bi-hourglass-split"></i>
         </div>
       </div>
-
       <!-- Card 8: Foreclosure Requests -->
       <div class="metric-card">
         <div class="metric-info">
           <span class="metric-label">Foreclosure Requests</span>
-          <div class="metric-value">0</div>
+          <div class="metric-value">{{ dashboardData?.foreClosureRequests ?? 0 }}</div>
         </div>
         <div class="metric-icon text-danger">
           <i class="bi bi-clipboard2-check"></i>
         </div>
       </div>
-
     </div>
-
   </div>
 </div>
-
 <!-- ========================================== -->
 <!-- 2. CUSTOMER LOAN DASHBOARD                 -->
 <!-- ========================================== -->
