@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Eligibilityservice } from '../services/eligibility';
+import { AuthService } from '../core/services/auth.service';
 
 @Component({
   imports: [CommonModule, FormsModule],
@@ -9,11 +10,17 @@ import { Eligibilityservice } from '../services/eligibility';
   templateUrl: './eligibility.html',
   styleUrl: './eligibility.scss',
 })
-export class Eligibility {
-  customerId: any = 1;
+export class Eligibility implements OnInit {
+  private eligibilityservice = inject(Eligibilityservice);
+  private authService = inject(AuthService);
+
+  customerId: any = this.authService.getUser()?.customerId || this.authService.getUser()?.userId || 1;
   eligibility: any;
 
-  constructor(private eligibilityservice: Eligibilityservice) {
+  ngOnInit(): void {
+    if (this.customerId) {
+      this.getEligibility();
+    }
   }
 
   getEligibility() {
