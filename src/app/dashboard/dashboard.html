@@ -1,0 +1,457 @@
+<div class="dashboard-page">
+
+  <!-- Header -->
+  <div class="dashboard-header">
+    <div>
+      <h2>Customer Dashboard</h2>
+      <p>Here's an overview of your loans and payments.</p>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-outline-primary btn-sm"
+      (click)="loadDashboard()"
+      [disabled]="isLoading">
+      {{ isLoading ? 'Loading...' : 'Refresh' }}
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="alert alert-info">
+    Loading dashboard data...
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <ng-container *ngIf="dashboardData && !isLoading">
+
+    <!-- Summary Cards -->
+    <div class="summary-grid" *ngIf="summary">
+
+      <div class="summary-card blue">
+        <div class="summary-icon">▤</div>
+        <div>
+          <p>Total Applications</p>
+          <h3>{{ summary.totalApplications ?? summary.TotalApplications }}</h3>
+          <small>Loan applications</small>
+        </div>
+      </div>
+
+      <div class="summary-card green">
+        <div class="summary-icon">▣</div>
+        <div>
+          <p>Active Loans</p>
+          <h3>{{ summary.activeLoans ?? summary.ActiveLoans }}</h3>
+          <small>Currently active</small>
+        </div>
+      </div>
+
+      <div class="summary-card orange">
+        <div class="summary-icon">▦</div>
+        <div>
+          <p>EMIs Paid</p>
+          <h3>{{ summary.emisPaid ?? summary.EmisPaid }}</h3>
+          <small>Successful installments</small>
+        </div>
+      </div>
+
+      <div class="summary-card purple">
+        <div class="summary-icon">₹</div>
+        <div>
+          <p>Upcoming EMI</p>
+          <h3>
+            {{ (summary.upcomingEmiAmount ?? summary.UpcomingEmiAmount)
+              | currency:'INR':'symbol':'1.0-2' }}
+          </h3>
+          <small>Next installment amount</small>
+        </div>
+      </div>
+
+      <div class="summary-card red">
+        <div class="summary-icon">₹</div>
+        <div>
+          <p>Total Amount Paid</p>
+          <h3>
+            {{ (summary.totalAmountPaid ?? summary.TotalAmountPaid)
+              | currency:'INR':'symbol':'1.0-2' }}
+          </h3>
+          <small>Successful payments</small>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Active Loan and EMI Summary -->
+    <div class="main-grid">
+
+      <!-- Active Loan Overview -->
+      <div class="dashboard-card">
+        <div class="card-heading">
+          <h5>Active Loan Overview</h5>
+          <span class="heading-count">{{ activeLoans.length }} Loans</span>
+        </div>
+
+        <div class="card-content">
+
+          <div *ngIf="activeLoans.length === 0" class="empty-state">
+            No active loans found.
+          </div>
+
+          <div
+            class="loan-block"
+            *ngFor="let loan of activeLoans">
+
+            <div class="loan-title-row">
+              <div>
+                <h6>{{ loan.loanType ?? loan.LoanType }}</h6>
+                <small>
+                  Account: {{ loan.loanAccountNo ?? loan.LoanAccountNo }}
+                </small>
+              </div>
+
+              <span class="status-badge">Active</span>
+            </div>
+
+            <div class="loan-amount">
+              <span>Loan Amount</span>
+              <h3>
+                {{ (loan.loanAmount ?? loan.LoanAmount)
+                  | currency:'INR':'symbol':'1.0-2' }}
+              </h3>
+            </div>
+
+            <div class="detail-grid">
+              <div>
+                <span>Outstanding Principal</span>
+                <strong>
+                  {{ (loan.outstandingPrincipal ?? loan.OutstandingPrincipal)
+                    | currency:'INR':'symbol':'1.0-2' }}
+                </strong>
+              </div>
+
+              <div>
+                <span>EMI Amount</span>
+                <strong>
+                  {{ (loan.emiAmount ?? loan.EmiAmount)
+                    | currency:'INR':'symbol':'1.0-2' }}
+                </strong>
+              </div>
+
+              <div>
+                <span>Interest Rate</span>
+                <strong>
+                  {{ loan.interestRate ?? loan.InterestRate }}% p.a.
+                </strong>
+              </div>
+
+              <div>
+                <span>Tenure</span>
+                <strong>
+                  {{ loan.tenureMonths ?? loan.TenureMonths }} Months
+                </strong>
+              </div>
+
+              <div>
+                <span>Disbursement Date</span>
+                <strong>
+                  {{ (loan.disbursementDate ?? loan.DisbursementDate)
+                    | date:'dd MMM yyyy' }}
+                </strong>
+              </div>
+
+              <div>
+                <span>Total Paid</span>
+                <strong>
+                  {{ (loan.totalPaidAmount ?? loan.TotalPaidAmount)
+                    | currency:'INR':'symbol':'1.0-2' }}
+                </strong>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- EMI Summary -->
+      <div class="dashboard-card">
+        <div class="card-heading">
+          <h5>EMI Summary</h5>
+        </div>
+
+        <div class="card-content" *ngIf="emiSummary">
+
+          <div class="emi-total">
+            <div class="emi-circle">
+              <div>
+                <strong>
+                  {{ emiSummary.paidEmis ?? emiSummary.PaidEmis }}
+                </strong>
+                <small>Paid EMIs</small>
+              </div>
+            </div>
+
+            <div class="emi-legend">
+              <div>
+                <span class="dot green-dot"></span>
+                Paid
+                <strong>{{ emiSummary.paidEmis ?? emiSummary.PaidEmis }}</strong>
+              </div>
+
+              <div>
+                <span class="dot blue-dot"></span>
+                Upcoming
+                <strong>{{ emiSummary.upcomingEmis ?? emiSummary.UpcomingEmis }}</strong>
+              </div>
+
+              <div>
+                <span class="dot gray-dot"></span>
+                Remaining
+                <strong>{{ emiSummary.remainingEmis ?? emiSummary.RemainingEmis }}</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="emi-progress">
+            <div class="progress-label">
+              <span>EMI Payment Progress</span>
+              <strong>
+                {{ emiSummary.totalEmis
+                  ? (((emiSummary.paidEmis ?? emiSummary.PaidEmis) /
+                      (emiSummary.totalEmis ?? emiSummary.TotalEmis)) * 100
+                    | number:'1.0-0')
+                  : 0 }}%
+              </strong>
+            </div>
+
+            <div class="progress">
+              <div
+                class="progress-bar bg-success"
+                [style.width.%]="emiSummary.totalEmis
+                  ? ((emiSummary.paidEmis ?? emiSummary.PaidEmis) /
+                     (emiSummary.totalEmis ?? emiSummary.TotalEmis)) * 100
+                  : 0">
+              </div>
+            </div>
+          </div>
+
+          <div class="emi-amount-row">
+            <span>Total EMI Amount</span>
+            <strong>
+              {{ (emiSummary.totalEmiAmount ?? emiSummary.TotalEmiAmount)
+                | currency:'INR':'symbol':'1.0-2' }}
+            </strong>
+          </div>
+
+          <div class="emi-amount-row">
+            <span>Paid Amount</span>
+            <strong class="text-success">
+              {{ (emiSummary.paidEmiAmount ?? emiSummary.PaidEmiAmount)
+                | currency:'INR':'symbol':'1.0-2' }}
+            </strong>
+          </div>
+
+          <div class="emi-amount-row">
+            <span>Remaining Amount</span>
+            <strong>
+              {{ (emiSummary.remainingEmiAmount ?? emiSummary.RemainingEmiAmount)
+                | currency:'INR':'symbol':'1.0-2' }}
+            </strong>
+          </div>
+
+          <div class="next-emi-box">
+            <div>
+              <small>Next EMI Date</small>
+              <strong>
+                {{
+                  (emiSummary.nextEmiDate ?? emiSummary.NextEmiDate)
+                    ? ((emiSummary.nextEmiDate ?? emiSummary.NextEmiDate)
+                      | date:'dd MMM yyyy')
+                    : 'Not scheduled'
+                }}
+              </strong>
+            </div>
+
+            <div>
+              <small>Next EMI Amount</small>
+              <strong>
+                {{
+                  (emiSummary.nextEmiAmount ?? emiSummary.NextEmiAmount) != null
+                    ? ((emiSummary.nextEmiAmount ?? emiSummary.NextEmiAmount)
+                      | currency:'INR':'symbol':'1.0-2')
+                    : 'N/A'
+                }}
+              </strong>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Applications -->
+    <div class="dashboard-card section-card">
+      <div class="card-heading">
+        <h5>Loan Applications</h5>
+        <span class="heading-count">{{ applications.length }} Applications</span>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table dashboard-table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Application ID</th>
+              <th>Loan Type</th>
+              <th>Loan Amount</th>
+              <th>Approved Amount</th>
+              <th>Status</th>
+              <th>Applied Date</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let application of applications">
+              <td>#{{ application.applicationId ?? application.ApplicationId }}</td>
+              <td>{{ application.loanType ?? application.LoanType }}</td>
+              <td>
+                {{ (application.loanAmount ?? application.LoanAmount)
+                  | currency:'INR':'symbol':'1.0-2' }}
+              </td>
+              <td>
+                {{ (application.approvedAmount ?? application.ApprovedAmount)
+                  | currency:'INR':'symbol':'1.0-2' }}
+              </td>
+              <td>
+                <span class="status-badge">
+                  {{ application.status ?? application.Status }}
+                </span>
+              </td>
+              <td>
+                {{ (application.appliedDate ?? application.AppliedDate)
+                  | date:'dd MMM yyyy' }}
+              </td>
+            </tr>
+
+            <tr *ngIf="applications.length === 0">
+              <td colspan="6" class="empty-state">
+                No loan applications found.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Recent Payments -->
+    <div class="dashboard-card section-card">
+      <div class="card-heading">
+        <h5>Recent Payments</h5>
+        <span class="heading-count">{{ recentPayments.length }} Payments</span>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table dashboard-table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Payment</th>
+              <th>Date</th>
+              <th>Amount</th>
+              <th>Payment Mode</th>
+              <th>Transaction Reference</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let payment of recentPayments">
+              <td>
+                <strong>{{ payment.paymentName ?? payment.PaymentName }}</strong>
+                <small class="d-block text-muted">
+                  ID: {{ payment.paymentId ?? payment.PaymentId }}
+                </small>
+              </td>
+
+              <td>
+                {{ (payment.paymentDate ?? payment.PaymentDate)
+                  | date:'dd MMM yyyy' }}
+              </td>
+
+              <td>
+                <strong>
+                  {{ (payment.paidAmount ?? payment.PaidAmount)
+                    | currency:'INR':'symbol':'1.0-2' }}
+                </strong>
+              </td>
+
+              <td>{{ payment.paymentMode ?? payment.PaymentMode }}</td>
+
+              <td>{{ payment.transactionReference ?? payment.TransactionReference }}</td>
+
+              <td>
+                <span class="payment-status">
+                  {{ payment.paymentStatus ?? payment.PaymentStatus }}
+                </span>
+              </td>
+            </tr>
+
+            <tr *ngIf="recentPayments.length === 0">
+              <td colspan="6" class="empty-state">
+                No recent payments found.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Documents -->
+    <div class="dashboard-card section-card">
+      <div class="card-heading">
+        <h5>Documents</h5>
+        <span class="heading-count">{{ documents.length }} Documents</span>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table dashboard-table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Document ID</th>
+              <th>Deal ID</th>
+              <th>Document Type</th>
+              <th>Loan Amount</th>
+              <th>Created Date</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let document of documents">
+              <td>#{{ document.documentId ?? document.DocumentId }}</td>
+              <td>{{ document.dealId ?? document.DealId }}</td>
+              <td>{{ document.documentType ?? document.DocumentType }}</td>
+              <td>
+                {{ (document.loanAmount ?? document.LoanAmount)
+                  | currency:'INR':'symbol':'1.0-2' }}
+              </td>
+              <td>
+                {{ (document.createdDate ?? document.CreatedDate)
+                  | date:'dd MMM yyyy' }}
+              </td>
+            </tr>
+
+            <tr *ngIf="documents.length === 0">
+              <td colspan="5" class="empty-state">
+                No documents found.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </ng-container>
+
+</div>
+

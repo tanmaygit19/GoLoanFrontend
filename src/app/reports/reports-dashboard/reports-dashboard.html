@@ -1,0 +1,162 @@
+<div class="reports-page">
+
+  <!-- Page Header -->
+
+  <div class="page-header">
+    <div>
+      <h2>Reports Dashboard</h2>
+      <p>Loan Origination System — Reports Overview</p>
+    </div>
+
+
+<button class="btn btn-outline-primary" (click)="loadReportsDashboard()">
+  <i class="bi bi-arrow-clockwise"></i> Refresh
+</button>
+
+
+  </div>
+
+  <!-- Loading -->
+
+  <div class="alert alert-info" *ngIf="isLoading">
+    Loading reports dashboard...
+  </div>
+
+  <!-- Error -->
+
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    {{ errorMessage }}
+    <button class="btn btn-sm btn-outline-danger ms-3" (click)="loadReportsDashboard()">
+      Retry
+    </button>
+  </div>
+
+<ng-container *ngIf="!isLoading && dashboardData">
+
+
+<!-- Summary Cards -->
+<div class="summary-grid">
+
+  <div class="summary-card total">
+    <div class="summary-icon">
+      <i class="bi bi-file-earmark-text"></i>
+    </div>
+    <div>
+      <p>Total Applications</p>
+      <h3>{{ summary?.totalApplications ?? 0 | number }}</h3>
+    </div>
+  </div>
+
+  <div class="summary-card approved">
+    <div class="summary-icon">
+      <i class="bi bi-check-circle"></i>
+    </div>
+    <div>
+      <p>Applications Approved</p>
+      <h3>{{ summary?.applicationsApproved ?? 0 | number }}</h3>
+    </div>
+  </div>
+
+  <div class="summary-card rejected">
+    <div class="summary-icon">
+      <i class="bi bi-x-circle"></i>
+    </div>
+    <div>
+      <p>Applications Rejected</p>
+      <h3>{{ summary?.applicationsRejected ?? 0 | number }}</h3>
+    </div>
+  </div>
+
+  <div class="summary-card pending">
+    <div class="summary-icon">
+      <i class="bi bi-clock-history"></i>
+    </div>
+    <div>
+      <p>Applications Pending</p>
+      <h3>{{ summary?.applicationsPending ?? 0 | number }}</h3>
+    </div>
+  </div>
+
+</div>
+
+<!-- Application Funnel -->
+<div class="report-card funnel-card">
+  <div class="card-heading">
+    <div>
+      <h5>Application Funnel</h5>
+      <p>Application distribution by stage</p>
+    </div>
+  </div>
+
+  <div class="funnel-content">
+    <div class="funnel-visual">
+      <div
+        class="funnel-stage"
+        *ngFor="let item of applicationFunnel; let i = index"
+        [style.width.%]="applicationFunnel.length ? 100 - (i * 15) : 100"
+        [class.stage-0]="i === 0"
+        [class.stage-1]="i === 1"
+        [class.stage-2]="i === 2"
+        [class.stage-3]="i === 3"
+        [class.stage-4]="i === 4">
+      </div>
+    </div>
+
+    <div class="funnel-legend">
+      <div class="funnel-item" *ngFor="let item of applicationFunnel">
+        <span class="legend-label">{{ item.stage }}</span>
+        <strong>{{ item.count }}</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Individual Reports -->
+<div class="section-heading">
+  <div>
+    <h4>Detailed Reports</h4>
+    <p>Explore individual loan reports</p>
+  </div>
+</div>
+
+<div class="report-links-grid">
+
+  <a routerLink="/reports/cibil-score-range" class="report-link-card">
+    <div class="report-link-icon cibil-icon">
+      <i class="bi bi-speedometer2"></i>
+    </div>
+    <div class="report-link-content">
+      <h5>CIBIL Score Range Report</h5>
+      <p>View applicants and approval percentages across CIBIL score ranges.</p>
+      <span class="view-report">View Report <i class="bi bi-arrow-right"></i></span>
+    </div>
+  </a>
+
+  <a routerLink="/reports/score-card-wise" class="report-link-card">
+    <div class="report-link-icon score-icon">
+      <i class="bi bi-clipboard-data"></i>
+    </div>
+    <div class="report-link-content">
+      <h5>Score Card Wise Report</h5>
+      <p>Analyze applicants by score card, including approvals, rejections, and pending applications.</p>
+      <span class="view-report">View Report <i class="bi bi-arrow-right"></i></span>
+    </div>
+  </a>
+
+  <a routerLink="/reports/product-wise" class="report-link-card">
+    <div class="report-link-icon product-icon">
+      <i class="bi bi-pie-chart"></i>
+    </div>
+    <div class="report-link-content">
+      <h5>Product Wise Report</h5>
+      <p>Compare loan products by applications, approvals, and disbursements.</p>
+      <span class="view-report">View Report <i class="bi bi-arrow-right"></i></span>
+    </div>
+  </a>
+
+</div>
+
+
+  </ng-container>
+
+</div>
