@@ -1,12 +1,12 @@
 <div *ngIf="isOfficer" class="dashboard-card-wrapper">
   <div class="dashboard-main-card">
-    
+
     <h3 class="dashboard-heading">Loan Management Dashboard</h3>
     <!-- 8 KPI Cards Grid (4x2) -->
     <div class="officer-grid">
-      
+
       <!-- Card 1: Total Customers -->
-      <div class="metric-card">
+      <div class="metric-card" routerLink="/module/customers" style="cursor: pointer;">
         <div class="metric-info">
           <span class="metric-label">Total Customers</span>
           <div class="metric-value">{{ dashboardData?.totalCustomers ?? 0 }}</div>
@@ -19,17 +19,19 @@
       <div class="metric-card">
         <div class="metric-info">
           <span class="metric-label">Loan Customers</span>
-          <div class="metric-value">{{ dashboardData?.totalLoanCustomers ?? 0 }}/{{ dashboardData?.totalCustomers ?? 0 }}</div>
+          <div class="metric-value">{{ dashboardData?.totalLoanCustomers ?? 0 }}/{{ dashboardData?.totalCustomers ?? 0
+            }}</div>
         </div>
         <div class="metric-icon text-warning">
           <i class="bi bi-cash-stack"></i>
         </div>
       </div>
       <!-- Card 3: Approved KYC -->
-      <div class="metric-card">
+      <div class="metric-card" routerLink="/module/kyc" style="cursor: pointer;">
         <div class="metric-info">
           <span class="metric-label">Approved KYC</span>
-          <div class="metric-value">{{ dashboardData?.totalApprovedKyc ?? 0 }}/{{ dashboardData?.totalCustomers ?? 0 }}</div>
+          <div class="metric-value">{{ dashboardData?.totalApprovedKyc ?? 0 }}/{{ dashboardData?.totalCustomers ?? 0 }}
+          </div>
         </div>
         <div class="metric-icon text-success">
           <i class="bi bi-check-square-fill"></i>
@@ -46,7 +48,7 @@
         </div>
       </div>
       <!-- Card 5: Active Loans -->
-      <div class="metric-card">
+      <div class="metric-card" routerLink="/module/accounts" style="cursor: pointer;">
         <div class="metric-info">
           <span class="metric-label">Active Loans</span>
           <div class="metric-value">{{ dashboardData?.totalActiveLoans ?? 0 }}</div>
@@ -76,7 +78,7 @@
         </div>
       </div>
       <!-- Card 8: Foreclosure Requests -->
-      <div class="metric-card">
+      <div class="metric-card" routerLink="/module/closure-requests" style="cursor: pointer;">
         <div class="metric-info">
           <span class="metric-label">Foreclosure Requests</span>
           <div class="metric-value">{{ dashboardData?.foreClosureRequests ?? 0 }}</div>
@@ -88,16 +90,17 @@
     </div>
   </div>
 </div>
+
 <!-- ========================================== -->
 <!-- 2. CUSTOMER LOAN DASHBOARD                 -->
 <!-- ========================================== -->
 <div *ngIf="!isOfficer" class="dashboard-card-wrapper">
   <div class="dashboard-main-card">
-    
+
     <h3 class="dashboard-heading">Customer Loan Dashboard</h3>
 
     <div class="customer-row">
-      
+
       <!-- Mini Card: Total Active LoanAccounts -->
       <div class="metric-card mini-loan-card">
         <div class="metric-info">
@@ -123,7 +126,8 @@
     </div>
 
     <!-- Empty Feedback -->
-    <div class="empty-loan-text mt-4 text-center text-muted" *ngIf="!dashboardData?.activeLoans || dashboardData?.activeLoans?.length === 0">
+    <div class="empty-loan-text mt-4 text-center text-muted"
+      *ngIf="!dashboardData?.activeLoans || dashboardData?.activeLoans?.length === 0">
       No Loan Account Found
     </div>
 

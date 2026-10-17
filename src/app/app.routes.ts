@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-// Foreclosure / payments (from HEAD)
+// Foreclosure / payments
 import { LoanOfficerClosure } from './loan-officer-closure/loan-officer-closure';
 import { LoanOfficerforeclosure } from './loan-officerforeclosure/loan-officerforeclosure';
 import { ForeclosurePayment } from './foreclosure-payment/foreclosure-payment';
@@ -62,37 +62,7 @@ export const routes: Routes = [
     component: TwoFactor
   },
 
-  // Foreclosure / EMI / payment routes
-  {
-    path: 'foreclosure',
-    component: LoanOfficerforeclosure
-  },
-  {
-    path: 'closure',
-    component: LoanOfficerClosure
-  },
-  {
-    path: 'fore',
-    component: Foreclosure
-  },
-  {
-    path: 'foreclosure-payment/:requestId',
-    component: ForeclosurePayment
-  },
-  {
-    path: 'emi-pay/:emiScheduleId',
-    component: EmiPay
-  },
-  {
-    path: 'btn',
-    component: Paybtn
-  },
-  {
-    path: 'payment',
-    component: PaymentHistory
-  },
-
-  // Protected application layout (Sidebar + Header)
+  // Protected application layout (Sidebar + Topbar)
   {
     path: '',
     component: MainLayout,
@@ -104,7 +74,7 @@ export const routes: Routes = [
       { path: 'module/customers', component: OfficerCustomers },
       { path: 'module/kyc', component: OfficerKyc },
 
-      // Teammate features (matching sidebar routerLinks)
+      // Customer services
       { path: 'module/cibil', component: Cibil },
       { path: 'module/scorecards', component: Scorecard },
       { path: 'module/eligibility', component: Eligibility },
@@ -114,10 +84,26 @@ export const routes: Routes = [
       { path: 'module/track-status', component: Pendingdeals },
       { path: 'module/letters', component: Sanctionletter },
       { path: 'module/accounts', component: Loanaccount },
+      { path: 'module/loanaccount-details/:id', component: LoanaccountDetails },
       { path: 'module/emi-schedule', component: Emischedule },
       { path: 'module/notifications', component: Notification },
 
-      // Direct / alternative URLs
+      // Connected Foreclosure & Closure Routes
+      { path: 'module/foreclosure-request', component: Foreclosure },
+      { path: 'module/closure-requests', component: LoanOfficerClosure },
+      { path: 'module/foreclosure', component: LoanOfficerforeclosure },
+
+      // Connected Payment Routes
+      { path: 'module/payment-history', component: PaymentHistory },
+      { path: 'module/make-payments', component: Emischedule },
+      { path: 'module/emi-pay/:emiScheduleId', component: EmiPay },
+      { path: 'module/foreclosure-payment/:requestId', component: ForeclosurePayment },
+
+      // Direct / alias URLs inside layout
+      { path: 'foreclosure', component: LoanOfficerforeclosure },
+      { path: 'closure', component: LoanOfficerClosure },
+      { path: 'fore', component: Foreclosure },
+      { path: 'payment', component: PaymentHistory },
       { path: 'cibil', component: Cibil },
       { path: 'scorecard', component: Scorecard },
       { path: 'eligibility', component: Eligibility },
@@ -130,8 +116,13 @@ export const routes: Routes = [
       { path: 'emischedule', component: Emischedule },
       { path: 'notification', component: Notification },
 
-      // Fallback for placeholders (must stay last)
+      // Fallback for modules not yet created (must stay last)
       { path: 'module/:id', component: ModulePage }
     ]
-  }
+  },
+
+  // Fallback direct payment links if opened outside layout
+  { path: 'foreclosure-payment/:requestId', component: ForeclosurePayment },
+  { path: 'emi-pay/:emiScheduleId', component: EmiPay },
+  { path: 'btn', component: Paybtn }
 ];
