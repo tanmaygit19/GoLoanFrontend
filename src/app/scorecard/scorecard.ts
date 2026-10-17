@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Scorecardservice } from '../services/scorecard';
+import { AuthService } from '../core/services/auth.service';
 
 @Component({
   imports: [CommonModule, FormsModule],
@@ -9,11 +10,17 @@ import { Scorecardservice } from '../services/scorecard';
   templateUrl: './scorecard.html',
   styleUrl: './scorecard.scss',
 })
-export class Scorecard {
-  customerId: any = 1;
+export class Scorecard implements OnInit {
+  private scorecardservice = inject(Scorecardservice);
+  private authService = inject(AuthService);
+
+  customerId: any = this.authService.getUser()?.customerId || this.authService.getUser()?.userId || 1;
   scoreCard: any;
 
-  constructor(private scorecardservice: Scorecardservice) {
+  ngOnInit(): void {
+    if (this.customerId) {
+      this.getScoreCard();
+    }
   }
 
   getScoreCard() {

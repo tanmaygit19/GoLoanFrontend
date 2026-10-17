@@ -1,17 +1,17 @@
-
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoanService {
-  private apiurl = 'https://localhost:44348/api/LoanDealCreation/ApplyLoan';
-  private accounturl = 'https://localhost:44348/api/LoanAccount';
-  private sanctionurl = 'https://localhost:44348/api/SanctionLetter';
-  private disbursementurl = 'https://localhost:44348/api/Disbursement';
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  private apiurl = `${environment.apiUrl}/LoanDealCreation/ApplyLoan`;
+  private accounturl = `${environment.apiUrl}/LoanAccount`;
+  private sanctionurl = `${environment.apiUrl}/SanctionLetter`;
+  private disbursementurl = `${environment.apiUrl}/Disbursement`;
 
   addloan(data: any) {
     return this.http.post(this.apiurl, data);
@@ -22,86 +22,86 @@ export class LoanService {
   }
 
   getbyid(id: number) {
-    return this.http.get(this.accounturl + '/Get/' + id);
+    return this.http.get(`${this.accounturl}/Get/${id}`);
   }
 
   fetchloansbystatus(status: string) {
     return this.http.get(
-      'https://localhost:44348/api/LoanDealCreation/FetchLoansByStatus?status=' + status
+      `${environment.apiUrl}/LoanDealCreation/FetchLoansByStatus?status=${status}`
     );
   }
 
   approveloan(data: any) {
     return this.http.put(
-      'https://localhost:44348/api/LoanDealCreation/ApproveLoan',
+      `${environment.apiUrl}/LoanDealCreation/ApproveLoan`,
       data
     );
   }
 
   rejectloan(data: any) {
     return this.http.put(
-      'https://localhost:44348/api/LoanDealCreation/RejectLoan',
+      `${environment.apiUrl}/LoanDealCreation/RejectLoan`,
       data
     );
   }
 
   generatesanction(loandealid: number) {
     return this.http.post(
-      this.sanctionurl + '/GenerateSanction?loandealid=' + loandealid,
+      `${this.sanctionurl}/GenerateSanction?loandealid=${loandealid}`,
       null
     );
   }
 
   fetchsanction() {
-    return this.http.get(this.sanctionurl + '/FetchSanction');
+    return this.http.get(`${this.sanctionurl}/FetchSanction`);
   }
 
   fetchsanctionbyid(sanctionid: number) {
     return this.http.get(
-      this.sanctionurl + '/FetchSanctionById?sanctionid=' + sanctionid
+      `${this.sanctionurl}/FetchSanctionById?sanctionid=${sanctionid}`
     );
   }
 
   downloadsanction(sanctionid: number) {
     return this.http.get(
-      this.sanctionurl + '/DownloadSanction/' + sanctionid,
+      `${this.sanctionurl}/DownloadSanction/${sanctionid}`,
       { responseType: 'blob' }
     );
   }
 
   adddisbursement(data: any) {
     return this.http.post(
-      this.disbursementurl + '/AddDisbursement',
+      `${this.disbursementurl}/AddDisbursement`,
       data
     );
   }
 
   fetchdisbursement() {
-    return this.http.get(this.disbursementurl + '/FetchDisbursement');
+    return this.http.get(`${this.disbursementurl}/FetchDisbursement`);
   }
 
   fetchdisbursementbyid(id: number) {
     return this.http.get(
-      this.disbursementurl + '/FetchDisbursementById?id=' + id
+      `${this.disbursementurl}/FetchDisbursementById?id=${id}`
     );
   }
 
   fetchdisbursementsbystatus(status: string) {
     return this.http.get(
-      this.disbursementurl + '/FetchDisbursementsByStatus?status=' + status
+      `${this.disbursementurl}/FetchDisbursementsByStatus?status=${status}`
     );
   }
 
   approvedisbursement(id: number) {
     return this.http.put(
-      this.disbursementurl + '/ApproveDisbursement?disbursementid=' + id,
+      `${this.disbursementurl}/ApproveDisbursement?disbursementid=${id}`,
       null
     );
   }
 
   rejectdisbursement(id: number) {
     return this.http.put(
-      this.disbursementurl + '/RejectDisbursement?disbursementid=' + id,
+      `${this.disbursementurl}/RejectDisbursement?disbursementid=${id}`,
       null
     );
   }

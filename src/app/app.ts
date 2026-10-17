@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
@@ -17,6 +17,7 @@ export class App {
   title = 'goloan-angular';
 }
   isModulePage = false;
+  protected readonly title = signal('GoLoan');
 
   constructor(private router: Router) {
     this.router.events.subscribe(event => {
@@ -25,5 +26,4 @@ export class App {
       }
     });
   }
-  protected readonly title = signal('GoLoan');
 }

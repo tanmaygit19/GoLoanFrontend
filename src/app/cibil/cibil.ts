@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Cibilservice } from '../services/cibil';
+import { AuthService } from '../core/services/auth.service';
 
 @Component({
   imports: [CommonModule, FormsModule],
@@ -9,11 +10,17 @@ import { Cibilservice } from '../services/cibil';
   templateUrl: './cibil.html',
   styleUrl: './cibil.scss',
 })
-export class Cibil {
-  customerId: any = 1;
+export class Cibil implements OnInit {
+  private cibilservice = inject(Cibilservice);
+  private authService = inject(AuthService);
+
+  customerId: any = this.authService.getUser()?.customerId || this.authService.getUser()?.userId || 1;
   cibilReport: any;
 
-  constructor(private cibilservice: Cibilservice) {
+  ngOnInit(): void {
+    if (this.customerId) {
+      this.getCibilReport();
+    }
   }
 
   getCibilReport() {
