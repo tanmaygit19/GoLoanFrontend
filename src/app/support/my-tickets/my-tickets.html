@@ -1,0 +1,112 @@
+<div class="support-page">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">My Support Tickets</h2>
+
+    <a routerLink="/support/create-ticket" class="btn btn-primary">
+      Raise New Ticket
+    </a>
+  </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+
+      <!-- Loading Message -->
+      <div *ngIf="isLoading" class="alert alert-info">
+        Loading your tickets...
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <!-- No Tickets Message -->
+      <div
+        *ngIf="!isLoading && !errorMessage && tickets.length === 0"
+        class="alert alert-info"
+      >
+        You haven't raised any support tickets yet.
+      </div>
+
+      <!-- Tickets Table -->
+      <div
+        *ngIf="!isLoading && tickets.length > 0"
+        class="table-responsive"
+      >
+        <table class="table table-bordered table-striped align-middle mb-0">
+
+          <thead class="table-dark">
+            <tr>
+              <th>Ticket No</th>
+              <th>Subject</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Officer Response</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let ticket of tickets">
+
+              <!-- Ticket ID -->
+              <td>
+                {{ ticket.ticketId ?? ticket.TicketId }}
+              </td>
+
+              <!-- Subject -->
+              <td>
+                {{ ticket.subject ?? ticket.Subject }}
+              </td>
+
+              <!-- Status -->
+              <td>
+                <span
+                  class="badge"
+                  [ngClass]="getStatusClass(ticket.status ?? ticket.Status)"
+                >
+                  {{ ticket.status ?? ticket.Status }}
+                </span>
+              </td>
+
+              <!-- Created Date -->
+              <td>
+                {{
+                  (ticket.createdDate ?? ticket.CreatedDate)
+                    | date: 'dd-MM-yyyy'
+                }}
+              </td>
+
+              <!-- Officer Response -->
+              <td>
+                {{
+                  (ticket.officerResponse ?? ticket.OfficerResponse)
+                    || 'Awaiting response'
+                }}
+              </td>
+
+              <!-- View Details Button -->
+              <td>
+                <a
+                  [routerLink]="[
+                    '/support/ticket-details',
+                    ticket.ticketId ?? ticket.TicketId
+                  ]"
+                  class="btn btn-sm btn-outline-primary"
+                >
+                  View Details
+                </a>
+              </td>
+
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+

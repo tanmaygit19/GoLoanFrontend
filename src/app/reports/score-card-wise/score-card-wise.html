@@ -1,0 +1,170 @@
+<div class="score-report-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h2>Score Card Wise Report</h2>
+      <p>Analyze applications, approvals, rejections, and pending applications by score card.</p>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-outline-primary refresh-btn"
+      (click)="loadReport()"
+      [disabled]="isLoading">
+      <i class="bi bi-arrow-clockwise"></i> Refresh
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-card">
+    <div class="filter-field">
+      <label for="fromDate">From Date</label>
+      <input
+        id="fromDate"
+        type="date"
+        class="form-control"
+        [(ngModel)]="fromDate"
+        [max]="toDate"
+        [disabled]="isLoading">
+    </div>
+
+    <div class="filter-field">
+      <label for="toDate">To Date</label>
+      <input
+        id="toDate"
+        type="date"
+        class="form-control"
+        [(ngModel)]="toDate"
+        [min]="fromDate"
+        [disabled]="isLoading">
+    </div>
+
+    <div class="filter-field search-field">
+      <label for="searchTerm">Search Score Card</label>
+      <input
+        id="searchTerm"
+        type="text"
+        class="form-control"
+        placeholder="Search score cards..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="applyFilters()">
+    </div>
+
+    <div class="filter-actions">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="loadReport()"
+        [disabled]="isLoading">
+        <i class="bi bi-search"></i> Search
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="exportReport()"
+        [disabled]="filteredData.length === 0 || isLoading">
+        <i class="bi bi-download"></i> Export
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="alert alert-info" *ngIf="isLoading">
+    <span class="spinner-border spinner-border-sm me-2"></span>
+    Loading Score Card Wise Report...
+  </div>
+
+  <!-- Error -->
+  <div class="alert alert-danger" *ngIf="!isLoading && errorMessage">
+    {{ errorMessage }}
+
+    <button
+      type="button"
+      class="btn btn-sm btn-outline-danger ms-2"
+      (click)="loadReport()">
+      Retry
+    </button>
+  </div>
+
+  <!-- Report Table -->
+  <div class="report-card" *ngIf="!isLoading && !errorMessage">
+
+    <div class="card-heading">
+      <div>
+        <h4>Score Card Wise Report</h4>
+        <p>Application status and approval percentage for each score card.</p>
+      </div>
+
+      <span class="record-count">
+        {{ filteredData.length }}
+        {{ filteredData.length === 1 ? 'score card' : 'score cards' }}
+      </span>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table report-table align-middle mb-0">
+
+        <thead>
+          <tr>
+            <th>Score Card</th>
+            <th class="text-end">Applicants</th>
+            <th class="text-end">Approved</th>
+            <th class="text-end">Rejected</th>
+            <th class="text-end">Pending</th>
+            <th class="text-end">Approval %</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let item of filteredData">
+            <td>{{ item.scoreCard }}</td>
+
+            <td class="text-end">
+              {{ item.applicants | number }}
+            </td>
+
+            <td class="text-end approved-value">
+              {{ item.approved | number }}
+            </td>
+
+            <td class="text-end rejected-value">
+              {{ item.rejected | number }}
+            </td>
+
+            <td class="text-end pending-value">
+              {{ item.pending | number }}
+            </td>
+
+            <td class="text-end">
+              {{ item.approvalPercentage | number:'1.0-2' }}%
+            </td>
+          </tr>
+
+          <tr *ngIf="filteredData.length === 0">
+            <td colspan="6" class="empty-state">
+              No score card records found.
+            </td>
+          </tr>
+        </tbody>
+
+        <tfoot *ngIf="filteredData.length > 0">
+          <tr>
+            <th>Total</th>
+            <th class="text-end">{{ totalApplicants | number }}</th>
+            <th class="text-end">{{ totalApproved | number }}</th>
+            <th class="text-end">{{ totalRejected | number }}</th>
+            <th class="text-end">{{ totalPending | number }}</th>
+            <th class="text-end">
+              {{ overallApprovalPercentage | number:'1.0-2' }}%
+            </th>
+          </tr>
+        </tfoot>
+
+      </table>
+    </div>
+  </div>
+
+</div>
+

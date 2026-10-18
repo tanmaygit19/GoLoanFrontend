@@ -1,18 +1,22 @@
-
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LoanService } from '../loan';
+import { AuthService } from '../core/services/auth.service';
 
 @Component({
   selector: 'app-applyloan',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './applyloan.html',
   styleUrl: './applyloan.scss'
 })
 export class Applyloan {
+  private loan = inject(LoanService);
+  private authService = inject(AuthService);
+
   data: any = {
-    customerId: 26,
+    customerId: this.authService.getUser()?.customerId || this.authService.getUser()?.userId || 1,
     loanType: 'Personal Loan',
     loanAmount: 250000,
     tenureMonths: 60,
@@ -23,8 +27,6 @@ export class Applyloan {
   };
 
   message = '';
-
-  constructor(private loan: LoanService) {}
 
   addloan() {
     this.loan.addloan(this.data).subscribe({
