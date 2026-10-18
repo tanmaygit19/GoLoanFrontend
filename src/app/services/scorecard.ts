@@ -1,16 +1,20 @@
+
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class Scorecardservice {
-    http = inject(HttpClient);
+  http = inject(HttpClient);
 
-    url = "https://localhost:44348/api/ScoreCard";
+  url = 'https://localhost:44348/api/ScoreCard';
 
-    getScoreCard(id: any)
-    {
-        return this.http.get<any>(`${this.url}/${id}`);
-    }
+  getScoreCard(id: number) {
+    return this.http.get<any>(`${this.url}/${id}`);
+  }
+
+  getCustomers() {
+    return this.http.get<any[]>(`${this.url}/Customers`);
+  }
 }

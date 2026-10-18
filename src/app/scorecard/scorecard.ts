@@ -1,30 +1,43 @@
-import { Component } from '@angular/core';
+
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Scorecardservice } from '../services/scorecard';
 
 @Component({
-  imports: [CommonModule, FormsModule],
   selector: 'app-scorecard',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './scorecard.html',
-  styleUrl: './scorecard.scss',
+  styleUrl: './scorecard.scss'
 })
-export class Scorecard {
-  customerId: any = 1;
-  scoreCard: any;
+export class Scorecard implements OnInit {
 
-  constructor(private scorecardservice: Scorecardservice) {
+  scoreCardService = inject(Scorecardservice);
+  router = inject(Router);
+  cdr = inject(ChangeDetectorRef);
+
+  customers: any[] = [];
+
+  ngOnInit() {
+    this.getCustomers();
   }
 
-  getScoreCard() {
-    this.scorecardservice.getScoreCard(this.customerId).subscribe({
-      next: res => {
-        console.log(res);
-        this.scoreCard = res;
+  getCustomers() {
+    this.scoreCardService.getCustomers().subscribe({
+      next: (data: any[]) => {
+        console.log('Customers received:', data);
+
+        this.customers = data;
+        this.cdr.detectChanges();
       },
-      error: err => {
-        console.log(err);
+      error: (error: any) => {
+        console.error('Customer API error:', error);
       }
     });
+  }
+
+  viewScoreCard(id: number) {
+    this.router.navigate(['/loan-scorecard', id]);
   }
 }

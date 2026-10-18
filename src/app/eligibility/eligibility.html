@@ -1,22 +1,181 @@
-<div class="container">
-  <h2>Eligibility Check</h2>
-  <hr>
 
-  <label>Customer ID:</label>
-  <input type="number" [(ngModel)]="customerId">
+<div class="eligibility-page">
 
-  <button (click)="getEligibility()">Check Eligibility</button>
+  <!-- SCREEN 1: Loan Application Form -->
+  <div *ngIf="!showResult" class="customer-form">
 
-  <div *ngIf="eligibility">
-    <hr>
-    <p>Eligibility ID: {{ eligibility.eligibilityId }}</p>
-    <p>Customer ID: {{ eligibility.customerId }}</p>
-    <p>CIBIL Score: {{ eligibility.cibilScore }}</p>
-    <p>Eligibility Status: {{ eligibility.isEligible }}</p>
-    <p>Eligible Loan Amount: {{ eligibility.loanAmount }}</p>
+    <h3>Check Eligibility & Apply for a Loan</h3>
 
-    <p *ngIf="eligibility.rejectionReason">
-      Rejection Reason: {{ eligibility.rejectionReason }}
+    <div class="form-group">
+      <label for="customerId">Customer ID</label>
+      <input
+        id="customerId"
+        type="number"
+        [(ngModel)]="customerId"
+        min="1">
+    </div>
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="getEligibility()">
+      Check Eligibility
+    </button>
+
+    <div *ngIf="eligibility">
+
+      <div class="form-group">
+        <label for="requestedAmount">Requested Loan Amount (₹)</label>
+        <input
+          id="requestedAmount"
+          type="number"
+          [(ngModel)]="requestedLoanAmount"
+          (ngModelChange)="calculateEMI()"
+          min="1"
+          [max]="eligibility.loanAmount">
+
+        <small>
+          Maximum:
+          {{ eligibility.loanAmount | currency:'INR':'symbol':'1.2-2' }}
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="loanTenure">Loan Tenure</label>
+        <select
+          id="loanTenure"
+          [(ngModel)]="loanTenureMonths"
+          (ngModelChange)="changeTenure()">
+          <option [ngValue]="36">36 months - 11.5%</option>
+          <option [ngValue]="60">60 months - 11%</option>
+          <option [ngValue]="72">72 months - 11%</option>
+          <option [ngValue]="120">120 months - 11%</option>
+        </select>
+      </div>
+
+      <div class="emi-box">
+        <span>Annual Interest Rate</span>
+        <strong>{{ interestRate }}%</strong>
+
+        <span>Estimated Monthly EMI</span>
+        <strong>
+          {{ emi | currency:'INR':'symbol':'1.2-2' }}
+        </strong>
+      </div>
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="applyForLoan()"
+        [disabled]="requestedLoanAmount <= 0 ||
+                    requestedLoanAmount > eligibility.loanAmount">
+        Apply for Loan
+      </button>
+
+    </div>
+
+    <p *ngIf="message" class="message">
+      {{ message }}
     </p>
   </div>
+
+  <!-- SCREEN 2: Eligibility Result -->
+  <div *ngIf="showResult && eligibility" class="result-card">
+
+    <h2 class="result-title">
+      <span class="title-icon">✓</span>
+      Eligibility Result
+    </h2>
+
+    <div class="details-grid">
+
+      <div class="detail-box">
+        <label>Customer Name</label>
+        <p>{{ eligibility.customerName || 'Customer' }}</p>
+      </div>
+
+      <div class="detail-box">
+        <label>PAN Number</label>
+        <p>{{ eligibility.panNumber || 'Not available' }}</p>
+      </div>
+
+      <div class="detail-box">
+        <label>Monthly Income</label>
+        <p>
+          {{ eligibility.monthlyIncome != null
+            ? (eligibility.monthlyIncome | currency:'INR':'symbol':'1.2-2')
+            : 'Not available' }}
+        </p>
+      </div>
+
+      <div class="detail-box">
+        <label>CIBIL Score</label>
+        <p>{{ eligibility.cibilScore }}</p>
+      </div>
+
+      <div class="detail-box">
+        <label>Loan Amount</label>
+        <p>
+          {{ eligibility.loanAmount | currency:'INR':'symbol':'1.2-2' }}
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Eligibility Status -->
+    <div
+      class="status-panel"
+      [ngClass]="{
+        'approved': eligibility.isEligible === 'Approved' ||
+                    eligibility.isEligible === 'Auto Approved',
+        'manual-review': eligibility.isEligible === 'Manual Review',
+        'rejected': eligibility.isEligible === 'Rejected' ||
+                    eligibility.isEligible === 'Auto Rejected'
+      }">
+
+      <h2>
+        <span class="status-icon">
+          {{ eligibility.isEligible === 'Approved' ||
+             eligibility.isEligible === 'Auto Approved' ? '✓' :
+             eligibility.isEligible === 'Manual Review' ? '!' : '×' }}
+        </span>
+
+        {{ eligibility.isEligible === 'Auto Approved' ? 'Approved' :
+           eligibility.isEligible === 'Auto Rejected' ? 'Rejected' :
+           eligibility.isEligible }}
+      </h2>
+
+      <p *ngIf="eligibility.isEligible === 'Approved' ||
+                eligibility.isEligible === 'Auto Approved'">
+        Congratulations! Your loan eligibility is approved.
+      </p>
+
+      <p *ngIf="eligibility.isEligible === 'Manual Review'">
+        Your application is waiting for officer review.
+      </p>
+
+      <p *ngIf="eligibility.isEligible === 'Rejected' ||
+                eligibility.isEligible === 'Auto Rejected'">
+        Your application was rejected.
+      </p>
+
+      <p *ngIf="eligibility.rejectionReason">
+        Reason: {{ eligibility.rejectionReason }}
+      </p>
+
+    </div>
+
+    <p *ngIf="message" class="message">
+      {{ message }}
+    </p>
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="backToForm()">
+      Back
+    </button>
+
+  </div>
+
 </div>

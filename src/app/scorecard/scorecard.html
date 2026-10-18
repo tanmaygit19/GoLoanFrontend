@@ -1,17 +1,41 @@
-<div class="container">
-  <h2>Score Cards</h2>
-  <hr>
 
-  <label>Customer ID:</label>
-  <input type="number" [(ngModel)]="customerId">
+<div class="customer-container">
+  <h2>Customer List</h2>
 
-  <button (click)="getScoreCard()">Get Score Card</button>
+  <div class="table-responsive">
+    <table class="customer-table">
+      <thead>
+        <tr>
+          <th>Customer Id</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Income</th>
+          <th>Action</th>
+        </tr>
+      </thead>
 
-  <div *ngIf="scoreCard">
-    <hr>
-    <p>Score Card ID: {{ scoreCard.scoreCardId }}</p>
-    <p>Customer ID: {{ scoreCard.customerId }}</p>
-    <p>Risk Category: {{ scoreCard.riskCategory }}</p>
-    <p>Eligible Loan Amount: {{ scoreCard.eligibleLoanAmount }}</p>
+      <tbody>
+        @for (customer of customers; track customer.customerId) {
+          <tr>
+            <td>{{ customer.customerId }}</td>
+            <td>{{ customer.firstName }} {{ customer.lastName }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.monthlyIncome | currency:'INR':'symbol':'1.2-2' }}</td>
+            <td>
+              <button
+                type="button"
+                class="view-button"
+                (click)="viewScoreCard(customer.customerId)">
+                View Score Card
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="empty-message">No customers found.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
   </div>
 </div>
