@@ -7,9 +7,14 @@ import { environment } from '../../environments/environment';
 })
 export class Scorecardservice {
   private http = inject(HttpClient);
+
   url = `${environment.apiUrl}/ScoreCard`;
 
-  getScoreCard(id: any) {
+  getScoreCard(id: number) {
     return this.http.get<any>(`${this.url}/${id}`);
+  }
+
+  getCustomers() {
+    return this.http.get<any[]>(`${this.url}/Customers`);
   }
 }

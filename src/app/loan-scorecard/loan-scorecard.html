@@ -1,0 +1,42 @@
+
+<div class="scorecard-container">
+  <div class="scorecard-box">
+
+    <div class="scorecard-header">
+      <h1>Loan Score Card</h1>
+    </div>
+
+    <div class="scorecard-body" *ngIf="scoreCard !== null">
+      <table>
+        <tr>
+          <th>Customer ID</th>
+          <td>{{ scoreCard.customerId }}</td>
+        </tr>
+        <tr>
+          <th>Risk Category</th>
+          <td>{{ scoreCard.riskCategory }}</td>
+        </tr>
+        <tr>
+          <th>Eligible Loan Amount</th>
+          <td>{{ scoreCard.eligibleLoanAmount | currency:'INR':'symbol':'1.2-2' }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <p *ngIf="scoreCard === null && errorMessage === ''">
+      Loading score card...
+    </p>
+
+    <p *ngIf="errorMessage">
+      {{ errorMessage }}
+    </p>
+
+   <button
+  type="button"
+  class="back-button"
+  (click)="backToCustomerList()">
+  ← Back
+</button>
+
+  </div>
+</div>

@@ -1,0 +1,168 @@
+<div class="officer-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <span class="page-label">LOAN MANAGEMENT / OPERATIONS</span>
+      <h2>Officer Review</h2>
+      <p>Review loan applications and manage approval decisions.</p>
+    </div>
+
+    <button
+      type="button"
+      class="load-button"
+      (click)="getApplications()">
+      <span class="button-icon">↻</span>
+      Load Applications
+    </button>
+  </div>
+
+  <!-- Information Banner -->
+  <div class="review-banner">
+    <div class="banner-icon">✓</div>
+    <div>
+      <h4>Application Review Center</h4>
+      <p>Review applicant credit scores, requested loan amounts, and repayment tenure before making a decision.</p>
+    </div>
+  </div>
+
+  <!-- Message -->
+  <div *ngIf="message" class="message-box">
+    {{ message }}
+  </div>
+
+  <!-- Applications Table -->
+  <div class="applications-card">
+    <div class="table-header">
+      <div>
+        <h3>Loan Applications</h3>
+        <p>Applications requiring officer attention</p>
+      </div>
+
+      <span class="record-count">
+        {{ applications.length }} records
+      </span>
+    </div>
+
+    <div class="table-responsive">
+      <table class="applications-table">
+        <thead>
+          <tr>
+            <th>APPLICATION</th>
+            <th>CUSTOMER</th>
+            <th>CIBIL SCORE</th>
+            <th>ELIGIBLE AMOUNT</th>
+            <th>REQUESTED AMOUNT</th>
+            <th>TENURE</th>
+            <th>INTEREST</th>
+            <th>STATUS</th>
+            <th>REJECTION REASON</th>
+            <th>ACTION</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let app of applications">
+
+            <td>
+              <span class="application-id">
+                #{{ app.eligibilityId }}
+              </span>
+            </td>
+
+            <td>
+              <span class="customer-id">
+                Customer {{ app.customerId }}
+              </span>
+            </td>
+
+            <td>
+              <span
+                class="cibil-score"
+                [class.good-score]="app.cibilScore >= 750"
+                [class.medium-score]="app.cibilScore >= 650 && app.cibilScore < 750"
+                [class.low-score]="app.cibilScore < 650">
+                {{ app.cibilScore }}
+              </span>
+            </td>
+
+            <td class="amount-cell">
+              {{ app.loanAmount | currency:'INR':'symbol':'1.0-0' }}
+            </td>
+
+            <td class="amount-cell requested-amount">
+              {{ app.requestedLoanAmount | currency:'INR':'symbol':'1.0-0' }}
+            </td>
+
+            <td>{{ app.loanTenureMonths }} months</td>
+
+            <td>{{ app.interestRate }}%</td>
+
+            <td>
+              <span
+                class="status-badge"
+                [class.pending-status]="app.isEligible === 'Manual Review'"
+                [class.approved-status]="app.isEligible === 'Approved' || app.isEligible === 'Auto Approved'"
+                [class.rejected-status]="app.isEligible === 'Rejected' || app.isEligible === 'Auto Rejected'">
+                <span class="status-dot"></span>
+                {{ app.isEligible }}
+              </span>
+            </td>
+
+            <td>
+              <span class="rejection-text">
+                {{ app.rejectionReason || '—' }}
+              </span>
+            </td>
+
+            <td class="action-cell">
+              <ng-container *ngIf="app.isEligible === 'Manual Review'; else completedAction">
+
+                <button
+                  type="button"
+                  class="approve-button"
+                  (click)="approveApplication(app.eligibilityId)">
+                  ✓ Approve
+                </button>
+
+                <input
+                  type="text"
+                  class="rejection-input"
+                  placeholder="Reason for rejection"
+                  [(ngModel)]="app.rejectionReasonInput">
+
+                <button
+                  type="button"
+                  class="reject-button"
+                  (click)="rejectApplication(app)">
+                  ✕ Reject
+                </button>
+
+              </ng-container>
+
+              <ng-template #completedAction>
+                <span class="no-action">No action required</span>
+              </ng-template>
+            </td>
+
+          </tr>
+
+          <tr *ngIf="applications.length === 0">
+            <td colspan="10" class="empty-state">
+              <div class="empty-icon">▤</div>
+              <h4>No applications to display</h4>
+              <p>Click “Load Applications” to retrieve pending loan reviews.</p>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-footer">
+      <span>Loan application review</span>
+      <span>GoLoan · Officer Portal</span>
+    </div>
+  </div>
+
+</div>
