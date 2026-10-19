@@ -1,5 +1,5 @@
 
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Eligibilityservice } from '../services/eligibility';
@@ -11,7 +11,7 @@ import { Eligibilityservice } from '../services/eligibility';
   templateUrl: './officer-review.html',
   styleUrl: './officer-review.scss'
 })
-export class OfficerReview {
+export class OfficerReview implements OnInit {
 
   applications: any[] = [];
   message: string = '';
@@ -20,6 +20,10 @@ export class OfficerReview {
     private eligibilityService: Eligibilityservice,
     private cdr: ChangeDetectorRef
   ) {}
+
+  ngOnInit(): void {
+    this.getApplications();
+  }
 
   // Load applications waiting for review
   getApplications() {
