@@ -13,7 +13,7 @@ import { MyTickets } from './support/my-tickets/my-tickets';
 import { TicketDetails } from './support/ticket-details/ticket-details';
 import { AdminTickets } from './support/admin-tickets/admin-tickets';
 import { ManageResponse } from './support/manage-response/manage-response';
-import { Dashboard } from './dashboard/dashboard';
+import { Dashboard as CustomerDashboard } from './dashboard/dashboard';
 import { ReportsDashboard } from './reports/reports-dashboard/reports-dashboard';
 import { CibilScoreRangeComponent } from './reports/cibil-score-range/cibil-score-range';
 import { ScoreCardWiseComponent } from './reports/score-card-wise/score-card-wise';
@@ -61,8 +61,6 @@ export const routes: Routes = [
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
-    path: 'support/create-ticket',
-    component: CreateTicket
   },
 
   // Authentication
@@ -77,6 +75,14 @@ export const routes: Routes = [
   {
     path: 'two-factor',
     component: TwoFactor
+  },
+
+  // Support routes accessible directly
+  {
+    path: 'support/create-ticket',
+    component: CreateTicket
+  },
+  {
     path: 'support/my-tickets',
     component: MyTickets
   },
@@ -85,14 +91,12 @@ export const routes: Routes = [
     component: TicketDetails
   },
   {
-    path: '',
-    redirectTo: 'support/create-ticket',
-    pathMatch: 'full'
+    path: 'support/admin-tickets',
+    component: AdminTickets
   },
-
   {
-  path: 'support/admin-tickets',
-  component: AdminTickets
+    path: 'support/manage-response/:id',
+    component: ManageResponse
   },
 
   // Protected application layout (Sidebar + Topbar)
@@ -102,6 +106,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'dashboard', component: Dashboard },
+      { path: 'customer-dashboard', component: CustomerDashboard },
       { path: 'module/profile', component: CustomerProfile },
       { path: 'module/kyc-verification', component: KycVerification },
       { path: 'module/customers', component: OfficerCustomers },
@@ -132,6 +137,32 @@ export const routes: Routes = [
       { path: 'module/emi-pay/:emiScheduleId', component: EmiPay },
       { path: 'module/foreclosure-payment/:requestId', component: ForeclosurePayment },
 
+      // Support routes inside layout
+      { path: 'module/support', component: MyTickets },
+      { path: 'support/create-ticket', component: CreateTicket },
+      { path: 'support/my-tickets', component: MyTickets },
+      { path: 'support/ticket-details/:id', component: TicketDetails },
+      { path: 'support/admin-tickets', component: AdminTickets },
+      { path: 'support/manage-response/:id', component: ManageResponse },
+
+      // Reports inside layout
+      { path: 'reports', component: ReportsDashboard },
+      { path: 'reports/cibil-score-range', component: CibilScoreRangeComponent },
+      { path: 'reports/score-card-wise', component: ScoreCardWiseComponent },
+      { path: 'reports/product-wise', component: ProductWiseComponent },
+
+      // LMS Reports inside layout
+      { path: 'lms-reports', component: LMSReportsDashboardComponent },
+      { path: 'lms-reports/loan-portfolio', component: LoanPortfolioComponent },
+      { path: 'lms-reports/emi-collection', component: EmiCollectionComponent },
+      {
+        path: 'lms-reports/overdue',
+        loadComponent: () =>
+          import('./lms-reports/overdue/overdue').then(m => m.OverdueComponent)
+      },
+      { path: 'lms-reports/disbursement', component: DisbursementComponent },
+      { path: 'lms-reports/prepayment', component: PrepaymentComponent },
+
       // Direct / alias URLs inside layout
       { path: 'foreclosure', component: LoanOfficerforeclosure },
       { path: 'closure', component: LoanOfficerClosure },
@@ -157,60 +188,30 @@ export const routes: Routes = [
   // Fallback direct payment links if opened outside layout
   { path: 'foreclosure-payment/:requestId', component: ForeclosurePayment },
   { path: 'emi-pay/:emiScheduleId', component: EmiPay },
-  { path: 'btn', component: Paybtn }
-  path: 'support/manage-response/:id',
-  component: ManageResponse
-},
- {
-  path: 'dashboard',
-  component: Dashboard
-  },
+  { path: 'btn', component: Paybtn },
+
+  // Standalone reports routes
+  { path: 'reports', component: ReportsDashboard },
+  { path: 'reports/cibil-score-range', component: CibilScoreRangeComponent },
+  { path: 'reports/score-card-wise', component: ScoreCardWiseComponent },
+  { path: 'reports/product-wise', component: ProductWiseComponent },
+
+  // Standalone LMS reports routes
+  { path: 'lms-reports', component: LMSReportsDashboardComponent },
+  { path: 'lms-reports/loan-portfolio', component: LoanPortfolioComponent },
+  { path: 'lms-reports/emi-collection', component: EmiCollectionComponent },
   {
-  path: 'reports',
-  component: ReportsDashboard
-},
-{
-  path: 'reports/cibil-score-range',
-  component: CibilScoreRangeComponent
-},
-{
-  path: 'reports/score-card-wise',
-  component: ScoreCardWiseComponent
-},
-{
-  path: 'reports/product-wise',
-  component: ProductWiseComponent
-},
-{
-  path: 'lms-reports',
-  component: LMSReportsDashboardComponent
-},
-{
-  path: 'lms-reports/loan-portfolio',
-  component: LoanPortfolioComponent
-},
-{
-  path: 'lms-reports/emi-collection',
-  component: EmiCollectionComponent
-},
-{
-  path: 'lms-reports/overdue',
-  loadComponent: () =>
-    import('./lms-reports/overdue/overdue')
-      .then(m => m.OverdueComponent)
-},
-{
-  path: 'lms-reports/disbursement',
-  component: DisbursementComponent
-},
-{
-  path: 'lms-reports/prepayment',
-  component: PrepaymentComponent
-},
+    path: 'lms-reports/overdue',
+    loadComponent: () =>
+      import('./lms-reports/overdue/overdue').then(m => m.OverdueComponent)
+  },
+  { path: 'lms-reports/disbursement', component: DisbursementComponent },
+  { path: 'lms-reports/prepayment', component: PrepaymentComponent },
+
   {
     path: '**',
-    redirectTo: 'support/create-ticket'
+    redirectTo: 'login'
   }
- 
 ];
+
 

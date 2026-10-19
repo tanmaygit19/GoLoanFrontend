@@ -26,14 +26,14 @@ export class ForeclosureService {
 url3='https://localhost:7074/api/ForeClosure/Approve';
 
 approveRequest(requestId: number){
-  return this.http.put<any>(`${this.url3}/${requestId}`,{}, {responseType: 'text'});
+  return this.http.put(`${this.url3}/${requestId}`,{}, {responseType: 'text'});
 }
 
 
 url4 = 'https://localhost:7074/api/ForeClosure/Reject';
 
 rejectRequest(requestId: number){
-  return this.http.put<any>(`${this.url4}/${requestId}`,{}, { responseType: 'text'});
+  return this.http.put(`${this.url4}/${requestId}`,{}, { responseType: 'text'});
 }
 
 

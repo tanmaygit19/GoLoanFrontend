@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { timeout, finalize } from 'rxjs';
 import { ReportsService, CibilScoreRange } from '../services/reports';
 
 @Component({
   selector: 'app-cibil-score-range',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './cibil-score-range.html',
   styleUrl: './cibil-score-range.scss'
 })
