@@ -44,22 +44,34 @@ export class AuthService {
     return this.http.post<AuthResponse>(this.verify2faUrl, data, { headers });
   }
 
-  getToken() {
-    return localStorage.getItem('token');
+  private isBrowser(): boolean {
+    return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
   }
 
-  getUser() {
-    const userStr = localStorage.getItem('user');
-    return userStr ? JSON.parse(userStr) : null;
+  getToken(): string | null {
+    if (this.isBrowser()) {
+      return localStorage.getItem('token');
+    }
+    return null;
+  }
+
+  getUser(): any {
+    if (this.isBrowser()) {
+      const userStr = localStorage.getItem('user');
+      return userStr ? JSON.parse(userStr) : null;
+    }
+    return null;
   }
 
   isLoggedIn(): boolean {
     return !!this.getToken() || !!this.getUser();
   }
 
-  logout() {
-    localStorage.clear();
-    sessionStorage.clear();
+  logout(): void {
+    if (this.isBrowser()) {
+      localStorage.clear();
+      sessionStorage.clear();
+    }
     this.router.navigate(['/login']);
   }
 }

@@ -1,0 +1,348 @@
+<div class="lms-reports-page">
+
+  <!-- Page Header -->
+
+  <div class="page-header">
+    <div>
+      <h2>Reports Dashboard</h2>
+      <p>Loan Management System — Reports Overview</p>
+    </div>
+
+
+<button
+  class="btn btn-outline-primary refresh-btn"
+  (click)="loadDashboard()"
+  [disabled]="isLoading">
+  <i class="bi bi-arrow-clockwise"></i>
+  {{ isLoading ? 'Loading...' : 'Refresh' }}
+</button>
+
+  </div>
+
+  <!-- Loading -->
+
+  <div class="alert alert-info" *ngIf="isLoading">
+    Loading LMS reports...
+  </div>
+
+  <!-- Error -->
+
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    {{ errorMessage }}
+
+
+<button
+  class="btn btn-sm btn-outline-danger ms-3"
+  (click)="loadDashboard()">
+  Retry
+</button>
+
+
+  </div>
+
+<ng-container *ngIf="!isLoading && dashboardData">
+
+
+<!-- Summary Cards -->
+<div class="summary-grid">
+
+  <div class="summary-card total-card">
+    <div class="summary-icon">
+      <i class="bi bi-bank"></i>
+    </div>
+
+    <div class="summary-info">
+      <p>Total Loans</p>
+      <h3>{{ summary?.totalLoans ?? 0 | number }}</h3>
+    </div>
+  </div>
+
+  <div class="summary-card active-card">
+    <div class="summary-icon">
+      <i class="bi bi-check-circle"></i>
+    </div>
+
+    <div class="summary-info">
+      <p>Active Loans</p>
+      <h3>{{ summary?.activeLoans ?? 0 | number }}</h3>
+    </div>
+  </div>
+
+  <div class="summary-card closed-card">
+    <div class="summary-icon">
+      <i class="bi bi-folder-check"></i>
+    </div>
+
+    <div class="summary-info">
+      <p>Closed Loans</p>
+      <h3>{{ summary?.closedLoans ?? 0 | number }}</h3>
+    </div>
+  </div>
+
+</div>
+
+<!-- Charts -->
+<div class="charts-grid">
+
+  <!-- Loan Portfolio Summary -->
+  <div class="report-card">
+
+    <div class="card-heading">
+      <div>
+        <h5>Loan Portfolio Summary</h5>
+        <p>Outstanding amount by loan product</p>
+      </div>
+    </div>
+
+    <div
+      class="portfolio-content"
+      *ngIf="loanPortfolioChart.length > 0">
+
+      <!-- Donut Chart -->
+      <div class="portfolio-chart">
+        <div
+          class="donut-chart"
+          [style.background]="portfolioDonutBackground">
+
+          <div class="donut-hole">
+            <span>Total Portfolio</span>
+            <strong>
+              {{ totalPortfolioAmount | currency:'INR':'symbol-narrow':'1.0-0' }}
+            </strong>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Portfolio Legend -->
+      <div class="portfolio-legend">
+
+        <div
+          class="legend-item"
+          *ngFor="let item of loanPortfolioChart; let i = index">
+
+          <span
+            class="legend-dot"
+            [style.background-color]="getPortfolioColor(i)">
+          </span>
+
+          <div class="legend-details">
+            <span>{{ item.product }}</span>
+
+            <strong>
+              {{ item.outstandingAmount | currency:'INR':'symbol-narrow':'1.0-0' }}
+            </strong>
+
+            <small>
+              {{ item.percentage | number:'1.0-2' }}%
+            </small>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div
+      class="empty-state"
+      *ngIf="loanPortfolioChart.length === 0">
+      No loan portfolio data available.
+    </div>
+
+  </div>
+
+  <!-- Collection Efficiency Monthly Chart -->
+  <div class="report-card">
+
+    <div class="card-heading">
+      <div>
+        <h5>Collection Efficiency (Monthly)</h5>
+        <p>Monthly collection percentage</p>
+      </div>
+    </div>
+
+    <div
+      class="collection-chart"
+      *ngIf="collectionEfficiencyChart.length > 0">
+
+      <!-- Y Axis -->
+      <div class="chart-y-axis">
+        <span>100%</span>
+        <span>75%</span>
+        <span>50%</span>
+        <span>25%</span>
+        <span>0%</span>
+      </div>
+
+      <!-- Chart Plot -->
+      <div class="chart-main">
+
+        <!-- Horizontal Grid Lines -->
+        <div class="chart-grid-lines">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <!-- Bars: one per API record -->
+        <div class="bar-chart">
+
+          <div
+            class="bar-item"
+            *ngFor="let item of collectionEfficiencyChart">
+
+            <div class="bar-area">
+
+              <span class="bar-value">
+                {{ item.collectionPercentage | number:'1.0-2' }}%
+              </span>
+
+              <div
+                class="bar"
+                [style.height.%]="item.collectionPercentage">
+              </div>
+
+            </div>
+
+            <span class="bar-label">
+              {{ formatMonth(item.month) }}
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div
+      class="empty-state"
+      *ngIf="collectionEfficiencyChart.length === 0">
+      No collection efficiency data available.
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Detailed Reports Heading -->
+<div class="section-heading">
+  <div>
+    <h4>Detailed Reports</h4>
+    <p>Explore loan management reports</p>
+  </div>
+</div>
+
+<!-- Individual Report Cards -->
+<div class="report-links-grid">
+
+  <!-- Loan Portfolio -->
+  <a
+    routerLink="/lms-reports/loan-portfolio"
+    class="report-link-card">
+
+    <div class="report-link-icon portfolio-icon">
+      <i class="bi bi-pie-chart"></i>
+    </div>
+
+    <div class="report-link-content">
+      <h5>Loan Portfolio Report</h5>
+      <p>Review outstanding loans by product.</p>
+
+      <span class="view-report">
+        View Report <i class="bi bi-arrow-right"></i>
+      </span>
+    </div>
+
+  </a>
+
+  <!-- EMI Collection -->
+  <a
+    routerLink="/lms-reports/emi-collection"
+    class="report-link-card">
+
+    <div class="report-link-icon collection-icon">
+      <i class="bi bi-cash-stack"></i>
+    </div>
+
+    <div class="report-link-content">
+      <h5>EMI Collection Report</h5>
+      <p>Review collected and pending EMI amounts.</p>
+
+      <span class="view-report">
+        View Report <i class="bi bi-arrow-right"></i>
+      </span>
+    </div>
+
+  </a>
+
+  <!-- Overdue -->
+  <a
+    routerLink="/lms-reports/overdue"
+    class="report-link-card">
+
+    <div class="report-link-icon overdue-icon">
+      <i class="bi bi-calendar-x"></i>
+    </div>
+
+    <div class="report-link-content">
+      <h5>Overdue Report</h5>
+      <p>Review overdue accounts and outstanding amounts.</p>
+
+      <span class="view-report">
+        View Report <i class="bi bi-arrow-right"></i>
+      </span>
+    </div>
+
+  </a>
+
+  <!-- Disbursement -->
+  <a
+    routerLink="/lms-reports/disbursement"
+    class="report-link-card">
+
+    <div class="report-link-icon disbursement-icon">
+      <i class="bi bi-wallet2"></i>
+    </div>
+
+    <div class="report-link-content">
+      <h5>Disbursement Report</h5>
+      <p>Review loan disbursements over time.</p>
+
+      <span class="view-report">
+        View Report <i class="bi bi-arrow-right"></i>
+      </span>
+    </div>
+
+  </a>
+
+  <!-- Prepayment -->
+  <a
+    routerLink="/lms-reports/prepayment"
+    class="report-link-card">
+
+    <div class="report-link-icon prepayment-icon">
+      <i class="bi bi-arrow-left-right"></i>
+    </div>
+
+    <div class="report-link-content">
+      <h5>Prepayment Report</h5>
+      <p>Review prepayments and foreclosure activity.</p>
+
+      <span class="view-report">
+        View Report <i class="bi bi-arrow-right"></i>
+      </span>
+    </div>
+
+  </a>
+
+</div>
+
+
+  </ng-container>
+
+</div>

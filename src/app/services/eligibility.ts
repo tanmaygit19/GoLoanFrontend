@@ -1,14 +1,14 @@
-
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Eligibilityservice {
-  http = inject(HttpClient);
+  private http = inject(HttpClient);
 
-  url = 'https://localhost:44348/api/Eligibility';
+  url = `${environment.apiUrl}/Eligibility`;
 
   getEligibility(id: number) {
     return this.http.get<any>(`${this.url}/${id}`);

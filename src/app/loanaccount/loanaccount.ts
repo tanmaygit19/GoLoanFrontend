@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { Loanservice } from '../loanservice';
 import { CommonModule } from '@angular/common';
@@ -25,7 +24,7 @@ export class Loanaccount {
     this.getLoans();
   }
 
- 
+
 
 
 

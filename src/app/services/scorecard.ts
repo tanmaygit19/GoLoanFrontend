@@ -1,14 +1,14 @@
-
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Scorecardservice {
-  http = inject(HttpClient);
+  private http = inject(HttpClient);
 
-  url = 'https://localhost:44348/api/ScoreCard';
+  url = `${environment.apiUrl}/ScoreCard`;
 
   getScoreCard(id: number) {
     return this.http.get<any>(`${this.url}/${id}`);

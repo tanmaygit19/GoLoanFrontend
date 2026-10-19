@@ -1,15 +1,22 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterLinkWithHref, Router, NavigationEnd } from '@angular/router';
+import { Component, signal } from '@angular/core';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Component, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
-  imports: [CommonModule, RouterOutlet, RouterLinkWithHref],
   selector: 'app-root',
-  styleUrl: './app.scss',
+  imports: [RouterOutlet],
   templateUrl: './app.html',
+  styleUrl: './app.scss'
 })
 export class App {
+  title = 'goloan-angular';
+}
+}
   isModulePage = false;
+  protected readonly title = signal('GoLoan');
 
   constructor(private router: Router) {
     this.router.events.subscribe(event => {

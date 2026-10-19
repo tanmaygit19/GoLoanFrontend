@@ -1,15 +1,15 @@
-
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Cibilservice {
-  http = inject(HttpClient);
+  private http = inject(HttpClient);
 
-  url = "https://localhost:44348/api/Cibil";
-  customerUrl = "https://localhost:44348/api/CustomerDashboard/CustomerDetails";
+  url = `${environment.apiUrl}/Cibil`;
+  customerUrl = `${environment.apiUrl}/CustomerDashboard/CustomerDetails`;
 
   getCibilReport(id: any) {
     return this.http.get<any>(`${this.url}/${id}`);

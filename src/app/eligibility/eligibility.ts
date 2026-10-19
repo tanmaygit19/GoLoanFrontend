@@ -1,8 +1,13 @@
-
-import { Component, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  ChangeDetectorRef
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Eligibilityservice } from '../services/eligibility';
+import { AuthService } from '../core/services/auth.service';
 
 @Component({
   selector: 'app-eligibility',
@@ -11,9 +16,15 @@ import { Eligibilityservice } from '../services/eligibility';
   templateUrl: './eligibility.html',
   styleUrl: './eligibility.scss'
 })
-export class Eligibility {
+export class Eligibility implements OnInit {
+  private eligibilityservice = inject(Eligibilityservice);
+  private authService = inject(AuthService);
+  private cdr = inject(ChangeDetectorRef);
 
-  customerId: number = 1;
+  customerId: any =
+    this.authService.getUser()?.customerId ||
+    this.authService.getUser()?.userId ||
+    1;
 
   eligibility: any = null;
   showResult: boolean = false;
@@ -25,10 +36,11 @@ export class Eligibility {
 
   message: string = '';
 
-  constructor(
-    private eligibilityservice: Eligibilityservice,
-    private cdr: ChangeDetectorRef
-  ) {}
+  ngOnInit(): void {
+    if (this.customerId) {
+      this.getEligibility();
+    }
+  }
 
   // Check the customer's latest eligibility and application
   getEligibility() {

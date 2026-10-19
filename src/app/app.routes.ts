@@ -1,16 +1,364 @@
-
 import { Routes } from '@angular/router';
+
+// Foreclosure / payments
+import { LoanOfficerClosure } from './loan-officer-closure/loan-officer-closure';
+import { LoanOfficerforeclosure } from './loan-officerforeclosure/loan-officerforeclosure';
+import { ForeclosurePayment } from './foreclosure-payment/foreclosure-payment';
+import { Foreclosure } from './foreclosure/foreclosure';
+import { EmiPay } from './emi-pay/emi-pay';
+import { Paybtn } from './paybtn/paybtn';
+import { PaymentHistory } from './payment-history/payment-history';
+
+// Support
+import { CreateTicket } from './support/create-ticket/create-ticket';
+import { MyTickets } from './support/my-tickets/my-tickets';
+import { TicketDetails } from './support/ticket-details/ticket-details';
+import { AdminTickets } from './support/admin-tickets/admin-tickets';
+import { ManageResponse } from './support/manage-response/manage-response';
+
+// Reports
+import { ReportsDashboard } from './reports/reports-dashboard/reports-dashboard';
+import { CibilScoreRangeComponent } from './reports/cibil-score-range/cibil-score-range';
+import { ScoreCardWiseComponent } from './reports/score-card-wise/score-card-wise';
+import { ProductWiseComponent } from './reports/product-wise/product-wise';
+import { LMSReportsDashboardComponent } from './lms-reports/lms-reports-dashboard/lms-reports-dashboard';
+import { LoanPortfolioComponent } from './lms-reports/loan-portfolio/loan-portfolio';
+import { EmiCollectionComponent } from './lms-reports/emi-collection/emi-collection';
+import { DisbursementComponent } from './lms-reports/disbursement/disbursement';
+import { PrepaymentComponent } from './lms-reports/prepayment/prepayment';
+
+// Authentication
+import { Login } from './pages/auth/login/login';
+import { Register } from './pages/auth/register/register';
+import { TwoFactor } from './pages/auth/two-factor/two-factor';
+
+// Layout
+import { MainLayout } from './layout/main-layout/main-layout';
+
+// Core dashboard and modules
+import { Dashboard } from './pages/dashboard/dashboard';
+import { CustomerProfile } from './pages/customer-profile/customer-profile';
+import { KycVerification } from './pages/kyc-verification/kyc-verification';
+import { OfficerCustomers } from './pages/officer-customers/officer-customers';
+import { OfficerKyc } from './pages/officer-kyc/officer-kyc';
+import { ModulePage } from './pages/module-page/module-page';
+
+// Teammate components
 import { Cibil } from './cibil/cibil';
 import { Scorecard } from './scorecard/scorecard';
 import { Eligibility } from './eligibility/eligibility';
 import { LoanScorecard } from './loan-scorecard/loan-scorecard';
 import { OfficerReview } from './officer-review/officer-review';
 
+// Loan modules
+import { Applyloan } from './applyloan/applyloan';
+import { Pendingdeals } from './pendingdeals/pendingdeals';
+import { Sanctionletter } from './sanctionletter/sanctionletter';
+import { Loanaccount } from './loanaccount/loanaccount';
+import { LoanaccountDetails } from './loanaccount-details/loanaccount-details';
+import { Emischedule } from './emischedule/emischedule';
+import { Notification } from './notification/notification';
+
+// Authentication guard
+import { authGuard } from './core/guards/auth.guard';
+
 export const routes: Routes = [
-  { path: 'cibil', component: Cibil },
-  { path: 'scorecard', component: Scorecard },
-  { path: 'loan-scorecard/:id', component: LoanScorecard },
-  { path: 'eligibility', component: Eligibility },
-  { path: 'officer-review', component: OfficerReview },
-  { path: '', redirectTo: 'cibil', pathMatch: 'full' }
+  // Default redirect
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+
+  // Authentication pages
+  {
+    path: 'login',
+    component: Login
+  },
+  {
+    path: 'register',
+    component: Register
+  },
+  {
+    path: 'two-factor',
+    component: TwoFactor
+  },
+
+  // Support routes
+  {
+    path: 'support/create-ticket',
+    component: CreateTicket
+  },
+  {
+    path: 'support/my-tickets',
+    component: MyTickets
+  },
+  {
+    path: 'support/ticket-details/:id',
+    component: TicketDetails
+  },
+  {
+    path: 'support/admin-tickets',
+    component: AdminTickets
+  },
+  {
+    path: 'support/manage-response/:id',
+    component: ManageResponse
+  },
+
+  // Protected application layout (Sidebar + Topbar)
+  {
+    path: '',
+    component: MainLayout,
+    canActivate: [authGuard],
+    children: [
+      // Dashboard
+      {
+        path: 'dashboard',
+        component: Dashboard
+      },
+
+      // Core modules
+      {
+        path: 'module/profile',
+        component: CustomerProfile
+      },
+      {
+        path: 'module/kyc-verification',
+        component: KycVerification
+      },
+      {
+        path: 'module/customers',
+        component: OfficerCustomers
+      },
+      {
+        path: 'module/kyc',
+        component: OfficerKyc
+      },
+
+      // Customer services
+      {
+        path: 'module/cibil',
+        component: Cibil
+      },
+      {
+        path: 'module/scorecards',
+        component: Scorecard
+      },
+      {
+        path: 'module/eligibility',
+        component: Eligibility
+      },
+      {
+        path: 'module/eligibility-result',
+        component: Eligibility
+      },
+      {
+        path: 'module/apply-loan',
+        component: Applyloan
+      },
+      {
+        path: 'module/applications',
+        component: Pendingdeals
+      },
+      {
+        path: 'module/track-status',
+        component: Pendingdeals
+      },
+      {
+        path: 'module/letters',
+        component: Sanctionletter
+      },
+      {
+        path: 'module/accounts',
+        component: Loanaccount
+      },
+      {
+        path: 'module/loanaccount-details/:id',
+        component: LoanaccountDetails
+      },
+      {
+        path: 'module/emi-schedule',
+        component: Emischedule
+      },
+      {
+        path: 'module/notifications',
+        component: Notification
+      },
+
+      // Scorecard and officer review
+      {
+        path: 'loan-scorecard/:id',
+        component: LoanScorecard
+      },
+      {
+        path: 'officer-review',
+        component: OfficerReview
+      },
+
+      // Foreclosure and closure
+      {
+        path: 'module/foreclosure-request',
+        component: Foreclosure
+      },
+      {
+        path: 'module/closure-requests',
+        component: LoanOfficerClosure
+      },
+      {
+        path: 'module/foreclosure',
+        component: LoanOfficerforeclosure
+      },
+
+      // Payment routes
+      {
+        path: 'module/payment-history',
+        component: PaymentHistory
+      },
+      {
+        path: 'module/make-payments',
+        component: Emischedule
+      },
+      {
+        path: 'module/emi-pay/:emiScheduleId',
+        component: EmiPay
+      },
+      {
+        path: 'module/foreclosure-payment/:requestId',
+        component: ForeclosurePayment
+      },
+
+      // Direct aliases within the protected layout
+      {
+        path: 'foreclosure',
+        component: LoanOfficerforeclosure
+      },
+      {
+        path: 'closure',
+        component: LoanOfficerClosure
+      },
+      {
+        path: 'fore',
+        component: Foreclosure
+      },
+      {
+        path: 'payment',
+        component: PaymentHistory
+      },
+      {
+        path: 'cibil',
+        component: Cibil
+      },
+      {
+        path: 'scorecard',
+        component: Scorecard
+      },
+      {
+        path: 'eligibility',
+        component: Eligibility
+      },
+      {
+        path: 'applyloan',
+        component: Applyloan
+      },
+      {
+        path: 'pendingdeals',
+        component: Pendingdeals
+      },
+      {
+        path: 'sanctionletter',
+        component: Sanctionletter
+      },
+      {
+        path: 'loanacc',
+        component: Loanaccount
+      },
+      {
+        path: 'loanaccount',
+        component: Loanaccount
+      },
+      {
+        path: 'loanaccount-details/:id',
+        component: LoanaccountDetails
+      },
+      {
+        path: 'emischedule',
+        component: Emischedule
+      },
+      {
+        path: 'notification',
+        component: Notification
+      },
+
+      // Fallback for modules not yet created (keep last)
+      {
+        path: 'module/:id',
+        component: ModulePage
+      }
+    ]
+  },
+
+  // Direct payment links
+  {
+    path: 'foreclosure-payment/:requestId',
+    component: ForeclosurePayment
+  },
+  {
+    path: 'emi-pay/:emiScheduleId',
+    component: EmiPay
+  },
+  {
+    path: 'btn',
+    component: Paybtn
+  },
+
+  // Reports
+  {
+    path: 'reports',
+    component: ReportsDashboard
+  },
+  {
+    path: 'reports/cibil-score-range',
+    component: CibilScoreRangeComponent
+  },
+  {
+    path: 'reports/score-card-wise',
+    component: ScoreCardWiseComponent
+  },
+  {
+    path: 'reports/product-wise',
+    component: ProductWiseComponent
+  },
+  {
+    path: 'lms-reports',
+    component: LMSReportsDashboardComponent
+  },
+  {
+    path: 'lms-reports/loan-portfolio',
+    component: LoanPortfolioComponent
+  },
+  {
+    path: 'lms-reports/emi-collection',
+    component: EmiCollectionComponent
+  },
+  {
+    path: 'lms-reports/overdue',
+    loadComponent: () =>
+      import('./lms-reports/overdue/overdue')
+        .then(m => m.OverdueComponent)
+  },
+  {
+    path: 'lms-reports/disbursement',
+    component: DisbursementComponent
+  },
+  {
+    path: 'lms-reports/prepayment',
+    component: PrepaymentComponent
+  },
+
+  // Unknown routes
+  {
+    path: '**',
+    redirectTo: 'support/create-ticket'
+  }
 ];

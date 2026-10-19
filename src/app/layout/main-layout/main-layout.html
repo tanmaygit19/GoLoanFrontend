@@ -4,10 +4,12 @@
 
   <!-- Main View -->
   <div class="flex-grow-1 d-flex flex-column" style="min-width: 0; background-color: #f4f6f9;">
-    
+
     <!-- Top Blue Accent Line (from Customer Screenshot) -->
     <div *ngIf="!isOfficer" class="customer-top-accent">
-      <i class="bi bi-bell-fill text-white bell-icon"></i>
+      <a routerLink="/module/notifications" title="Notifications" style="text-decoration: none;">
+        <i class="bi bi-bell-fill text-white bell-icon"></i>
+      </a>
     </div>
 
     <!-- White Topbar Banner -->
