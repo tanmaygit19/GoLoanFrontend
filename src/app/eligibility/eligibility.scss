@@ -1,0 +1,343 @@
+
+/* Main page */
+.eligibility-page {
+  min-height: 100vh;
+  padding: 35px;
+  background-color: #f3f5fa;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #172b4d;
+  box-sizing: border-box;
+}
+
+/* Screen 1: Customer form */
+.customer-form {
+  width: 100%;
+  max-width: 675px;
+  padding: 22px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border-radius: 14px;
+}
+
+.customer-form h3,
+.loan-form h3 {
+  margin: 0 0 28px;
+  color: #173d78;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.form-group {
+  margin-bottom: 26px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  color: #111827;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+  display: block;
+  width: 100%;
+  min-height: 54px;
+  padding: 12px 15px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #111827;
+  font-size: 18px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #2165f5;
+  box-shadow: 0 0 0 3px rgba(33, 101, 245, 0.12);
+}
+
+.form-group small {
+  display: block;
+  margin-top: 10px;
+  color: #647da5;
+  font-size: 15px;
+}
+
+/* Blue buttons */
+.primary-button {
+  display: inline-block;
+  min-height: 53px;
+  padding: 13px 30px;
+  border: none;
+  border-radius: 10px;
+  background-color: #2165f5;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.primary-button:hover:not(:disabled) {
+  background-color: #1451d8;
+  transform: translateY(-1px);
+}
+
+.primary-button:disabled {
+  background-color: #a6bce9;
+  cursor: not-allowed;
+}
+
+/* EMI information panel */
+.emi-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 22px 0 30px;
+  padding: 25px;
+  border-radius: 16px;
+  background-color: #eff4ff;
+}
+
+.emi-box span {
+  margin-top: 4px;
+  color: #647da5;
+  font-size: 18px;
+}
+
+.emi-box strong {
+  margin-bottom: 12px;
+  color: #173d78;
+  font-size: 27px;
+  font-weight: 700;
+}
+
+/* Screen 2: Eligibility result card */
+.result-card {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 42px;
+  box-sizing: border-box;
+  border-radius: 22px;
+  background-color: #ffffff;
+  box-shadow: 0 8px 25px rgba(25, 42, 70, 0.08);
+}
+
+.result-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 30px;
+  color: #172b4d;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.title-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: #2165f5;
+  color: #ffffff;
+  font-size: 25px;
+}
+
+/* Customer details grid */
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 30px;
+  margin-bottom: 48px;
+}
+
+.detail-box {
+  min-height: 96px;
+  padding: 22px 20px;
+  border-radius: 14px;
+  background-color: #f6f7f9;
+  box-sizing: border-box;
+}
+
+.detail-box label {
+  display: block;
+  margin-bottom: 5px;
+  color: #77869b;
+  font-size: 17px;
+  font-weight: 400;
+}
+
+.detail-box p {
+  margin: 0;
+  color: #111827;
+  font-size: 24px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+/* Approved / Manual Review / Rejected status */
+.status-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 170px;
+  margin-bottom: 0;
+  padding: 25px;
+  border-radius: 16px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.status-panel h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 0 12px;
+  font-size: 38px;
+  font-weight: 600;
+}
+
+.status-panel p {
+  margin: 0 0 8px;
+  font-size: 19px;
+  line-height: 1.5;
+}
+
+.status-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: currentColor;
+  font-size: 0;
+}
+
+/* White symbol inside the status circle */
+.status-icon::after {
+  font-size: 25px;
+}
+
+.approved .status-icon::after {
+  content: "✓";
+  color: #ffffff;
+}
+
+.manual-review .status-icon::after {
+  content: "!";
+  color: #ffffff;
+}
+
+.rejected .status-icon::after {
+  content: "×";
+  color: #ffffff;
+}
+
+.status-panel.approved {
+  background-color: #d1e9df;
+  color: #07583e;
+}
+
+.status-panel.manual-review {
+  background-color: #fff0c2;
+  color: #8a5700;
+}
+
+.status-panel.rejected {
+  background-color: #fce1e1;
+  color: #a52020;
+}
+
+/* Messages */
+.message {
+  margin: 18px 0;
+  color: #173d78;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Loan section if displayed on the result screen */
+.loan-form {
+  margin-top: 30px;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+  .eligibility-page {
+    padding: 16px;
+  }
+
+  .customer-form {
+    padding: 16px;
+  }
+
+  .result-card {
+    padding: 22px;
+    border-radius: 16px;
+  }
+
+  .result-title {
+    font-size: 28px;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .detail-box p {
+    font-size: 21px;
+  }
+
+  .status-panel h2 {
+    font-size: 29px;
+  }
+
+  .status-panel p {
+    font-size: 16px;
+  }
+
+  .emi-box strong {
+    font-size: 24px;
+  }
+
+  .primary-button {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .eligibility-page {
+    padding: 10px;
+  }
+
+  .result-card {
+    padding: 16px;
+  }
+
+  .result-title {
+    font-size: 24px;
+  }
+
+  .status-panel {
+    padding: 18px 12px;
+  }
+
+  .status-panel h2 {
+    font-size: 25px;
+  }
+}
