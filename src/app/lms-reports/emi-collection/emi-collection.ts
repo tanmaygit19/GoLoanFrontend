@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { LMSReportsService } from '../services/lms-reports';
 import { finalize } from 'rxjs/operators';
 
@@ -15,7 +14,7 @@ percentage: number;
 @Component({
 selector: 'app-emi-collection',
 standalone: true,
-imports: [CommonModule, FormsModule, RouterLink],
+imports: [CommonModule, FormsModule],
 templateUrl: './emi-collection.html',
 styleUrl: './emi-collection.scss'
 })

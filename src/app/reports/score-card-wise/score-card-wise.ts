@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { finalize, timeout } from 'rxjs';
 import { ReportsService, ScoreCardWiseItem } from '../services/reports';
 
 @Component({
   selector: 'app-score-card-wise',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './score-card-wise.html',
   styleUrl: './score-card-wise.scss'
 })

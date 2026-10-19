@@ -35,8 +35,11 @@ import { TwoFactor } from './pages/auth/two-factor/two-factor';
 // Layout
 import { MainLayout } from './layout/main-layout/main-layout';
 
-// Core dashboard and modules
+// Dashboards
+import { Dashboard as CustomerDashboard } from './dashboard/dashboard';
 import { Dashboard } from './pages/dashboard/dashboard';
+
+// Core modules
 import { CustomerProfile } from './pages/customer-profile/customer-profile';
 import { KycVerification } from './pages/kyc-verification/kyc-verification';
 import { OfficerCustomers } from './pages/officer-customers/officer-customers';
@@ -84,7 +87,7 @@ export const routes: Routes = [
     component: TwoFactor
   },
 
-  // Support routes
+  // Support routes accessible directly
   {
     path: 'support/create-ticket',
     component: CreateTicket
@@ -112,10 +115,14 @@ export const routes: Routes = [
     component: MainLayout,
     canActivate: [authGuard],
     children: [
-      // Dashboard
+      // Main dashboard
       {
         path: 'dashboard',
         component: Dashboard
+      },
+      {
+        path: 'customer-dashboard',
+        component: CustomerDashboard
       },
 
       // Core modules
@@ -196,6 +203,12 @@ export const routes: Routes = [
         component: OfficerReview
       },
 
+      // Support routes inside the layout
+      {
+        path: 'module/support',
+        component: MyTickets
+      },
+
       // Foreclosure and closure
       {
         path: 'module/foreclosure-request',
@@ -228,7 +241,53 @@ export const routes: Routes = [
         component: ForeclosurePayment
       },
 
-      // Direct aliases within the protected layout
+      // Reports inside the protected layout
+      {
+        path: 'reports',
+        component: ReportsDashboard
+      },
+      {
+        path: 'reports/cibil-score-range',
+        component: CibilScoreRangeComponent
+      },
+      {
+        path: 'reports/score-card-wise',
+        component: ScoreCardWiseComponent
+      },
+      {
+        path: 'reports/product-wise',
+        component: ProductWiseComponent
+      },
+
+      // LMS reports
+      {
+        path: 'lms-reports',
+        component: LMSReportsDashboardComponent
+      },
+      {
+        path: 'lms-reports/loan-portfolio',
+        component: LoanPortfolioComponent
+      },
+      {
+        path: 'lms-reports/emi-collection',
+        component: EmiCollectionComponent
+      },
+      {
+        path: 'lms-reports/overdue',
+        loadComponent: () =>
+          import('./lms-reports/overdue/overdue')
+            .then(m => m.OverdueComponent)
+      },
+      {
+        path: 'lms-reports/disbursement',
+        component: DisbursementComponent
+      },
+      {
+        path: 'lms-reports/prepayment',
+        component: PrepaymentComponent
+      },
+
+      // Direct aliases inside the layout
       {
         path: 'foreclosure',
         component: LoanOfficerforeclosure
@@ -290,7 +349,7 @@ export const routes: Routes = [
         component: Notification
       },
 
-      // Fallback for modules not yet created (keep last)
+      // Fallback for modules not yet created (must stay last)
       {
         path: 'module/:id',
         component: ModulePage
@@ -312,53 +371,9 @@ export const routes: Routes = [
     component: Paybtn
   },
 
-  // Reports
-  {
-    path: 'reports',
-    component: ReportsDashboard
-  },
-  {
-    path: 'reports/cibil-score-range',
-    component: CibilScoreRangeComponent
-  },
-  {
-    path: 'reports/score-card-wise',
-    component: ScoreCardWiseComponent
-  },
-  {
-    path: 'reports/product-wise',
-    component: ProductWiseComponent
-  },
-  {
-    path: 'lms-reports',
-    component: LMSReportsDashboardComponent
-  },
-  {
-    path: 'lms-reports/loan-portfolio',
-    component: LoanPortfolioComponent
-  },
-  {
-    path: 'lms-reports/emi-collection',
-    component: EmiCollectionComponent
-  },
-  {
-    path: 'lms-reports/overdue',
-    loadComponent: () =>
-      import('./lms-reports/overdue/overdue')
-        .then(m => m.OverdueComponent)
-  },
-  {
-    path: 'lms-reports/disbursement',
-    component: DisbursementComponent
-  },
-  {
-    path: 'lms-reports/prepayment',
-    component: PrepaymentComponent
-  },
-
   // Unknown routes
   {
     path: '**',
-    redirectTo: 'support/create-ticket'
+    redirectTo: 'login'
   }
 ];

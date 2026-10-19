@@ -1,6 +1,6 @@
-
 .page {
   padding: 24px;
+  color: #202124;
 }
 
 h2 {
@@ -8,27 +8,29 @@ h2 {
 }
 
 .generate-section,
-.table-section,
-.view-section,
-.disbursement-form {
+.table-section {
   margin-bottom: 24px;
   padding: 20px;
   border: 1px solid #ddd;
-  border-radius: 6px;
+  border-radius: 8px;
+  background: #fff;
 }
 
 label {
   display: block;
   margin-top: 12px;
   margin-bottom: 8px;
+  font-weight: 500;
 }
 
 select,
-.disbursement-form input {
+.disbursement-dialog input {
   width: 100%;
   max-width: 400px;
   padding: 10px;
   margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
   box-sizing: border-box;
 }
 
@@ -36,10 +38,11 @@ button {
   padding: 9px 14px;
   margin: 4px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   background: #174ea6;
   color: white;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
 
 button:hover {
@@ -74,20 +77,14 @@ th {
 }
 
 .loan-details p,
-.view-section p {
-  margin: 10px 0;
-}
-
-.disbursement-form {
-  max-width: 500px;
-}
-
-.disbursement-form input {
-  max-width: 100%;
+.modal-body p {
+  margin: 12px 0;
 }
 
 .message {
   margin-top: 12px;
+  margin-bottom: 12px;
+  overflow-wrap: anywhere;
 }
 
 .status-text {
@@ -104,4 +101,128 @@ th {
 
 .status-rejected {
   color: #b42318;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.55);
+  overflow-y: auto;
+}
+
+.modal-dialog {
+  width: 100%;
+  max-width: 550px;
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  animation: modalopen 0.2s ease-out;
+}
+
+.disbursement-dialog {
+  max-width: 500px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.close-button {
+  margin: 0;
+  padding: 2px 8px;
+  background: transparent;
+  color: #555;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.close-button:hover {
+  background: #f0f0f0;
+  color: #111;
+}
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.disbursement-dialog .modal-body input {
+  max-width: 100%;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 14px 20px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.modal-footer button {
+  margin: 0;
+}
+
+.secondary-button {
+  background: #6c757d;
+}
+
+.secondary-button:hover {
+  background: #565e64;
+}
+
+@keyframes modalopen {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 12px;
+  }
+
+  .generate-section,
+  .table-section {
+    padding: 14px;
+  }
+
+  .modal-backdrop {
+    padding: 10px;
+  }
+
+  .modal-dialog {
+    max-height: calc(100vh - 20px);
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 14px;
+  }
 }
